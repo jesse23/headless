@@ -39,10 +39,6 @@ export interface PathContext {
  */
 export interface ViewDefinition {
   /**
-   * schema version of the view model JSON
-   */
-  schemaVersion: string;
-  /**
    * data definition for the view model
    */
   data: Data;
@@ -84,7 +80,8 @@ export interface ViewDefinition {
 /**
  * primitive type in store
  */
-export type FunctionType = (...args: unknown[]) => unknown;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type FunctionType = (...args: any[]) => unknown;
 
 export type Primitive = boolean | number | string;
 

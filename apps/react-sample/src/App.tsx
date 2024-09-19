@@ -1,10 +1,37 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import reactLogo from './assets/react.svg';
+import viteLogo from '/vite.svg';
+import './App.css';
+import { TestButton } from './components/TestButton';
+import { registerLibDeps } from './libs/core';
+import { useViewModel } from './libs/react/view';
+
+registerLibDeps('testLib', {
+  increment: (x: number) => x + 1,
+});
+
+const viewModelDefinition = {
+  data: {
+    count: 0,
+  },
+  actions: {
+    increment: {
+      actionType: 'JSFunction',
+      method: 'increment',
+      inputData: {
+        'count': '{{data.count}}',
+      },
+      outputData: {
+        'count': '',
+      },
+      deps: 'testLib',
+    },
+  },
+};
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { getData, actions } = useViewModel(viewModelDefinition, {});
+
+  const { count } = getData();
 
   return (
     <>
@@ -18,9 +45,7 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
+        <TestButton action={actions.increment}>count is {count as number}</TestButton>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
@@ -29,7 +54,7 @@ function App() {
         Click on the Vite and React logos to learn more
       </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
