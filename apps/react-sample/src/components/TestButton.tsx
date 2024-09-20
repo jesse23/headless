@@ -5,7 +5,7 @@ export const TestButton = ({
   children,
 }: {
   action: () => void;
-  children: ReactNode[];
+  children: ReactNode[]|ReactNode;
 }) => {
   return <button onClick={action}>{children}</button>;
 };

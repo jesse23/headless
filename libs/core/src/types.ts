@@ -37,7 +37,7 @@ export interface PathContext {
 /**
  * view definition with 'view' and 'viewmodel'
  */
-export interface ViewDefinition {
+export interface ViewModelDefinition {
   /**
    * data definition for the view model
    */
@@ -58,6 +58,10 @@ export interface ViewDefinition {
      * onUnmount hook is called when the view is unmounted
      */
     onUnmount?: string;
+    /**
+     * onUpdate hook is called when the view is updated
+     */
+    onUpdate?: string;
   }
   /**
    * view dependency definitions for the view model
@@ -75,6 +79,13 @@ export interface ViewDefinition {
    * view name
    */
   name?: string;
+  /**
+   * onEvent
+   */
+  onEvent?: {
+    eventId: string;
+    action: string;
+  }[];
 }
 
 /**
@@ -153,3 +164,6 @@ export interface DataProvider {
   totalFound: number;
 }
 
+export type InitFn = () => Data;
+
+export type UseStoreFn = (initFn: InitFn) => Store;

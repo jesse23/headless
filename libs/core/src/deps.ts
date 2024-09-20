@@ -9,7 +9,10 @@ const _libDeps = {} as Record<string,Record<string, FunctionType>>;
  * @param deps lib implementation
  */
 export const registerLibDeps = (libName: string, deps: Record<string, FunctionType>) => {
-    _libDeps[libName] = deps;
+    _libDeps[libName] = {
+        ..._libDeps[libName],
+        ...deps
+    };
 };
 
 /**

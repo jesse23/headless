@@ -102,8 +102,8 @@ export const createActionFn = (
   actionDef: Data,
   store: Store,
   getProps: () => Record<string, unknown>
-): (() => Promise<void>) => {
-  return async () => {
+): ((eventData? : Data) => Promise<void>) => {
+  return async (eventData) => {
     // load deps
     const actionFn = getLibDeps(actionDef.deps as string)[
       actionDef.method as string
@@ -111,13 +111,13 @@ export const createActionFn = (
 
     // load input data
     const data = store.getData();
-    const inputData = evalDataDefinition(actionDef.inputData as Data, { data, props: getProps() as Value });
+    const inputData = evalDataDefinition(actionDef.inputData as Data, { data, props: getProps() as Value, eventData });
 
     // execute action
     const result = await actionFn(...Object.values(inputData)) as number;
 
     // update output data
-    const outputData = evalOutputData(actionDef.outputData as Record<string, string>, result);
+    const outputData = evalOutputData((actionDef.outputData || {}) as Record<string, string>, result);
     store.updateData(outputData);
   };
 };
