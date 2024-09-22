@@ -3,6 +3,7 @@ import {
     FunctionType,
     PathContext,
 } from './types';
+import lodashFpSet from 'lodash/fp/set';
 
 export const BaseIndent = '  ';
 
@@ -286,23 +287,18 @@ export const getValue = ( scope: Data, path: string ): Data => {
 };
 
 /**
- * set value to scope
+ * update data store in immutable way
  *
- * @param scope scope for evaluation
- * @param path path to set to scope
- * @param value value to specific path
- * @returns true if value is different with orignal (and successfully set).
+ * @param prev data store before update
+ * @param values updates in key-value pair
+ * @returns immutable data store after update
  */
-/*
-export const setValue = ( scope: DataStore, path: string, value: unknown ): boolean => {
-    // do immutable comparison only
-    if ( getValue( scope, path ) !== value ) {
-        lodashSet( scope, path, value );
-        return true;
-    }
-    return false;
+export const applyValues = ( prev: Data, values: Data ): Data => {
+    return Object.entries(values).reduce((prev, [path, value]): Data => {
+      const prevValue = getValue(prev, path);
+      return prevValue === value ? prev : lodashFpSet(path, value, prev);
+    }, prev);
 };
-*/
 
 /**
  * parse expr ${aa.bb}} to get aa.bb

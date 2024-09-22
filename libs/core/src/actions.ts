@@ -121,3 +121,17 @@ export const createActionFn = (
     store.updateData(outputData);
   };
 };
+
+export const initActions = ( actionsDef: Data, 
+  store: Store,   getProps: () => Record<string, unknown>): Record<string, (eventData? : Data) => Promise<void>> => {
+    return Object.entries(actionsDef).reduce((prev, [actionName, actionDef]) => {
+      return {
+        ...prev,
+        [actionName]: createActionFn(
+          actionDef as Data,
+          store,
+          getProps,
+        ),
+      };
+    }, {});
+  };
