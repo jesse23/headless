@@ -1,9 +1,11 @@
+import { Action, Data, applyValues, cloneJson, execLifecycleHook, initActions, subscribeEvents, unsubscribeEvents } from '@headless/core';
+import { Subscription } from '@headless/ops';
 import { Component, State, h } from '@stencil/core';
+
 import { EventExampleContainerViewModel } from '@headless/models';
-import { Data, applyValues } from '@headless/core';
-import { initViewModel } from '@headless/core/src/models';
 import '../event-example-wrong-child/event-example-wrong-child';
 import '../event-example-correct-child/event-example-correct-child';
+
 
 @Component({
   tag: 'event-example-container',
@@ -11,9 +13,15 @@ import '../event-example-correct-child/event-example-correct-child';
   shadow: false,
 })
 export class EventExampleContainer {
-  private actions: Record<string, () => void>;
+  private vmDef = EventExampleContainerViewModel;
 
+  // props
+  getProps() {
+    return {
+    };
+  }
 
+  // data
   @State() data: Data;
 
   getData() {
@@ -24,18 +32,36 @@ export class EventExampleContainer {
     this.data = applyValues(this.getData(), values);
   }
 
+  // action
+  private actions: Record<string, Action>;
+
   componentWillLoad() {
-    Object.assign(
-      this,
-      initViewModel(
-        EventExampleContainerViewModel,
-        {
-          getData: this.getData.bind(this),
-          updateData: this.updateData.bind(this),
-        },
-        () => ({}),
-      ),
-    );
+    this.data = cloneJson(this.vmDef.data);
+    this.actions = initActions(this.vmDef.actions || {}, {
+      getData: this.getData.bind(this),
+      updateData: this.updateData.bind(this),
+    }, this.getProps.bind(this));
+  }
+
+  // subscriptions
+  private subscriptions: Subscription<unknown>[] = [];
+
+  async componentDidLoad() {
+    await execLifecycleHook(this.vmDef, this.actions, 'onMount');
+
+    this.subscriptions = subscribeEvents(this.vmDef, this.actions);
+  }
+
+  async disconnectedCallback() {
+    unsubscribeEvents(this.subscriptions);
+    this.subscriptions = [];
+
+    await execLifecycleHook(this.vmDef, this.actions, 'onUnmount');
+  }
+
+  // update hook
+  async componentDidUpdate() {
+    await execLifecycleHook(this.vmDef, this.actions, 'onUpdate');
   }
 
   render() {

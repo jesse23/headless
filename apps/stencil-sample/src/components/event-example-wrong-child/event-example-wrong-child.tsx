@@ -1,8 +1,8 @@
+import { Action, Data, applyValues, cloneJson, execLifecycleHook, initActions, subscribeEvents, unsubscribeEvents } from '@headless/core';
+import { Subscription } from '@headless/ops';
 import { Component, Prop, State, h } from '@stencil/core';
+
 import { EventExampleWrongChildViewModel } from '@headless/models';
-import { Data, applyValues } from '@headless/core';
-import { initViewModel } from '@headless/core/src/models';
-import { eventBus, Subscription } from '@headless/ops';
 
 @Component({
   tag: 'event-example-wrong-child',
@@ -10,10 +10,9 @@ import { eventBus, Subscription } from '@headless/ops';
   shadow: false,
 })
 export class EventExampleWrongChild {
-  private actions: Record<string, (eventData?: Data) => void>;
+  private vmDef = EventExampleWrongChildViewModel;
 
-  private subscriptions: Subscription<unknown>[] = [];
-
+  // props
   @Prop() count: number;
 
   getProps() {
@@ -22,6 +21,7 @@ export class EventExampleWrongChild {
     };
   }
 
+  // data
   @State() data: Data;
 
   getData() {
@@ -32,46 +32,36 @@ export class EventExampleWrongChild {
     this.data = applyValues(this.getData(), values);
   }
 
+  // action
+  private actions: Record<string, Action>;
+
   componentWillLoad() {
-    Object.assign(
-      this,
-      initViewModel(
-        EventExampleWrongChildViewModel,
-        {
-          getData: this.getData.bind(this),
-          updateData: this.updateData.bind(this),
-        },
-        this.getProps.bind(this),
-      ),
-    );
+    this.data = cloneJson(this.vmDef.data);
+    this.actions = initActions(this.vmDef.actions || {}, {
+      getData: this.getData.bind(this),
+      updateData: this.updateData.bind(this),
+    }, this.getProps.bind(this));
   }
 
-  componentDidLoad() {
-    // event
-    const viewDef = EventExampleWrongChildViewModel;
-    this.subscriptions = (viewDef.onEvent || []).map(eventListener => {
-      const { eventId, action } = eventListener;
-      const actionFn = this.actions[action];
-      if (!actionFn) {
-        console.warn(`action ${action} not found in actions`);
-        return;
-      }
-      return eventBus.subscribe({
-        topic: eventId,
-        handler: (eventData: Data) => {
-          actionFn(eventData);
-        },
-      });
-    });
+  // subscriptions
+  private subscriptions: Subscription<unknown>[] = [];
+
+  async componentDidLoad() {
+    await execLifecycleHook(this.vmDef, this.actions, 'onMount');
+
+    this.subscriptions = subscribeEvents(this.vmDef, this.actions);
   }
 
-  disconnectedCallback() {
-    this.subscriptions.forEach(sub => {
-      if(sub) {
-        eventBus.unsubscribe(sub);
-      }
-      this.subscriptions = [];
-    });
+  async disconnectedCallback() {
+    unsubscribeEvents(this.subscriptions);
+    this.subscriptions = [];
+
+    await execLifecycleHook(this.vmDef, this.actions, 'onUnmount');
+  }
+
+  // update hook
+  async componentDidUpdate() {
+    await execLifecycleHook(this.vmDef, this.actions, 'onUpdate');
   }
 
   render() {

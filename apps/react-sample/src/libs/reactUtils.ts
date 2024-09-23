@@ -2,14 +2,17 @@ import {
   Data,
   Store,
   cloneJson,
-  createActionFn,
   getValue,
   UseStoreFn,
   ViewModelDefinition,
+  applyValues,
+  initActions,
+  execLifecycleHook,
+  subscribeEvents,
+  unsubscribeEvents,
 } from '@headless/core';
-import { useRef, useReducer, useEffect, useState } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import lodashFpSet from 'lodash/fp/set';
-import { eventBus } from '@headless/ops';
 
 type UsePartialStoreFn = (store: Store, path: string) => Store;
 
@@ -33,27 +36,15 @@ export const usePartialStore: UsePartialStoreFn = (store, path) => {
 };
 
 export const useStore: UseStoreFn = (initFn) => {
-  const lastState = useRef({} as Data);
-
-  // to prevent reducer called twice, per: https://github.com/facebook/react/issues/16295
-  const reducer = useRef(
-    (data: Data, values: Data): Data =>
-      (lastState.current = Object.entries(values).reduce(
-        (prev, [path, value]) => {
-          const prevValue = getValue(prev, path);
-          return prevValue === value ? prev : lodashFpSet(path, value, prev);
-        },
-        data
-      ))
-  ).current;
-
-  const [_, updateData] = useReducer(
-    reducer,
-    null,
-    () => (lastState.current = initFn())
-  );
+  const lastState = useRef(initFn());
 
   const getData = useRef(() => lastState.current).current;
+
+  const [ _, setData ] = useState(getData());
+
+  const updateData = useRef((values: Data): void => {
+    setData(lastState.current = applyValues(getData(), values));
+  }).current;
 
   return { getData, updateData };
 };
@@ -67,98 +58,40 @@ export const useViewModel = (
   //   - for UI driven action, it will always be the latest value
   //   - for Model driven action, it may not be the latest if the UI rendering is delayed.
   const propsRef = useRef({} as Record<string, unknown>);
-  propsRef.current = props;
   const getProps = useRef(() => propsRef.current).current;
+  propsRef.current = props;
 
   // data
-  const data = useStore(() => cloneJson(viewDef.data));
-  const { getData, updateData } = data;
+  const { getData, updateData } = useStore(() => cloneJson(viewDef.data));
 
   // actions
-  const [actions, setActions] = useState({} as Record<string, (eventData?: Data) => void>);
-
-  useEffect(() => {
-    setActions(
-      Object.entries(viewDef.actions || {}).reduce(
-        (prev, [actionName, actionDef]) => {
-          return {
-            ...prev,
-            [actionName]: createActionFn(
-              actionDef as Data,
-              {
-                getData,
-                updateData,
-              },
-              getProps
-            ),
-          };
-        },
-        {} as Record<string, () => void>
-      )
-    );
-    // TODO: quickly hack field here
-  }, [getData, getProps, updateData, viewDef.actions]);
+  const actions = useRef(initActions(viewDef.actions || {}, { getData, updateData }, getProps)).current;
 
   // lifecycle hooks
   useEffect(() => {
-    if (Object.keys(actions).length === 0) return;
-    const onMountFnName = viewDef.lifecycleHooks?.onMount;
-    if (onMountFnName) {
-      const onMountFn = actions[onMountFnName];
-      onMountFn();
-    }
+    execLifecycleHook(viewDef, actions, 'onMount');
     return () => {
-      const onUnmountFnName = viewDef.lifecycleHooks?.onUnmount;
-      if (onUnmountFnName) {
-        const onUnmountFn = actions[onUnmountFnName];
-        onUnmountFn();
-      }
+      execLifecycleHook(viewDef, actions, 'onUnmount');
     };
     // action hook is stable since it is with useStore
-  }, [
-    actions,
-    viewDef.lifecycleHooks?.onMount,
-    viewDef.lifecycleHooks?.onUnmount,
-  ]);
+  }, [actions, viewDef]);
 
   // onUpdate
   useEffect(() => {
-    const onUpdateFnName = viewDef.lifecycleHooks?.onUpdate || '';
-    const onUpdateFn = actions[onUpdateFnName];
-    if( onUpdateFn ) {
-      onUpdateFn();
-    }
-  } );
+    execLifecycleHook(viewDef, actions, 'onUpdate');
+  });
 
   // onEvent
   useEffect(() => {
-    const eventSubscriptionDefinitions = viewDef.onEvent || [];
-    const subs = eventSubscriptionDefinitions.map((eventListener) => {
-      const { eventId, action } = eventListener;
-      const actionFn = actions[action];
-      if (!actionFn) {
-        console.warn(`action ${action} not found in actions`);
-        return;
-      }
-      return eventBus.subscribe({
-        topic: eventId,
-        handler: (eventData: Data) => {
-          actionFn(eventData);
-        },
-      });
-    });
+    const subscriptions = subscribeEvents(viewDef, actions);
     return () => {
-      subs.forEach((sub) => {
-        if (sub) {
-          eventBus.unsubscribe(sub);
-        }
-      });
+      unsubscribeEvents(subscriptions);
     };
-  }, [actions, viewDef.onEvent]);
+  }, [actions, viewDef]);
 
-  return { 
-    getData, 
-    updateData, 
+  return {
+    getData,
+    updateData,
     actions,
     data: getData(),
   };

@@ -167,3 +167,5 @@ export interface DataProvider {
 export type InitFn = () => Data;
 
 export type UseStoreFn = (initFn: InitFn) => Store;
+
+export type Action = (eventData? : unknown) => Promise<void>

@@ -49,8 +49,8 @@ ViewModel is a class that contains all the data and logic for a view. It is a he
 - Event Publish could carry data, the data will be the latest
 
 ### Event Subscription
-- Event Subscription will be done as soon as component is mounted.
-- It is not guaranteed that the event will be listened right after it is getting mounted.
+- Event Subscription should happen after onMount hook, which is the callback for user to ensure component is mounted.
+- Unsuscribe should be done before triggering unmount hook too.
 
 ### Event Handler
 - Event Handler will trigger an action in ViewModel.

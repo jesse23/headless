@@ -1,7 +1,8 @@
-import { Component, Prop, State, h } from '@stencil/core';
+import { Action, Data, applyValues, cloneJson, execLifecycleHook, initActions, subscribeEvents, unsubscribeEvents } from '@headless/core';
+import { Subscription } from '@headless/ops';
+import { Component, State, h } from '@stencil/core';
+
 import { DataExampleViewModel } from '@headless/models';
-import { Data, applyValues } from '@headless/core';
-import { initViewModel } from '@headless/core/src/models';
 
 @Component({
   tag: 'data-example',
@@ -9,8 +10,15 @@ import { initViewModel } from '@headless/core/src/models';
   shadow: false,
 })
 export class DataExample {
-  private actions: Record<string, () => void>;
+  private vmDef = DataExampleViewModel;
 
+  // props
+  getProps() {
+    return {
+    };
+  }
+
+  // data
   @State() data: Data;
 
   getData() {
@@ -21,11 +29,36 @@ export class DataExample {
     this.data = applyValues(this.getData(), values);
   }
 
+  // action
+  private actions: Record<string, Action>;
+
   componentWillLoad() {
-    Object.assign(this, initViewModel(DataExampleViewModel, {
+    this.data = cloneJson(this.vmDef.data);
+    this.actions = initActions(this.vmDef.actions || {}, {
       getData: this.getData.bind(this),
       updateData: this.updateData.bind(this),
-    }, () => ({})));
+    }, this.getProps.bind(this));
+  }
+
+  // subscriptions
+  private subscriptions: Subscription<unknown>[] = [];
+
+  async componentDidLoad() {
+    await execLifecycleHook(this.vmDef, this.actions, 'onMount');
+
+    this.subscriptions = subscribeEvents(this.vmDef, this.actions);
+  }
+
+  async disconnectedCallback() {
+    unsubscribeEvents(this.subscriptions);
+    this.subscriptions = [];
+
+    await execLifecycleHook(this.vmDef, this.actions, 'onUnmount');
+  }
+
+  // update hook
+  async componentDidUpdate() {
+    await execLifecycleHook(this.vmDef, this.actions, 'onUpdate');
   }
 
   render() {

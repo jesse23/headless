@@ -1,4 +1,4 @@
-import { Value, Data, Store } from './types';
+import { Value, Data, Store, Action } from './types';
 import { cloneJson, getValue, parseExpr } from './utils';
 import { getLibDeps } from './deps';
 
@@ -102,8 +102,8 @@ export const createActionFn = (
   actionDef: Data,
   store: Store,
   getProps: () => Record<string, unknown>
-): ((eventData? : Data) => Promise<void>) => {
-  return async (eventData) => {
+): Action => {
+  return async (eventData: Data) => {
     // load deps
     const actionFn = getLibDeps(actionDef.deps as string)[
       actionDef.method as string
@@ -123,7 +123,7 @@ export const createActionFn = (
 };
 
 export const initActions = ( actionsDef: Data, 
-  store: Store,   getProps: () => Record<string, unknown>): Record<string, (eventData? : Data) => Promise<void>> => {
+  store: Store,   getProps: () => Record<string, unknown>): Record<string, Action> => {
     return Object.entries(actionsDef).reduce((prev, [actionName, actionDef]) => {
       return {
         ...prev,
