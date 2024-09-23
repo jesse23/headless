@@ -1,6 +1,8 @@
 # Headless UI
 Try to build UI framework in a headless way, so that it can be used in any environment.
 
+![Headless UI](./headless.drawio.png)
+
 # Key Concepts
 ## ViewModel
 ViewModel is a class that contains all the data and logic for a view. It is a headless class that can be
@@ -31,6 +33,15 @@ ViewModel is a class that contains all the data and logic for a view. It is a he
 ### Hook
 - Hook is callback function that can be used to listen to ViewModel lifecycle.
 - Input in hook is guaranteed to be up to date.
+- Lifecycle hook and init flow should maintain the promise chain if possible
+- Lifecycle Hook for component mount:
+  - onInit to initialize view model, action and other resources
+  - launch onMount hook
+  - subscribe to event callback
+- Lifecycle Hook for component unmount:
+  - unsubscribe to event callback
+  - launch onUnmount hook
+  - destroy other resources
 
 ## Ctx
 - Ctx is the global state for all the ViewModel. Dispatch to Ctx will trigger re-render for root level of the ViewModel.

@@ -16,13 +16,12 @@ export const EventExampleCorrectChild = defineComponent({
       const { count } = getData();
 
       return (
-    <div className="card">
-      Process "PropData + EventData" in onUpdate: {count as number}
-    </div>
+        <div className="card">
+          Process "PropData + EventData" in onUpdate: {count as number}
+        </div>
       );
     };
   },
-}) as unknown as FunctionalComponent<{count: number}>;
+}) as unknown as FunctionalComponent<{ count: number }>;
 
 export default EventExampleCorrectChild;
-

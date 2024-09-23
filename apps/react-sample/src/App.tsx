@@ -1,6 +1,6 @@
 import './App.css';
 import { DataExample, EventExampleContainer } from './components';
-import { RenderExample } from './components/RenderExample';
+import { RenderExample } from '@headless/components';
 
 function App() {
   return (

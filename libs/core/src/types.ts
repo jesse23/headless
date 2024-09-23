@@ -177,3 +177,15 @@ export type Action = (eventData? : unknown) => Promise<void>
  * Action function that used in view model, which will return patch as key value pair
  */
 export type ActionFn = (data: Data, props: Record<string, unknown>, eventData?: Data) => Promise<Data>|Data|void|Promise<void>;
+
+
+export interface ComponentDefinition {
+  data: Data;
+  actions: Record<string, ActionFn>;
+  lifecycleHooks?: Record<string, ActionFn>;
+  onEvent?: {
+    eventId: string;
+    action: string;
+  }[];
+  render: (props: Record<string, unknown>, data: Data, actions: Record<string, Action>) => JSX.Element;
+}

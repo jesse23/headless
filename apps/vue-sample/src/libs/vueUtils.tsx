@@ -1,4 +1,10 @@
-import { ref, onMounted, onUnmounted, onUpdated } from 'vue';
+import {
+  ref,
+  onMounted,
+  onUnmounted,
+  onUpdated,
+  defineComponent as defineComponentVue,
+} from 'vue';
 import {
   Data,
   cloneJson,
@@ -9,6 +15,10 @@ import {
   subscribeEvents,
   execLifecycleHook,
   unsubscribeEvents,
+  ComponentDefinition,
+  initActionsFromActionFn,
+  createActionFromActionFn,
+  registerLibDeps,
 } from '@headless/core';
 import { Subscription } from '@headless/ops';
 
@@ -66,3 +76,86 @@ export const useViewModel = (
 
   return { getData, updateData, actions, data: getData() };
 };
+
+export const defineComponent = (componentDef: ComponentDefinition) => {
+  const Component = defineComponentVue({
+    setup(props) {
+      // props
+      const propsRef = ref(props);
+      propsRef.value = props;
+      const getProps = () => propsRef.value;
+
+      // data
+      const { getData, updateData } = useStore(() =>
+        cloneJson(componentDef.data)
+      );
+
+      // actions
+      const actions = ref(
+        initActionsFromActionFn(
+          componentDef.actions,
+          { getData, updateData },
+          getProps
+        )
+      ).value;
+
+      // events
+      const subscriptions = ref([] as Subscription<unknown>[]);
+
+      onMounted(async () => {
+        // onMount hook
+        const actionFn = componentDef.lifecycleHooks?.onMount;
+        if (actionFn) {
+          // TODO: need await here
+          await createActionFromActionFn(
+            actionFn,
+            { getData, updateData },
+            getProps
+          )();
+        }
+
+        // onEvent
+        subscriptions.value = subscribeEvents(
+          { onEvent: componentDef.onEvent } as ViewModelDefinition,
+          actions
+        );
+      });
+
+      onUnmounted(async () => {
+        // unsubscribe
+        unsubscribeEvents(subscriptions.value);
+        subscriptions.value = [];
+
+        // onUnmount
+        const actionFn = componentDef.lifecycleHooks?.onUnmount;
+        if (actionFn) {
+          createActionFromActionFn(
+            actionFn,
+            { getData, updateData },
+            getProps
+          )();
+        }
+      });
+
+      // onUpdate
+      onUpdated(() => {
+        const actionFn = componentDef.lifecycleHooks?.onUpdate;
+        if (actionFn) {
+          createActionFromActionFn(
+            actionFn,
+            { getData, updateData },
+            getProps
+          )();
+        }
+      });
+
+      return () => componentDef.render(getProps(), getData(), actions);
+
+    },
+  });
+  return Component;
+};
+
+registerLibDeps('view', {
+  defineComponent,
+});

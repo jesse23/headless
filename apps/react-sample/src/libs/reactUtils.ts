@@ -10,10 +10,10 @@ import {
   execLifecycleHook,
   subscribeEvents,
   unsubscribeEvents,
-  ActionFn,
   initActionsFromActionFn,
   createActionFromActionFn,
-  Action,
+  registerLibDeps,
+  ComponentDefinition,
 } from '@headless/core';
 import { useRef, useEffect, useState } from 'react';
 import lodashFpSet from 'lodash/fp/set';
@@ -103,18 +103,6 @@ export const useViewModel = (
   };
 };
 
-/// JS Component
-
-export interface ComponentDefinition {
-  data: Data;
-  actions: Record<string, ActionFn>;
-  lifecycleHooks?: Record<string, ActionFn>;
-  onEvent?: {
-    eventId: string;
-    action: string;
-  }[];
-  render: (props: Record<string, unknown>, data: Data, actions: Record<string, Action>) => JSX.Element;
-}
 
 export const defineComponent = (componentDef: ComponentDefinition) => {
   const Component = (props: Record<string, unknown>) => {
@@ -149,8 +137,8 @@ export const defineComponent = (componentDef: ComponentDefinition) => {
 
       return () => {
         unsubscribeEvents(subscriptions);
-        const actionFn = componentDef.lifecycleHooks?.onUnmount;
 
+        const actionFn = componentDef.lifecycleHooks?.onUnmount;
         if (actionFn) {
           createActionFromActionFn(
             actionFn,
@@ -178,3 +166,7 @@ export const defineComponent = (componentDef: ComponentDefinition) => {
   };
   return Component;
 };
+
+registerLibDeps('view', {
+  defineComponent,
+});
