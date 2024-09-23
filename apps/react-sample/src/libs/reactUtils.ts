@@ -10,6 +10,10 @@ import {
   execLifecycleHook,
   subscribeEvents,
   unsubscribeEvents,
+  ActionFn,
+  initActionsFromActionFn,
+  createActionFromActionFn,
+  Action,
 } from '@headless/core';
 import { useRef, useEffect, useState } from 'react';
 import lodashFpSet from 'lodash/fp/set';
@@ -40,10 +44,10 @@ export const useStore: UseStoreFn = (initFn) => {
 
   const getData = useRef(() => lastState.current).current;
 
-  const [ _, setData ] = useState(getData());
+  const [_, setData] = useState(getData());
 
   const updateData = useRef((values: Data): void => {
-    setData(lastState.current = applyValues(getData(), values));
+    setData((lastState.current = applyValues(getData(), values)));
   }).current;
 
   return { getData, updateData };
@@ -65,7 +69,9 @@ export const useViewModel = (
   const { getData, updateData } = useStore(() => cloneJson(viewDef.data));
 
   // actions
-  const actions = useRef(initActions(viewDef.actions || {}, { getData, updateData }, getProps)).current;
+  const actions = useRef(
+    initActions(viewDef.actions || {}, { getData, updateData }, getProps)
+  ).current;
 
   // lifecycle hooks
   useEffect(() => {
@@ -95,4 +101,80 @@ export const useViewModel = (
     actions,
     data: getData(),
   };
+};
+
+/// JS Component
+
+export interface ComponentDefinition {
+  data: Data;
+  actions: Record<string, ActionFn>;
+  lifecycleHooks?: Record<string, ActionFn>;
+  onEvent?: {
+    eventId: string;
+    action: string;
+  }[];
+  render: (props: Record<string, unknown>, data: Data, actions: Record<string, Action>) => JSX.Element;
+}
+
+export const defineComponent = (componentDef: ComponentDefinition) => {
+  const Component = (props: Record<string, unknown>) => {
+    // props
+    const propsRef = useRef({} as Record<string, unknown>);
+    const getProps = useRef(() => propsRef.current).current;
+    propsRef.current = props;
+
+    // data
+    const { getData, updateData } = useStore(() =>
+      cloneJson(componentDef.data)
+    );
+
+    // actions
+    const actions = useRef(
+      initActionsFromActionFn(
+        componentDef.actions,
+        { getData, updateData },
+        getProps
+      )
+    ).current;
+
+    // lifecycle hooks
+    useEffect(() => {
+      const actionFn = componentDef.lifecycleHooks?.onMount;
+      if (actionFn) {
+        // TODO: need await here
+        createActionFromActionFn(actionFn, { getData, updateData }, getProps)();
+      }
+
+      const subscriptions = subscribeEvents({ onEvent: componentDef.onEvent} as ViewModelDefinition, actions);
+
+      return () => {
+        unsubscribeEvents(subscriptions);
+        const actionFn = componentDef.lifecycleHooks?.onUnmount;
+
+        if (actionFn) {
+          createActionFromActionFn(
+            actionFn,
+            { getData, updateData },
+            getProps
+          )();
+        }
+      };
+      // action hook is stable since it is with useStore
+    }, [actions, getData, getProps, updateData]);
+
+    // onUpdate
+    useEffect(() => {
+        const actionFn = componentDef.lifecycleHooks?.onUpdate;
+        if (actionFn) {
+          createActionFromActionFn(
+            actionFn,
+            { getData, updateData },
+            getProps
+          )();
+        }
+    });
+
+    return componentDef.render(props, getData(), actions);
+  };
+  return Component;
 };

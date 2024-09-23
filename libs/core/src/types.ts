@@ -168,4 +168,12 @@ export type InitFn = () => Data;
 
 export type UseStoreFn = (initFn: InitFn) => Store;
 
+/**
+ * Action that used in view model, which will be used in view directly
+ */
 export type Action = (eventData? : unknown) => Promise<void>
+
+/**
+ * Action function that used in view model, which will return patch as key value pair
+ */
+export type ActionFn = (data: Data, props: Record<string, unknown>, eventData?: Data) => Promise<Data>|Data|void|Promise<void>;

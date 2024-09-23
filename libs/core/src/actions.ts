@@ -1,4 +1,4 @@
-import { Value, Data, Store, Action } from './types';
+import { Value, Data, Store, Action, ActionFn } from './types';
 import { cloneJson, getValue, parseExpr } from './utils';
 import { getLibDeps } from './deps';
 
@@ -98,7 +98,7 @@ export const evalOutputData = (
  * @param store data state
  * @returns void function call back to execute the action
  */
-export const createActionFn = (
+export const createAction = (
   actionDef: Data,
   store: Store,
   getProps: () => Record<string, unknown>
@@ -123,12 +123,42 @@ export const createActionFn = (
 };
 
 export const initActions = ( actionsDef: Data, 
-  store: Store,   getProps: () => Record<string, unknown>): Record<string, Action> => {
+  store: Store,   
+  getProps: () => Record<string, unknown>): Record<string, Action> => {
     return Object.entries(actionsDef).reduce((prev, [actionName, actionDef]) => {
       return {
         ...prev,
-        [actionName]: createActionFn(
+        [actionName]: createAction(
           actionDef as Data,
+          store,
+          getProps,
+        ),
+      };
+    }, {});
+  };
+
+export const createActionFromActionFn = (
+  actionFn: ActionFn,
+  store: Store,
+  getProps: () => Record<string, unknown>
+): Action => {
+  return async (eventData: Data) => {
+    const res = await actionFn( store.getData(), getProps(), eventData); 
+    if( res ) {
+      store.updateData(res);
+    }
+  };
+};
+
+export const initActionsFromActionFn = (
+  actionFnMap: Record<string, ActionFn>,
+  store: Store,   
+  getProps: () => Record<string, unknown>): Record<string, Action> => {
+    return Object.entries(actionFnMap).reduce((prev, [actionName, actionFn]) => {
+      return {
+        ...prev,
+        [actionName]: createActionFromActionFn(
+          actionFn,
           store,
           getProps,
         ),
