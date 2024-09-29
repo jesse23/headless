@@ -1,7 +1,7 @@
-import { defineComponent } from '../libs/reactUtils';
+import { defineComponent } from '@headless/react';
 import { TestButton } from './TestButton';
 
-export const RenderExample = defineComponent({
+export const ComponentJsExample = defineComponent({
   data: {
     count: 0,
   },
@@ -16,16 +16,16 @@ export const RenderExample = defineComponent({
   lifecycleHooks: {
     onMount: () => {
       // same as actions interface
-      console.log('RenderExample mounted');
+      console.log('ComponentJsExample mounted');
       return {
         count: 23,
       };
     },
     onUnmount: () => {
-      console.log('RenderExample unmounted');
+      console.log('ComponentJsExample unmounted');
     },
     onUpdate: () => {
-      console.log('RenderExample updated');
+      console.log('ComponentJsExample updated');
     },
   },
   render: (_, { count }, { increment }) => {

@@ -1,11 +1,10 @@
 import {
   Data,
-  Store,
   cloneJson,
-  createActionFn,
   getValue,
   UseStoreFn,
   ViewModelDefinition,
+  initActions,
 } from '@headless/core';
 import { createSignal, createEffect, onMount, onCleanup } from 'solid-js';
 import lodashFpSet from 'lodash/fp/set';
@@ -41,29 +40,12 @@ export const useViewModel = (
   propsRef.current = props;
   const getProps = () => props;
 
-  const [dummy, setDummy] = createSignal(0); 
-
   // data
   const data = useStore(() => cloneJson(viewDef.data));
   const { getData, updateData } = data;
 
   // actions - not able to use use effect for now since JSX in solidJS is different with vue/react
-  const actions = { current: Object.entries(viewDef.actions || {}).reduce(
-    (prev, [actionName, actionDef]) => {
-      return {
-        ...prev,
-        [actionName]: createActionFn(
-          actionDef as Data,
-          {
-            getData,
-            updateData,
-          },
-          getProps
-        ),
-      };
-    },
-    {} as Record<string, (eventData?: any) => void>
-  ) }.current;
+  const actions = { current: initActions(viewDef.actions || {}, { getData, updateData }, getProps) }.current;
 
   // lifecycle hooks
   onMount(() => {

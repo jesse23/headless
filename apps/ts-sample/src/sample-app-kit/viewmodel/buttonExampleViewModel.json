@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0.0",
+  "data": {
+    "currValue": 0
+  },
+  "actions": {
+    "plus": {
+      "actionType": "JSFunction",
+      "method": "execute",
+      "inputData": {
+        "expr": "value + 1",
+        "scope": {
+          "value": "{{data.currValue}}"
+        }
+      },
+      "outputData": {
+        "currValue": ""
+      },
+      "deps": "js/buttonExampleService"
+    }
+  }
+}

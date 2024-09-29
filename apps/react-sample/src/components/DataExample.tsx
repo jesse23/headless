@@ -1,5 +1,5 @@
 import { DataExampleViewModel } from '@headless/models';
-import { useViewModel } from '../libs/reactUtils';
+import { useViewModel } from '@headless/react';
 import { TestButton } from '.';
 
 export function DataExample() {

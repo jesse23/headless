@@ -1,0 +1,28 @@
+{    
+    "schemaVersion": "1.0.0",
+    "lifecycleHooks": {
+        "onMount": "loadData"
+    },
+    "data": {
+        "dataprovider": {
+            "simpleListExample": {
+                "loadedViewModelObjects": []
+            }
+        }
+    },
+  "actions": {
+    "loadData": {
+      "actionType": "JSFunction",
+      "method": "loadData",
+      "inputData": {},
+      "outputData": {
+        "dataprovider.simpleListExample.loadedViewModelObjects": "data",
+        "dataprovider.simpleListExample.totalFound": "totalFound"
+      },
+      "deps": "js/pluginPanelService"
+    }
+  },
+  "imports": [
+    "SimpleList"
+  ]
+}

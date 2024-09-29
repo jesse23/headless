@@ -1,0 +1,44 @@
+// BUTTONS
+$button_border: 1px solid;
+$button_border_radius: 2px;
+$button_outline: none;
+$button_text_align: center;
+$button_width: 100%;
+$button_base_width: auto;
+//$button_font_size: $fontsize_small;
+$button_font_weight: bold;
+$button_padding: 4px 8px;
+$button_min_height: 24px;
+$button_max_height: 24px;
+
+.simple-button {
+  border-radius: $button_border_radius;
+  border: $button_border;
+  text-align: $button_text_align;
+  outline: $button_outline;
+  width: $button_base_width;
+  padding: $button_padding;
+  //font-size: $button_font_size;
+  font-weight: $button_font_weight;
+  min-height: $button_min_height;
+  box-sizing: border-box;
+  &.disabled {
+    border: $button_border;
+    opacity: 1;
+  }
+
+  &:not(.disabled).accent-highContrast {
+    background-color: #005f87;
+    border-color: #003951;
+    color: #fff;
+    fill: #fff;
+
+    &:not(.disabled):hover {
+      background-color: #004c6c;
+    }
+
+    &:not(.disabled):active {
+      background-color: #003951;
+    }
+  }
+}

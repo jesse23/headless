@@ -1,0 +1,38 @@
+{
+  "commands": {
+    "command12": {
+      "iconId": "command12Icon",
+      "title": "command12Title"
+    },
+    "command22": {
+      "iconId": "command22Icon",
+      "title": "command22Title"
+    }
+  },
+  "commandHandlers": {
+    "command12Handler": {
+      "id": "command12",
+      "activeWhen": true,
+      "visibleWhen": true,
+      "action": "command12Action"
+    },
+    "command22Handler": {
+      "id": "command22",
+      "activeWhen": true,
+      "visibleWhen": true,
+      "action": "command22Action"
+    }
+  },
+  "commandPlacements": {
+    "command12Placement": {
+      "id": "command12",
+      "uiAnchor": "anchor1",
+      "priority": 1
+    },
+    "command21Placement": {
+      "id": "command22",
+      "uiAnchor": "anchor2",
+      "priority": 1
+    }
+  }
+}

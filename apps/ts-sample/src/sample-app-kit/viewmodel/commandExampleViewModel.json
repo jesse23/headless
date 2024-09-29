@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0.0",
+  "data": {
+  },
+  "actions": {
+    "getRemoteCommandViewModel": {
+      "actionType": "JSFunction",
+      "method": "getRemoteCommandViewModel",
+      "inputData": {
+        "id": "id1"
+      },
+      "outputData": {
+        "currValue": ""
+      },
+      "deps": "js/commandExampleService"
+    }
+  },
+  "imports": [
+    "SimpleCommandBar"
+  ]
+}

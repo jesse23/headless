@@ -1,0 +1,5 @@
+<form onsubmit="{{function handleSubmit(e){ e.preventDefault(); actions.submitForm();} }}">
+  <simple-textbox prop="{props.vmo.props.name}"></simple-textbox>
+  <simple-checkbox prop="{props.vmo.props.registered}"></simple-checkbox>
+  <simple-button type="submit">Submit</simple-button>
+</form>

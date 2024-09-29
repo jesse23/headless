@@ -23,9 +23,14 @@
     "target": "es2018",
     // "typeRoots": ["node_modules", "node_modules/@types"],
     "paths": {
-      "@pscale/trmx": ["./libs/trmx/src/index.ts"],
-      "@pscale/difx": ["./libs/difx/src/index.ts"],
-      "@pscale/util": ["./libs/util/src/index.ts"],
+      "@headless/kit-sample": ["./kits/kit-sample/src/index.ts"],
+      "@headless/core": ["./libs/core/src/index.ts"],
+      "@headless/components": ["./libs/components/src/index.ts"],
+      "@headless/models": ["./libs/models/src/index.ts"],
+      "@headless/ops": ["./libs/ops/src/index.ts"],
+      "@headless/react": ["./libs/react/src/index.ts"],
+      "@headless/react-compiler": ["./libs/react-compiler/src/index.ts"],
+      "@headless/tooling": ["./libs/tooling/index.ts"],
     }
   },
   "exclude": ["node_modules"]

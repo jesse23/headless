@@ -1,0 +1,153 @@
+// Copyright (c) 2020 Siemens
+.simple-checkbox {
+    display: flex;
+    flex-direction: row;
+}
+
+// cb-val is an invisible label with a hidden input and a visible label + cb
+.simple-checkbox-val {
+    z-index: 0;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    line-height: 1.5;
+    width: fit-content;
+    text-align: center;
+
+    /* hide the html input */
+    >input {
+        appearance: none;
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        z-index: -1;
+        position: absolute;
+        left: -5px;
+        top: -3px;
+        display: block;
+        margin: 0;
+        /*
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        */
+        background-color: rgba(#006487, 0.6);
+        box-shadow: none;
+        outline: none;
+        // opacity: 0;
+        transform: scale(1);
+        pointer-events: none;
+        transition: opacity 0.3s, transform 0.2s;
+
+        /* Checked, Indeterminate */
+        &:checked,
+        &:indeterminate {
+            background-color: #006487;
+        }
+
+        &:checked+.checkbox-label::before,
+        &:indeterminate+.checkbox-label::before {
+            border-color: #006487;
+            background-color: #006487;
+        }
+
+        &:checked+.checkbox-label::after,
+        &:indeterminate+.checkbox-label::after {
+            border-color: white;
+        }
+
+        &:indeterminate+.checkbox-label::after {
+            border-left: none;
+            transform: translate(4px, -1px);
+        }
+
+        /* Hover, Focus */
+        &:hover>input {
+            opacity: 0.04;
+        }
+
+        &:focus {
+            opacity: 0.12;
+        }
+
+        /* Active */
+        &:active {
+            opacity: 1;
+            transform: scale(0);
+            transition: transform 0s, opacity 0s;
+        }
+
+        &:active+.checkbox-label::before {
+            border-color: #006487;
+        }
+
+        &:checked:active+.checkbox-label::before {
+            border-color: transparent;
+            background-color: rgba(#006487, 0.6);
+        }
+
+        /* Disabled */
+        &:disabled {
+            opacity: 0;
+        }
+
+        &:disabled+.checkbox-label {
+            color: rgba(#006487, 0.38);
+            cursor: initial;
+        }
+
+        &:disabled+.checkbox-label::before {
+            border-color: currentColor;
+        }
+
+        &:checked:disabled+.checkbox-label::before,
+        &:indeterminate:disabled+.checkbox-label::before {
+            border-color: transparent;
+            background-color: currentColor;
+        }
+    }
+
+    &:hover>input:focus {
+        opacity: 0.16;
+    }
+
+    /* Checkbox label */
+    >.checkbox-label {
+        display: flex;
+        width: auto;
+        cursor: pointer;
+        align-items: center;
+        z-index: 2;
+
+        .label-colon {
+            display: none;
+        }
+
+        /* Box */
+        &::before {
+            content: "";
+            display: inline-block;
+            box-sizing: border-box;
+            margin: 3px 11px 3px 1px;
+            border: solid 2px;
+            border-color: rgba(#006487, 0.6);
+            border-radius: 2px;
+            width: 18px;
+            height: 18px;
+            vertical-align: top;
+            transition: border-color 0.2s, background-color 0.2s;
+        }
+
+        /* Checkmark */
+        &::after {
+            content: "";
+            display: block;
+            position: absolute;
+            width: 10px;
+            height: 5px;
+            border: solid 2px transparent;
+            border-right: none;
+            border-top: none;
+            transform: translate(4px, -1px) rotate(-45deg);
+        }
+    }
+}

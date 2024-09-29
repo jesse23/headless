@@ -1,0 +1,5 @@
+<div>
+    <label>{{props.prop.getData().propertyName}}</label>
+    <input type="text" value="{{props.prop.getData().dbValue}}"
+        onchange="{{function handleChange(e){props.prop.updateData({ dbValue: e.target.value })} }}" />
+</div>

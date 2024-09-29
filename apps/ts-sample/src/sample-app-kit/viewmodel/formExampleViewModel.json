@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1.0.0",
+  "data": {
+    "box1": {
+      "displayName": "Enter String value in Textbox",
+      "type": "STRING",
+      "isRequired": "false",
+      "isEditable": "true",
+      "dbValue": "Default String",
+      "dispValue": "Default String",
+      "meta": true
+    },
+    "object1": {
+      "name": "object1",
+      "props": {
+        "name": {
+          "type": "STRING",
+          "hasLov": false,
+          "isArray": false,
+          "dbValue": "",
+          "propertyName": "name",
+          "isEnabled": true
+        },
+        "registered": {
+          "type": "BOOLEAN",
+          "hasLov": false,
+          "isArray": false,
+          "dbValue": false,
+          "propertyName": "registered",
+          "isEnabled": true
+        }
+      }
+    }
+  },
+  "actions": {},
+  "imports": ["VmoSampleForm"]
+}

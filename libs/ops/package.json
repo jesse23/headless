@@ -2,8 +2,8 @@
   "name": "@headless/ops",
   "version": "1.0.0",
   "description": "core engine of the headless ui",
-  "main": "src/index.ts",
-  "source": "src/index.ts",
+  "main": "dist/index.js",
+  "module": "src/index.ts",
   "types": "src/index.ts",
   "scripts": {
     "audit": "eslint src test --ext .js,.jsx,.ts,.tsx && tsc -p tsconfig.json",

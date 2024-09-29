@@ -1,6 +1,6 @@
 import { defineComponent } from 'vue';
 import { DataExample, EventExampleContainer } from './components';
-import { RenderExample } from '@headless/components';
+import { ComponentJsExample } from '@headless/components';
 
 export default defineComponent({
   props: {
@@ -14,7 +14,7 @@ export default defineComponent({
       <>
         <DataExample />
         <EventExampleContainer />
-        <RenderExample />
+        <ComponentJsExample />
       </>
     );
   },

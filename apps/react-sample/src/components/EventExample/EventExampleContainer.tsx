@@ -1,5 +1,5 @@
 import { EventExampleContainerViewModel } from '@headless/models';
-import { useViewModel } from '../../libs/reactUtils';
+import { useViewModel } from '@headless/react';
 import {
   TestButton,
   EventExampleWrongChild,

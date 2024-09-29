@@ -1,0 +1,17 @@
+.simple-list-item {
+  &:hover {
+    background-color: #daecf0;
+    color: #464646;
+  }
+
+  .selected {
+    background-color: #cde6eb;
+    fill: #005f87;
+    color: #464646;
+
+    &:hover {
+      background-color: #a3d0dc;
+      color: #464646;
+    }
+  }
+}

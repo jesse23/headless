@@ -1,0 +1,8 @@
+    <div class="{{styles.simpleCheckbox}}"> 
+    <div>{{props.prop.getData().propertyName}}</div>
+    <label class="{{styles.simpleCheckboxVal}}">
+        <input type="checkbox" checked="{{props.prop.getData().dbValue}}"
+            onchange="{{function handleChange(e){props.prop.updateData({ dbValue: e.target.checked })} }}" />
+        <div class="{{styles.checkboxLabel}}"></div>
+    </label>
+    </div>

@@ -1,5 +1,4 @@
 
-
 /**
  * https://github.com/SunshowerC/blog/issues/7
  * https://github.com/microsoft/TypeScript/issues/1897
@@ -38,6 +37,7 @@ export interface PathContext {
  * view definition with 'view' and 'viewmodel'
  */
 export interface ViewModelDefinition {
+  schemaVersion?: string;
   /**
    * data definition for the view model
    */
@@ -180,6 +180,7 @@ export type ActionFn = (data: Data, props: Record<string, unknown>, eventData?: 
 
 
 export interface ComponentDefinition {
+  name?: string;
   data: Data;
   actions: Record<string, ActionFn>;
   lifecycleHooks?: Record<string, ActionFn>;

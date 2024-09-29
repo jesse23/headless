@@ -9,12 +9,15 @@
   "scripts": {
     "audit": "npm run audit -ws",
     "build": "npm run build -ws",
-    "test": "npm run test -ws"
+    "test": "npm run test -ws",
+    "reset": "npm run clean -ws && npm exec -ws -- rimraf node_modules && rimraf node_modules"
   },
   "workspaces": [
     "apps/*",
-    "libs/*"
+    "libs/*",
+    "kits/*"
   ],
   "devDependencies": {
+    "rimraf": "^3.0.2"
   }
 }

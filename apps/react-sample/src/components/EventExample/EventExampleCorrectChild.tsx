@@ -1,5 +1,5 @@
 import { EventExampleCorrectChildViewModel } from '@headless/models';
-import { useViewModel } from '../../libs/reactUtils';
+import { useViewModel } from '@headless/react';
 
 export function EventExampleCorrectChild(props: Record<string, unknown>) {
   const {data: { count } } = useViewModel(EventExampleCorrectChildViewModel, props);
