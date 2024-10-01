@@ -2,8 +2,8 @@ import {
     Data,
     FunctionType,
     PathContext,
+    Value,
 } from './types';
-import lodashFpSet from 'lodash/fp/set';
 
 export const BaseIndent = '  ';
 
@@ -287,6 +287,29 @@ export const getValue = ( scope: Data, path: string ): Data => {
 };
 
 /**
+ * applyValue to scope in immutable way
+ * @param path path to set value as 'a.b.c'
+ * @param value value to set
+ * @param prev previous data store 
+ * @returns immutable data store after update
+ */
+const applyValueInternal = (paths: string[], value: Value, prev: Data): Data => {
+  if( paths.length === 0 ) {
+    return prev;
+  } else if( paths.length === 1 ) {
+    const path = paths[0];
+    return { ...prev, [path]: value };
+  } else {
+    const curr = ( prev[paths[0]] || {} ) as Data;
+    return { ...prev, [paths[0]]: applyValueInternal(paths.slice(1), value, curr) };
+  }
+};
+
+export const applyValue = ( path: string, value: Value, prev: Data ): Data => {
+    return applyValueInternal(path.split('.'), value, prev);
+}
+
+/**
  * update data store in immutable way
  *
  * @param prev data store before update
@@ -296,7 +319,7 @@ export const getValue = ( scope: Data, path: string ): Data => {
 export const applyValues = ( prev: Data, values: Data ): Data => {
     return Object.entries(values).reduce((prev, [path, value]): Data => {
       const prevValue = getValue(prev, path);
-      return prevValue === value ? prev : lodashFpSet(path, value, prev);
+      return prevValue === value ? prev : applyValue(path, value, prev);
     }, prev);
 };
 

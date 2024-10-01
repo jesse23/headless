@@ -5,12 +5,12 @@ import {
   UseStoreFn,
   ViewModelDefinition,
   initActions,
+  applyValue
 } from '@headless/core';
 import { createSignal, createEffect, onMount, onCleanup } from 'solid-js';
-import lodashFpSet from 'lodash/fp/set';
 import { eventBus } from '@headless/ops';
 
-export const useStore: UseStoreFn = (initFn) => {
+export const useStore: UseStoreFn = (initFn: () => Data) => {
   const [lastState, setLastState] = createSignal(initFn());
   const getData = lastState;
 
@@ -19,7 +19,7 @@ export const useStore: UseStoreFn = (initFn) => {
       setLastState((prevState) =>
         Object.entries(values).reduce((prev, [path, value]): Data => {
           const prevValue = getValue(prev, path);
-          return prevValue === value ? prev : lodashFpSet(path, value, prev);
+          return prevValue === value ? prev : applyValue(path, value, prev);
         }, prevState)
       );
     },

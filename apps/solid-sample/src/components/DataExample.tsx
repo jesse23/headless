@@ -12,7 +12,7 @@ export const DataExample = (() => {
         count is {getData().count as number}
       </button>
     </div>
-  );
-}) as unknown as JSXElement;
+  ) as unknown as JSXElement;
+});
 
 export default DataExample;

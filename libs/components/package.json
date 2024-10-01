@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "sample agnostic components to test headless",
   "main": "dist/index.js",
-  "modules": "src/index.ts",
+  "module": "src/index.ts",
   "types": "src/index.ts",
   "scripts": {
     "audit": "eslint src test --ext .js,.jsx,.ts,.tsx && tsc -p tsconfig.json",

@@ -17,10 +17,10 @@ import {
   ComponentDefinition,
   bindTrailingArgs,
   FunctionType,
-  getViewDeps
+  getViewDeps,
+  applyValue
 } from '@headless/core';
 import { useRef, useEffect, useState, createElement } from 'react';
-import lodashFpSet from 'lodash/fp/set';
 import { compiler } from '@headless/react-compiler';
 
 type UsePartialStoreFn = (store: Store, path: string) => Store;
@@ -34,7 +34,7 @@ export const usePartialStore: UsePartialStoreFn = (store, path) => {
     const updatedValues = Object.entries(values).reduce(
       (prev, [path, value]) => {
         const prevValue = getValue(prev, path);
-        return prevValue === value ? prev : lodashFpSet(path, value, prev);
+        return prevValue === value ? prev : applyValue(path, value, prev);
       },
       getData()
     );

@@ -1,5 +1,4 @@
 import { getLibDeps } from '@headless/core';
-import React from 'react';
 
 // dynamic loading defineComponent from different framework
 const { defineComponent } = getLibDeps('view');
