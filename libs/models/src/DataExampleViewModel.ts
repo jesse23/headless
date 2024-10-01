@@ -1,10 +1,11 @@
 import { registerLibDeps, ViewModelDefinition } from "@headless/core";
 
-registerLibDeps('testLib', {
+registerLibDeps('js/DataExampleService', Promise.resolve({
   increment: (x: number) => x + 1,
-});
+}));
 
 export const DataExampleViewModel: ViewModelDefinition = {
+  name: 'DataExample',
   data: {
     count: 0,
   },
@@ -18,7 +19,7 @@ export const DataExampleViewModel: ViewModelDefinition = {
       outputData: {
         'count': '',
       },
-      deps: 'testLib',
+      deps: 'js/DataExampleService',
     }
   },
 };

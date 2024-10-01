@@ -1,8 +1,10 @@
-import { ViewModelDefinition } from '@headless/core';
+import { Component, ViewModelDefinition } from '@headless/core';
+import { defineComponentDecl } from '@headless/react';
 
 const _mockViewStore: Record<string, ViewModelDefinition> = {
   RemoteExample: {
     schemaVersion: '1.0.0',
+    name: 'RemoteExample',
     data: {
       currValue: 0,
     },
@@ -39,8 +41,13 @@ const updateView = (viewName: string, viewDef: ViewModelDefinition) => {
  * get View
  * @param viewName  name of the view
  */
-const getView = (viewName: string, _: unknown): ViewModelDefinition => {
-  return _mockViewStore[viewName] || {};
+const getComponent = async (viewName: string, _: unknown): Promise<Component> => {
+  const viewDefinition = (await Promise.resolve(_mockViewStore[viewName] || null)) as ViewModelDefinition;
+  if (!viewDefinition) {
+    throw new Error(`View not found: ${viewName}`);
+  } else {
+    return defineComponentDecl(viewDefinition);
+  }
 };
 
 /**
@@ -56,7 +63,7 @@ const listViews = (): string[] => {
  * update View
  */
 export const mockViewStore = {
-  getView,
+  getComponent,
   updateView,
   listViews,
 };

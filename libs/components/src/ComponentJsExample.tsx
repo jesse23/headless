@@ -1,41 +1,42 @@
-import { getLibDeps } from '@headless/core';
-
 // dynamic loading defineComponent from different framework
-const { defineComponent } = getLibDeps('view');
+import { defineComponent } from '@headless/react';
 
-export const ComponentJsExample = defineComponent && defineComponent({
-  data: {
-    count: 0,
-  },
-  actions: {
-    increment: async ({ count }) => {
-      // return { path: value } pair
-      return {
-        count: (count as number) + 1,
-      };
+export const ComponentJsExample =
+  defineComponent &&
+  (defineComponent({
+    name: 'ComponentJsExample',
+    data: {
+      count: 0,
     },
-  },
-  lifecycleHooks: {
-    onMount: () => {
-      // same as actions interface
-      console.log('RenderExample mounted');
-      return {
-        count: 23,
-      };
+    actions: {
+      increment: async ({ count }) => {
+        // return { path: value } pair
+        return {
+          count: (count as number) + 1,
+        };
+      },
     },
-    onUnmount: () => {
-      console.log('RenderExample unmounted');
+    lifecycleHooks: {
+      onMount: () => {
+        // same as actions interface
+        console.log('RenderExample mounted');
+        return {
+          count: 23,
+        };
+      },
+      onUnmount: () => {
+        console.log('RenderExample unmounted');
+      },
+      onUpdate: () => {
+        console.log('RenderExample updated');
+      },
     },
-    onUpdate: () => {
-      console.log('RenderExample updated');
+    render: ({ data: { count }, actions: { increment } }) => {
+      return (
+        <div className="card">
+          <h2>Render Component Example</h2>
+          <button onClick={increment}>count is {count as number}</button>
+        </div>
+      );
     },
-  },
-  render: (_, { count }, { increment }) => {
-    return (
-      <div className="card">
-        <h2>Render Component Example</h2>
-        <button onClick={increment}>count is {count as number}</button>
-      </div>
-    );
-  },
-}) as () => JSX.Element;
+  }) as unknown as () => JSX.Element);

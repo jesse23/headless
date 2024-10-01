@@ -1,10 +1,11 @@
 import { registerLibDeps, ViewModelDefinition } from "@headless/core";
 
-registerLibDeps('testLib', {
+registerLibDeps('js/EventExampleWrongChild', Promise.resolve({
   doubleValue: (propVal: number, eventVal: number) => propVal + eventVal,
-});
+}));
 
 export const EventExampleWrongChildViewModel: ViewModelDefinition = {
+  name: 'EventExampleWrongChild',
   data: {
     count: 0,
   },
@@ -19,7 +20,7 @@ export const EventExampleWrongChildViewModel: ViewModelDefinition = {
       outputData: {
         'count': '',
       },
-      deps: 'testLib',
+      deps: 'js/EventExampleWrongChild',
     },
   },
   onEvent: [

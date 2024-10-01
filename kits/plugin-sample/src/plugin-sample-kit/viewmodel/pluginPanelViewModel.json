@@ -1,15 +1,16 @@
-{    
-    "schemaVersion": "1.0.0",
-    "lifecycleHooks": {
-        "onMount": "loadData"
-    },
-    "data": {
-        "dataprovider": {
-            "simpleListExample": {
-                "loadedViewModelObjects": []
-            }
-        }
-    },
+{
+  "schemaVersion": "1.0.0",
+  "name": "PluginPanel",
+  "lifecycleHooks": {
+    "onMount": "loadData"
+  },
+  "data": {
+    "dataprovider": {
+      "simpleListExample": {
+        "loadedViewModelObjects": []
+      }
+    }
+  },
   "actions": {
     "loadData": {
       "actionType": "JSFunction",
@@ -22,7 +23,5 @@
       "deps": "js/pluginPanelService"
     }
   },
-  "imports": [
-    "SimpleList"
-  ]
+  "imports": ["SimpleList"]
 }

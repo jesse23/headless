@@ -4,6 +4,7 @@ import {
   onUnmounted,
   onUpdated,
   defineComponent as defineComponentVue,
+  h,
 } from 'vue';
 import {
   Data,
@@ -18,7 +19,7 @@ import {
   ComponentDefinition,
   initActionsFromActionFn,
   createActionFromActionFn,
-  registerLibDeps,
+  RenderFn,
 } from '@headless/core';
 import { Subscription } from '@headless/ops';
 
@@ -78,6 +79,8 @@ export const useViewModel = (
 };
 
 export const defineComponent = (componentDef: ComponentDefinition) => {
+  const renderFn = componentDef.render as RenderFn;
+
   const Component = defineComponentVue({
     setup(props) {
       // props
@@ -149,13 +152,16 @@ export const defineComponent = (componentDef: ComponentDefinition) => {
         }
       });
 
-      return () => componentDef.render(getProps(), getData(), actions);
-
+      return () =>
+        renderFn({
+          props: getProps(),
+          data: getData(),
+          actions,
+          styles: {},
+          components: {},
+          functions: { createElement: h, getData, updateData },
+        });
     },
   });
   return Component;
 };
-
-registerLibDeps('view', {
-  defineComponent,
-});

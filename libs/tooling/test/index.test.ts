@@ -1,7 +1,7 @@
 /* eslint-env jest */
 import {
     placeHolder
-} from '../src';
+} from '../utils';
 
 describe( 'Test place holder', () => {
     it( 'placeholder', () => {

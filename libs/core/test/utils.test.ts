@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import { printDomNode, parseView, applyValues } from '../src/utils';
+import { printDomNode, parseView, applyValues } from '../src/libs/utils';
 
 describe('Test compile specific core/utils', () => {
   it('Verify printDomNode works as expected for pure element node case', () => {

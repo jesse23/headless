@@ -1,3 +1,3 @@
-import { build } from '@headless/tooling';
+import { build } from '@headless/tooling/esbuild';
 
 build();

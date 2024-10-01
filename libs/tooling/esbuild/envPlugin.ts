@@ -1,4 +1,4 @@
-import {Plugin } from 'esbuild';
+import { Plugin } from 'esbuild';
 
 export const envPlugin: Plugin = {
   name: 'env',

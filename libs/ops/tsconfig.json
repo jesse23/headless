@@ -3,5 +3,5 @@
   "compilerOptions": {
     "outDir": "./dist",
   },
-  "include": ["src/*.ts"],
+  "include": ["src/*.ts", "src/libs/eventBus.ts", "src/libs/remoteApi.ts", "src/libs/types.ts", "src/libs/utils.ts"],
 }

@@ -2,12 +2,9 @@
   "name": "@headless/tooling",
   "version": "1.0.0",
   "description": "tooling",
-  "main": "dist/index.js",
-  "source": "index.ts",
-  "types": "index.ts",
   "scripts": {
     "audit": "eslint src test --ext .js,.jsx,.ts,.tsx && tsc",
-    "build": "tsx esbuild",
+    "build": "echo \"placeholder\" && exit 0",
     "test": "vitest run",
     "clean": "rimraf dist doc *.log *.tgz node_modules/.*",
     "docs": "typedoc src/index.ts"
@@ -16,9 +13,7 @@
     "placeholder": "index.js"
   },
   "dependencies": {
-    "@optimize-lodash/rollup-plugin": "^4.0.3",
     "@rollup/plugin-json": "^6.0.0",
-    "@types/lodash": "^4.17.7",
     "@types/node": "^20.3.3",
     "@typescript-eslint/eslint-plugin": "^5.59.7",
     "@typescript-eslint/parser": "^5.59.7",
@@ -30,7 +25,6 @@
     "esbuild-sass-plugin": "^2.10.0",
     "eslint": "^8.41.0",
     "happy-dom": "^10.3.2",
-    "lodash": "^4.17.21",
     "prettier": "^2.8.8",
     "rimraf": "^3.0.2",
     "tsx": "^3.12.7",

@@ -1,18 +1,8 @@
-export * from './utils';
-export * from './actions';
-export * from './hooks';
-export * from './events';
-export * from './types';
-export * from './utils';
-export * from './deps';
-export * from './views';
-
-// add to globalThis
-import * as core from './';
-
-const globalSwf = globalThis as unknown as { swf: { [key: string]: unknown } };
-
-globalSwf.swf = {
-  ...globalSwf.swf,
-  core
-}
+export * from './libs/utils';
+export * from './libs/actions';
+export * from './libs/hooks';
+export * from './libs/events';
+export * from './libs/types';
+export * from './libs/utils';
+export * from './libs/deps';
+export * from './libs/views';

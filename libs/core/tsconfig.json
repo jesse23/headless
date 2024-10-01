@@ -2,8 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "jsx": "react-jsx",
-    "types": ["node", "jest", "react"],
+   "types": ["node", "jest", "./src/jsx.d.ts"],
   },
-  "include": ["src/*.ts"],
+  "include": ["src/**/*.ts"],
 }

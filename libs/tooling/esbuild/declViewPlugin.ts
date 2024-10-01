@@ -1,5 +1,5 @@
 import {Plugin} from 'esbuild';
-import {transpileViewModelJson, transpileJson } from '../src';
+import {transpileViewModel, transpileJson } from '../utils';
 
 export const declViewPlugin: Plugin = {
   name: 'declViewPlugin',
@@ -10,7 +10,7 @@ export const declViewPlugin: Plugin = {
       const jsonPath = args.path.replace(/\\/g, '/');
       const contents = jsonPath.endsWith('commandViewModel.json')
         ? await transpileJson(jsonPath)
-        : await transpileViewModelJson(jsonPath);
+        : await transpileViewModel(jsonPath);
       return {
         contents,
         loader: 'ts',

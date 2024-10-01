@@ -1,7 +1,8 @@
 import { defineComponent } from '@headless/react';
 import { TestButton } from './TestButton';
 
-export const ComponentJsExample = defineComponent({
+export const RenderExample = defineComponent({
+  name: 'RenderExample',
   data: {
     count: 0,
   },
@@ -28,7 +29,7 @@ export const ComponentJsExample = defineComponent({
       console.log('ComponentJsExample updated');
     },
   },
-  render: (_, { count }, { increment }) => {
+  render: ({ data: { count }, actions: { increment }}) => {
     return (
       <div className="card">
         <h2>Render Component Example</h2>

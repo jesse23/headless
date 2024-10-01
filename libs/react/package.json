@@ -2,9 +2,18 @@
   "name": "@headless/react",
   "version": "1.0.0",
   "description": "sample view models to test headless",
-  "main": "dist/index.js",
-  "module": "src/index.ts",
+  "main": "src/index.ts",
   "types": "src/index.ts",
+  "export": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    },
+    "./register": {
+      "import": "./dist/register.js",
+      "require": "./dist/register.js"
+    }
+  },
   "scripts": {
     "audit": "eslint src test --ext .js,.jsx,.ts,.tsx && tsc -p tsconfig.json",
     "build": "tsx esbuild",

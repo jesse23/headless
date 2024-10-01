@@ -1,13 +1,11 @@
 import { defineComponentDecl } from '@headless/react'
-import { FunctionType, registerLibDeps, registerViewDeps } from '@headless/core';
+import { registerLibDeps, registerViewDeps } from '@headless/core';
 
 // js
-import * as buttonExampleService from './js/buttonExampleService'
-import * as commandExampleService from './js/commandExampleService'
 
 //// Only needed for UI builder
-registerLibDeps('js/buttonExampleService', buttonExampleService as Record<string, FunctionType>)
-registerLibDeps('js/commandExampleService', commandExampleService as Record<string, FunctionType>)
+registerLibDeps('js/buttonExampleService', import('./js/buttonExampleService'));
+registerLibDeps('js/commandExampleService', import('./js/commandExampleService'));
 
 // view
 import VmoSampleFormView from './viewmodel/vmoSampleFormViewModel.json';

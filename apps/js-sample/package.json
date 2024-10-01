@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "vite",
-    "build": "npm run build -w @headless/components && npm run build -w @headless/kit-sample && vite build && npm run build -w @headless/deps && cp ../../libs/deps/dist/index.js ./dist/assets/deps.js && cp ../../libs/deps/dist/index.js.map ./dist/assets/deps.js.map",
+    "build": "npm run build -w @headless/components && npm run build -w @headless/kit-sample && vite build",
     "audit": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "echo \"placeholder\" && exit 0",

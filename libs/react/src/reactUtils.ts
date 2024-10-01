@@ -1,31 +1,109 @@
 import {
   Data,
-  Store,
   cloneJson,
   getValue,
   UseStoreFn,
   ViewModelDefinition,
   applyValues,
-  initActions,
-  execLifecycleHook,
   subscribeEvents,
   unsubscribeEvents,
   initActionsFromActionFn,
   createActionFromActionFn,
-  registerLibDeps,
   parseView,
   ComponentDefinition,
-  bindTrailingArgs,
-  FunctionType,
   getViewDeps,
-  applyValue
+  applyValue,
+  RenderFn,
+  createActionFn,
+  Component,
+  UsePartialStoreFn,
 } from '@headless/core';
 import { useRef, useEffect, useState, createElement } from 'react';
-import { compiler } from '@headless/react-compiler';
+import { createCompiler } from '@headless/view';
 
-type UsePartialStoreFn = (store: Store, path: string) => Store;
+export { createElement } from 'react';
 
-// not used yet
+export { registerLibDeps } from '@headless/core';
+
+/**
+ * Create render function content from view model definition and parsed view as HTMLElement
+ * @param viewDef view model definition
+ * @param node parsed view as HTMLElement
+ * @returns 
+ */
+const createRenderFnContent = (viewDef: ViewModelDefinition, node: HTMLElement): {
+  args: string[],
+  contents: string[],
+} => {
+  const viewDepDefs = (viewDef.imports || []) as string[];
+
+  const compiler = createCompiler();
+  const viewCompileResult = compiler.compile(node, {
+    index: 0,
+    level: 0,
+    deps: viewDepDefs.reduce((prev, name) => ({ ...prev, [name]: {} }), {}),
+  });
+
+  return {
+    args: [ 'param' ],
+    contents: [
+     `const { props, actions, styles, functions: { createElement, usePartialStore, getData, updateData }, components: { ${viewDepDefs.join(
+        ', '
+      )}} } = param;`,
+      `let data = { getData, updateData };`,
+      ...Object.keys(viewCompileResult.partialStore).map((fullPath) => {
+        const varName = fullPath.replace(/\./g, '_');
+        let store,
+          path = '';
+        const paths = fullPath.split('.');
+        if (fullPath.startsWith('props.')) {
+          store = `${paths[0]}.${paths[1]}`;
+          path = paths.slice(2).join('.');
+        } else {
+          store = paths[0];
+          path = paths.slice(1).join('.');
+        }
+        if (path) {
+          return `const ${varName} = usePartialStore(${store}, '${path}')`;
+        }
+        return `const ${varName} = ${store}`;
+      }),
+      `// quickly overwrite`,
+      `data = data.getData();`,
+      `return ${viewCompileResult.contents.join('\n')}`,
+    ]
+  }
+};
+
+
+/**
+ * Create render function from view model definition
+ * 
+ * @param viewDef view model definition
+ * @returns render function
+ */
+const createRenderFn = (viewDef: ViewModelDefinition) => {
+  if (!viewDef.view) {
+    throw new Error('createRenderFn: viewDef.view is required');
+  }
+  const { args, contents } = createRenderFnContent(viewDef, parseView(viewDef.view));
+  return new Function(...args, contents.join('\n')) as RenderFn;
+}
+
+const useStore: UseStoreFn = (initFn) => {
+  const lastState = useRef(initFn());
+
+  const getData = useRef(() => lastState.current).current;
+
+  const [_, setData] = useState(getData());
+
+  const updateData = useRef((values: Data): void => {
+    setData((lastState.current = applyValues(getData(), values)));
+  }).current;
+
+  return { getData, updateData };
+};
+
 export const usePartialStore: UsePartialStoreFn = (store, path) => {
   const { getData: getStoreData, updateData: updateStoreData } = store;
 
@@ -44,61 +122,94 @@ export const usePartialStore: UsePartialStoreFn = (store, path) => {
   return { getData, updateData };
 };
 
-export const useStore: UseStoreFn = (initFn) => {
-  const lastState = useRef(initFn());
+export const createComponentDefinition = ({
+  name,
+  data,
+  actions,
+  lifecycleHooks,
+  onEvent,
+}: ViewModelDefinition): ComponentDefinition => {
+  const actionFnMap = Object.entries(actions || {}).reduce(
+    (prev, [name, actionDef]) => {
+      return {
+        ...prev,
+        [name]: createActionFn(actionDef as Data),
+      };
+    },
+    {}
+  );
 
-  const getData = useRef(() => lastState.current).current;
+  const lifecycleHookFnMap = Object.entries(lifecycleHooks || {}).reduce(
+    (prev, [name, actionName]) => {
+      return {
+        ...prev,
+        [name]: actionFnMap[actionName],
+      };
+    },
+    {}
+  );
 
-  const [_, setData] = useState(getData());
-
-  const updateData = useRef((values: Data): void => {
-    setData((lastState.current = applyValues(getData(), values)));
-  }).current;
-
-  return { getData, updateData };
+  return {
+    name,
+    data,
+    actions: actionFnMap,
+    lifecycleHooks: lifecycleHookFnMap,
+    onEvent,
+  };
 };
 
-export const useViewModel = (
-  viewDef: ViewModelDefinition,
+export const useComponentDefinition = (
+  componentDef: ComponentDefinition,
   props: Record<string, unknown>
 ) => {
   // props
-  // - use it as a ref hook since we don't want to listen to props change
-  //   - for UI driven action, it will always be the latest value
-  //   - for Model driven action, it may not be the latest if the UI rendering is delayed.
   const propsRef = useRef({} as Record<string, unknown>);
   const getProps = useRef(() => propsRef.current).current;
   propsRef.current = props;
 
   // data
-  const { getData, updateData } = useStore(() => cloneJson(viewDef.data));
+  const { getData, updateData } = useStore(() => cloneJson(componentDef.data));
 
   // actions
   const actions = useRef(
-    initActions(viewDef.actions || {}, { getData, updateData }, getProps)
+    initActionsFromActionFn(
+      componentDef.actions,
+      { getData, updateData },
+      getProps
+    )
   ).current;
 
-  // lifecycle hooks
+  // lifecycle hooks and event
   useEffect(() => {
-    execLifecycleHook(viewDef, actions, 'onMount');
+    const actionFn = componentDef.lifecycleHooks?.onMount;
+    if (actionFn) {
+      // TODO: need await here
+      createActionFromActionFn(actionFn, { getData, updateData }, getProps)();
+    }
+
+    const subscriptions = subscribeEvents(
+      { onEvent: componentDef.onEvent } as ViewModelDefinition,
+      actions
+    );
+
     return () => {
-      execLifecycleHook(viewDef, actions, 'onUnmount');
+      unsubscribeEvents(subscriptions);
+
+      const actionFn = componentDef.lifecycleHooks?.onUnmount;
+      if (actionFn) {
+        createActionFromActionFn(actionFn, { getData, updateData }, getProps)();
+      }
     };
     // action hook is stable since it is with useStore
-  }, [actions, viewDef]);
+  }, [actions, getData, getProps, updateData]);
 
   // onUpdate
   useEffect(() => {
-    execLifecycleHook(viewDef, actions, 'onUpdate');
+    const actionFn = componentDef.lifecycleHooks?.onUpdate;
+    if (actionFn) {
+      createActionFromActionFn(actionFn, { getData, updateData }, getProps)();
+    }
   });
-
-  // onEvent
-  useEffect(() => {
-    const subscriptions = subscribeEvents(viewDef, actions);
-    return () => {
-      unsubscribeEvents(subscriptions);
-    };
-  }, [actions, viewDef]);
 
   return {
     getData,
@@ -108,154 +219,147 @@ export const useViewModel = (
   };
 };
 
+export const useViewModel = (
+  viewDef: ViewModelDefinition,
+  props: Record<string, unknown>
+) => {
+  // TODO: persist this init
+  const componentDef = createComponentDefinition(viewDef);
 
-export const defineComponent = (componentDef: ComponentDefinition) => {
+  return useComponentDefinition(componentDef, props);
+};
+
+export const useViewDeps = (viewDepDefs: string[]) => {
+  const [viewDeps, setViewDeps] = useState({});
+  useEffect(() => {
+    const updateViewDeps = async (depNames: string[]) => {
+      setViewDeps(
+        (
+          await Promise.all(
+            depNames.map(
+              async (depName): Promise<[string, unknown]> => [
+                depName,
+                await getViewDeps(depName),
+              ]
+            )
+          )
+        ).reduce(
+          (prev, [depName, dep]) => ({
+            ...prev,
+            [depName]: dep,
+          }),
+          {}
+        )
+      );
+    };
+    updateViewDeps(viewDepDefs);
+  }, [viewDepDefs]);
+
+  return viewDeps;
+};
+
+export const defineComponent = (componentDef: ComponentDefinition): RenderFn => {
+  const renderFn = componentDef.render as RenderFn;
+
   const Component = (props: Record<string, unknown>) => {
-    // props
-    const propsRef = useRef({} as Record<string, unknown>);
-    const getProps = useRef(() => propsRef.current).current;
-    propsRef.current = props;
-
-    // data
-    const { getData, updateData } = useStore(() =>
-      cloneJson(componentDef.data)
+    const { getData, updateData, actions } = useComponentDefinition(
+      componentDef,
+      props
     );
 
-    // actions
-    const actions = useRef(
-      initActionsFromActionFn(
-        componentDef.actions,
-        { getData, updateData },
-        getProps
-      )
-    ).current;
-
-    // lifecycle hooks
-    useEffect(() => {
-      const actionFn = componentDef.lifecycleHooks?.onMount;
-      if (actionFn) {
-        // TODO: need await here
-        createActionFromActionFn(actionFn, { getData, updateData }, getProps)();
-      }
-
-      const subscriptions = subscribeEvents({ onEvent: componentDef.onEvent} as ViewModelDefinition, actions);
-
-      return () => {
-        unsubscribeEvents(subscriptions);
-
-        const actionFn = componentDef.lifecycleHooks?.onUnmount;
-        if (actionFn) {
-          createActionFromActionFn(
-            actionFn,
-            { getData, updateData },
-            getProps
-          )();
-        }
-      };
-      // action hook is stable since it is with useStore
-    }, [actions, getData, getProps, updateData]);
-
-    // onUpdate
-    useEffect(() => {
-        const actionFn = componentDef.lifecycleHooks?.onUpdate;
-        if (actionFn) {
-          createActionFromActionFn(
-            actionFn,
-            { getData, updateData },
-            getProps
-          )();
-        }
+    return renderFn({
+      props,
+      data: getData(),
+      actions,
+      styles: {},
+      components: {},
+      functions: { createElement, usePartialStore, getData, updateData },
     });
-
-    return componentDef.render(props, getData(), actions);
   };
   Component.displayName = componentDef.name || 'anonymous';
   return Component;
 };
 
-
 export const defineComponentDecl = (viewDef: ViewModelDefinition) => {
+  if (!viewDef.view) {
+    return viewDef as unknown as Component;
+  }
   const viewDepDefs = (viewDef.imports || []) as string[];
+  const componentDef = createComponentDefinition(viewDef);
 
-  const viewCompileResult = compiler.compile(parseView(viewDef.view || ''), {
-    index: 0,
-    level: 0,
-    deps: viewDepDefs.reduce((prev, name) => ({ ...prev, [name]: {} }), {}),
-  });
-
-  // render fn
-  const argc = [
-    'props',
-    'data',
-    'actions',
-    ...viewDepDefs,
-    'styles',
-    'createElement',
-    'usePartialStore',
-  ];
-  const argv = [viewDef.styles || {}, createElement, usePartialStore];
-  const renderView = bindTrailingArgs(
-    new Function(
-      ...argc,
-      [
-        ...Object.keys(viewCompileResult.partialStore).map(fullPath => {
-          const varName = fullPath.replace(/\./g, '_');
-          let store, path = '';
-          const paths = fullPath.split('.');
-          if( fullPath.startsWith('props.')) {
-            store = `${paths[0]}.${paths[1]}`;
-            path = paths.slice(2).join('.');
-          } else {
-            store = paths[0];
-            path = paths.slice(1).join('.');
-          }
-          if( path) {
-            return `const ${varName} = usePartialStore(${store}, '${path}')`
-          }
-          return `const ${varName} = ${store}`
-        }),
-        `// quickly overwrite`,
-        `data = data.getData();`,
-        `return ${viewCompileResult.contents.join('\n')}`,
-      ].join('\n')
-    ) as FunctionType,
-    ...argv
-  );
+  const renderFn = createRenderFn(viewDef);
 
   const Component = (props: Record<string, unknown>) => {
-    const { getData, updateData, actions } = useViewModel(viewDef, props);
-
-    const data = { getData, updateData };
-
-    // view deps
-    const [viewDeps, setViewDeps] = useState(
-      Array(viewDepDefs.length).fill('')
+    const { getData, updateData, actions } = useComponentDefinition(
+      componentDef,
+      props
     );
-    useEffect(() => {
-      const updateViewDeps = async (depNames: string[]) => {
-        setViewDeps(
-          await Promise.all(
-            depNames.map((depName) => getViewDeps(depName, defineComponentDecl))
-          )
-        );
-      };
-      updateViewDeps(viewDepDefs);
-    }, [viewDepDefs]);
 
-    // render
-    return renderView(
+    // TODO: convert this to static import
+    const viewDeps = useViewDeps(viewDepDefs);
+
+    return renderFn({
       props,
-      data,
+      data: getData(),
       actions,
-      ...viewDeps
-    ) as JSX.Element;
+      styles: viewDef.styles || {},
+      components: viewDeps as Record<string, JSX.Element[]>,
+      functions: { createElement, usePartialStore, getData, updateData },
+    }) as JSX.Element;
   };
   Component.displayName = viewDef.name || 'anonymous';
 
   return Component;
 };
 
-registerLibDeps('view', {
-  defineComponent,
-  defineComponentDecl,
-});
+export const defineComponentDeclAsText = (viewDef: ViewModelDefinition, node: HTMLElement): string[] => {
+  const res = [];
+  res.push(`const viewDef = ${JSON.stringify(viewDef, null, 2)};`);
+
+  const { args, contents } = createRenderFnContent(viewDef, node);
+
+  res.push(`
+const viewDepDefs = (viewDef.imports || []);
+const componentDef = createComponentDefinition(viewDef);
+const renderFn = (${args.join(', ')}) => {
+  ${contents.join('\n')}
+};
+
+export const Component = (props) => {
+  const { getData, updateData, actions } = useComponentDefinition(
+    componentDef,
+    props
+  );
+
+  // TODO: convert this to static import
+  const viewDeps = useViewDeps(viewDepDefs);
+
+  return renderFn({
+    props,
+    data: getData(),
+    actions,
+    styles: viewDef.styles || {},
+    components: viewDeps,
+    functions: { createElement, usePartialStore, getData, updateData },
+  });
+};
+Component.displayName = viewDef.name || 'anonymous';
+  `.trim());
+
+
+  /*
+  // NOTE: this approach is cool but not usable since the JS code will be minified
+  const content = defineComponentDecl.toString().split('\n').slice(1, -2).join('\n');
+
+  res.push(content.replace('const renderFn = createRenderFn(viewDef);', `const renderFn = (${args.join(', ')}) => {
+    ${contents.join('\n')}
+  };`).replace('const Component =', 'export const Component ='));
+  */
+
+  res.push(`export default Component;`);
+
+  return res;
+};
+
+
+

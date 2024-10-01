@@ -1,26 +1,11 @@
 {    
     "schemaVersion": "1.0.0",
+    "name": "LoadPanelExample",
     "lifecycleHooks": {
-        "onMount": "loadData"
     },
     "data": {
-        "dataprovider": {
-            "simpleListExample": {
-                "loadedViewModelObjects": []
-            }
-        }
     },
   "actions": {
-    "loadData": {
-      "actionType": "JSFunction",
-      "method": "loadData",
-      "inputData": {},
-      "outputData": {
-        "dataprovider.simpleListExample.loadedViewModelObjects": "data",
-        "dataprovider.simpleListExample.totalFound": "totalFound"
-      },
-      "deps": "js/loadPanelService"
-    }
   },
   "imports": [
     "LoadPanel"

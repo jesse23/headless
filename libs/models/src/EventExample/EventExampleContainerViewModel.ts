@@ -1,7 +1,7 @@
 import { registerLibDeps, ViewModelDefinition } from '@headless/core';
 import { eventBus } from '@headless/ops';
 
-registerLibDeps('testLib', {
+registerLibDeps('js/EventExampleContainerService', Promise.resolve({
   incrementAndPublish: (x: number) => {
     const res = x + 1;
     eventBus.publish({
@@ -12,9 +12,10 @@ registerLibDeps('testLib', {
     });
     return res;
   },
-});
+}));
 
 export const EventExampleContainerViewModel: ViewModelDefinition = {
+  name: 'EventExampleContainer',
   data: {
     count: 0,
   },
@@ -28,7 +29,7 @@ export const EventExampleContainerViewModel: ViewModelDefinition = {
       outputData: {
         count: '',
       },
-      deps: 'testLib',
+      deps: 'js/EventExampleContainerService',
     },
   },
 };

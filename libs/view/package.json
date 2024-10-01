@@ -1,0 +1,26 @@
+{
+  "name": "@headless/view",
+  "version": "1.0.0",
+  "description": "compile view html to js",
+  "main": "dist/index.js",
+  "module": "src/index.ts",
+  "types": "src/index.ts",
+  "export": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    },
+    "./register": {
+      "import": "./dist/register.js",
+      "require": "./dist/register.js"
+    }
+  },
+  "scripts": {
+    "audit": "eslint src test --ext .js,.jsx,.ts,.tsx && tsc",
+    "build": "tsx esbuild",
+    "test": "vitest run",
+    "clean": "rimraf dist doc *.log *.tgz node_modules/.*"
+  },
+  "author": "jesse23",
+  "license": "ISC"
+}

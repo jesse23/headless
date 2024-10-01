@@ -1,13 +1,13 @@
-
-// if we do create view here, the lib will be react lib
-export { SimpleButton } from './js/SimpleButton';
-export { SimpleTextbox } from './js/SimpleTextbox';
-export { SimpleCheckbox } from './js/SimpleCheckbox';
+// decl component (pre compile)
+import SimpleButton from './viewmodel/SimpleButtonViewModel.json';
+import SimpleTextbox from './viewmodel/SimpleTextboxViewModel.json';
+import SimpleCheckbox from './viewmodel/SimpleCheckboxViewModel.json';
+export { SimpleButton, SimpleTextbox, SimpleCheckbox };
 
 // react component
 export { SimpleList } from './js/SimpleList';
 export { SimpleCommandBar } from './js/SimpleCommandBar';
 
-// js
+// js API
 export { registerCommandViewModel } from './js/services/commands.services';
 export type { CommandViewModelJson } from './js/services/commands.services';
