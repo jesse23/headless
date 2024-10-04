@@ -1,21 +1,23 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
+import '@headless/reactivity/react';
+
 import { registerViewStoreService } from '@headless/core';
 import { mockViewStore } from './mockDeclServer/mockViewStoreService.ts';
+import App from './App.tsx'
 import './index.css';
 
 // plugin system
 import '@headless/core/register';
-import '@headless/view/register';
-import '@headless/react/register';
+import '@headless/compiler/register';
 import '@headless/components/register';
 import './plugin';
 
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+
 registerViewStoreService(mockViewStore);
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
+createRoot(document.getElementById('root') as HTMLElement).render(
+  <StrictMode>
     <App />
-  </React.StrictMode>,
+  </StrictMode>,
 )

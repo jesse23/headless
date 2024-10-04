@@ -10,12 +10,10 @@ export const declViewPlugin = ()/*: PluginOption*/ => {
     async load(id) {
       if (/^.*ViewModel\.json$/g.test(id)) {
 
-        console.log((await this.resolve('@headless/react')).id);
-
         // TODO: in vite devServer, load will not resolve import statement correctly while in build it will
         // workaround for now
         const resolvedMap = {
-          '@headless/react': (await this.resolve('@headless/react')).id,
+          '@headless/core': (await this.resolve('@headless/core')).id,
         }
         /*
         console.log(await this.resolve('react'));

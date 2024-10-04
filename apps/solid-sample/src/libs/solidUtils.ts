@@ -8,7 +8,7 @@ import {
   applyValue
 } from '@headless/core';
 import { createSignal, createEffect, onMount, onCleanup } from 'solid-js';
-import { eventBus } from '@headless/ops';
+import { eventBus } from '@headless/interop';
 
 export const useStore: UseStoreFn = (initFn: () => Data) => {
   const [lastState, setLastState] = createSignal(initFn());

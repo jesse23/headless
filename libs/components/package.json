@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "sample agnostic components to test headless",
   "main": "dist/index.js",
+  "module": "src/index.ts",
   "types": "src/index.ts",
   "export": {
     ".": {

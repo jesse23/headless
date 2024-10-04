@@ -1,4 +1,4 @@
-import { EventExampleContainerViewModel } from '@headless/models';
+import { EventExampleContainerViewModel } from '@headless/components';
 import { useViewModel } from '../../libs/solidUtils';
 import { EventExampleWrongChild, EventExampleCorrectChild } from '../'
 

@@ -5,7 +5,7 @@ build({
   // if put it as deps, means it's self contained even we define external here
   // if put it as peerDeps, means it's not self contained, and user can
   // choose different version
-  external: ['@headless/ops'],
+  external: ['@headless/interop'],
 });
 
 // build for auto load

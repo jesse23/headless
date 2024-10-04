@@ -1,9 +1,9 @@
 import { Action, Data, applyValues, cloneJson, execLifecycleHook, initActions, subscribeEvents, unsubscribeEvents } from '@headless/core';
-import { Subscription } from '@headless/ops';
+import { Subscription } from '@headless/interop';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Component, State, h } from '@stencil/core';
 
-import { DataExampleViewModel } from '@headless/models';
+import { DataExampleViewModel } from '@headless/components';
 
 @Component({
   tag: 'data-example',

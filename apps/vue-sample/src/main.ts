@@ -1,3 +1,4 @@
+import '@headless/reactivity/vue';
 import { createApp } from 'vue'
 import './style.css'
 import App from './App.tsx'

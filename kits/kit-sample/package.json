@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "sample kits that will be built with app",
   "main": "dist/index.js",
+  "module": "src/index.ts",
   "types": "src/index.ts",
   "scripts": {
     "audit": "eslint src test --ext .js,.jsx,.ts,.tsx && tsc -p tsconfig.json",

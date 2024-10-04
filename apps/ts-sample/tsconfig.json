@@ -11,6 +11,7 @@
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
+    // "esModuleInterop": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
@@ -23,8 +24,8 @@
 
     /* Overwrites */
     "allowJs": true,
-    "types": ["node", "vitest/globals"]
+    "types": ["node", "vitest/globals", "@headless/core/src/decl.d.ts"],
   },
-  "include": ["src", "src/**/*ViewModel.json"],
+  "include": ["src"],
 }
 

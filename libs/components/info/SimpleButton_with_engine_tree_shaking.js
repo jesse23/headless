@@ -186,7 +186,7 @@ var _ctx = {
 var getViewDepsCached = (viewName) => {
   return _ctx.views[viewName] || {};
 };
-var getViewDeps = async (viewName, defineComponentDecl) => {
+var getViewDep = async (viewName, defineComponentDecl) => {
   if (!_ctx.views[viewName] && _ctx.viewStoreService) {
     const viewDef2 = await _ctx.viewStoreService.getView(viewName, {});
     _ctx.views[viewName] = defineComponentDecl(viewDef2);
@@ -305,7 +305,7 @@ var useViewDeps = (viewDepDefs2) => {
           depNames.map(
             async (depName) => [
               depName,
-              await getViewDeps(depName, null)
+              await getViewDep(depName, null)
             ]
           )
         )).reduce(

@@ -4,7 +4,7 @@
   "description": "core engine of the headless ui",
   "main": "dist/index.js",
   "module": "src/index.ts",
-  "types": "dist/index.d.ts",
+  "types": "src/index.ts",
   "export": {
     ".": {
       "import": "./dist/index.js",
@@ -25,7 +25,7 @@
     "docs": "typedoc src/index.ts"
   },
   "peerDependencies": {
-    "@headless/ops": "1.0.0"
+    "@headless/interop": "1.0.0"
   },
   "author": "jesse23",
   "license": "ISC"

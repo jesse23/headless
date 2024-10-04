@@ -18,7 +18,7 @@ components.forEach((filePath) => {
     entryPoints: [filePath],
     outfile: `dist/${path.basename(filePath).replace(/\.(tsx?)$/, '')}.js`, // Outputs to dist folder
     // NOTE: external here is the right approach, not externalGlobal
-    external: [ '@headless/core', '@headless/view', '@headless/ops', '@headless/react' ],
+    external: [ '@headless/core', '@headless/compiler', '@headless/interop', '@headless/reactivity' ],
   }).catch(() => process.exit(1));
 });
 

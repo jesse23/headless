@@ -11,14 +11,19 @@ test bad for headless ui
       - [x] stencil-sample
 - [x] Clean up libraries one by one
 - [x] Clean up aw factors
-- [ ] Extend to other frameworks
+- [ ] Extend the design to vue
+      - [x] defineComponent
+      - [ ] defineComponentDeclView
+      - [ ] defineComponentDecl
+- [ ] Extend the design to solid
+- [ ] Extend the design to stencil
 - [ ] Example to use component library
 - [ ] Re-enable strict mode
 
 # Libraries
 - [x] lv0: tooling    -> compile util but has dependencies with view
 - [x] lv0: view       -> html compiler, generic to all frameworks
-- [x] lv0: ops        -> interops and event bus, lv0 since no deps on core
+- [x] lv0: interop        -> interops and event bus, lv0 since no deps on core
   - [x] lv1: core       -> core engine and utils
     - [x] lv2: react      -> react related hooks
       - [x] lv3: components -> components lib, should only depend on core

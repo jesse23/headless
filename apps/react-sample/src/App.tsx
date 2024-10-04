@@ -1,13 +1,14 @@
 import './App.css';
-import { DataExample, EventExampleContainer } from './components';
-import { ComponentJsExample } from '@headless/components';
+import { ComponentJsExample, DataExample, EventExampleContainer } from '@headless/components';
+import { FormExample } from '@headless/kit-sample';
 
 function App() {
   return (
     <>
-      <DataExample />
-      <EventExampleContainer />
-      <ComponentJsExample />
+        <DataExample />
+        <FormExample />
+        <ComponentJsExample />
+        <EventExampleContainer />
     </>
   );
 }

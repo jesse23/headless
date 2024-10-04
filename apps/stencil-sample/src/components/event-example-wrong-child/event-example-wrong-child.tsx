@@ -1,8 +1,8 @@
 import { Action, Data, applyValues, cloneJson, execLifecycleHook, initActions, subscribeEvents, unsubscribeEvents } from '@headless/core';
-import { Subscription } from '@headless/ops';
+import { Subscription } from '@headless/interop';
 import { Component, Prop, State, h } from '@stencil/core';
 
-import { EventExampleWrongChildViewModel } from '@headless/models';
+import { EventExampleWrongChildViewModel } from '@headless/components';
 
 @Component({
   tag: 'event-example-wrong-child',

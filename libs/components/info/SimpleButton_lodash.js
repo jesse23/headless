@@ -4823,7 +4823,7 @@ __export(src_exports, {
   getBaseURL: () => getBaseURL,
   getLibDeps: () => getLibDeps,
   getValue: () => getValue,
-  getViewDeps: () => getViewDeps,
+  getViewDep: () => getViewDep,
   httpGet: () => httpGet,
   initActions: () => initActions,
   initActionsFromActionFn: () => initActionsFromActionFn,
@@ -5113,7 +5113,7 @@ var execLifecycleHook = async (viewDef, actions, lifecycle) => {
   }
 };
 
-// ../ops/src/eventBus.ts
+// ../interop/src/eventBus.ts
 var eventBus_exports = {};
 __export(eventBus_exports, {
   publish: () => publish2,
@@ -5121,7 +5121,7 @@ __export(eventBus_exports, {
   unsubscribe: () => unsubscribe
 });
 
-// ../ops/src/utils.ts
+// ../interop/src/utils.ts
 var generateId = () => {
   return Math.random().toString(36).substring(2, 11);
 };
@@ -5198,7 +5198,7 @@ var createMessageEventBus = () => {
   };
 };
 
-// ../ops/src/eventBus.ts
+// ../interop/src/eventBus.ts
 var _eventBus = createMessageEventBus();
 var publish2 = (eventDef, target) => _eventBus.publish(eventDef, target);
 var subscribe = (subsDef) => _eventBus.subscribe(subsDef);
@@ -5206,7 +5206,7 @@ var unsubscribe = (subs) => _eventBus.unsubscribe(subs);
 var handleMessage = (event) => _eventBus.handleMessage(event);
 window.addEventListener("message", handleMessage);
 
-// ../ops/src/remoteApi.ts
+// ../interop/src/remoteApi.ts
 var _pendingRequests = {};
 var _eventBus2 = createMessageEventBus();
 var handleMessage2 = (event) => {
@@ -5279,7 +5279,7 @@ var registerViewStoreService = (svc) => {
 var getViewDepsCached = (viewName) => {
   return _ctx.views[viewName] || {};
 };
-var getViewDeps = async (viewName, defineComponentDecl2) => {
+var getViewDep = async (viewName, defineComponentDecl2) => {
   if (!_ctx.views[viewName] && _ctx.viewStoreService) {
     const viewDef = await _ctx.viewStoreService.getView(viewName, {});
     _ctx.views[viewName] = defineComponentDecl2(viewDef);
@@ -6468,7 +6468,7 @@ var defineComponentDecl = (viewDef) => {
       const updateViewDeps = async (depNames) => {
         setViewDeps(
           await Promise.all(
-            depNames.map((depName) => getViewDeps(depName, defineComponentDecl))
+            depNames.map((depName) => getViewDep(depName, defineComponentDecl))
           )
         );
       };

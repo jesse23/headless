@@ -1,4 +1,4 @@
-import { DataExampleViewModel } from '@headless/models';
+import { DataExampleViewModel } from '@headless/components';
 import { useViewModel } from '../libs/solidUtils';
 import { JSXElement } from 'solid-js';
 

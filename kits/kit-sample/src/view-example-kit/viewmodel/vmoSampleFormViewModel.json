@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "1.0.0",
+  "name": "VmoSampleForm",
+  "data": {
+  },
+  "actions": {
+    "submitForm": {
+      "actionType": "JSFunction",
+      "method": "execute",
+      "inputData": {
+        "expr": "console.log(vmo)",
+        "scope": {
+          "vmo": "{{props.vmo.getData()}}"
+        }
+      },
+      "outputData": {
+        "currValue": ""
+      },
+      "deps": "js/vmoSampleFormService"
+    }
+  },
+  "imports": ["SimpleButton", "SimpleCheckbox","SimpleTextbox"]
+}

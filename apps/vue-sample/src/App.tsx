@@ -1,6 +1,6 @@
 import { defineComponent } from 'vue';
-import { DataExample, EventExampleContainer } from './components';
-import { ComponentJsExample } from '@headless/components';
+import { ComponentJsExample, DataExample, EventExampleContainer } from '@headless/components';
+import { FormExample } from '@headless/kit-sample';
 
 export default defineComponent({
   props: {
@@ -13,8 +13,9 @@ export default defineComponent({
     return () => (
       <>
         <DataExample />
-        <EventExampleContainer />
+        <FormExample />
         <ComponentJsExample />
+        <EventExampleContainer />
       </>
     );
   },

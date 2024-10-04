@@ -25,17 +25,15 @@
     "paths": {
       "@headless/core": ["libs/core/src"],
       "@headless/core/register": ["libs/core/src/register"],
-      "@headless/view": ["libs/view/src"],
-      "@headless/view/register": ["libs/view/src/register"],
-      "@headless/ops": ["libs/ops/src"],
-      "@headless/ops/register": ["libs/ops/src/register"],
+      "@headless/compiler": ["libs/compiler/src"],
+      "@headless/compiler/register": ["libs/compiler/src/register"],
+      "@headless/interop": ["libs/interop/src"],
+      "@headless/interop/register": ["libs/interop/src/register"],
       "@headless/components": ["libs/components/src"],
       "@headless/components/register": ["libs/components/src/register"],
-      "@headless/react": ["libs/react/src"],
-      "@headless/react/register": ["libs/react/src/register"],
+      "@headless/reactivity/*": ["libs/reactivity/src/*"],
       "@headless/tooling": ["libs/tooling"],
       "@headless/kit-sample": ["kits/kit-sample/src"],
-      "@headless/models": ["libs/models/src"],
     }
   },
   "exclude": ["node_modules"]

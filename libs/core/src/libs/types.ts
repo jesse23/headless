@@ -185,7 +185,7 @@ export type RenderFn = ({
     actions: Record<string, Action>;
     styles: Record<string, string>;
     functions: Record<string, FunctionType>;
-    components: Record<string,JSX.Element[]>;
+    components: Record<string,Component>;
   }) => JSX.Element;
 
 export interface ComponentDefinition {
@@ -197,9 +197,13 @@ export interface ComponentDefinition {
     eventId: string;
     action: string;
   }[];
+  styles?: Record<string, string>;
   render?: RenderFn;
+  imports?: string[];
 }
 
 export type Component = (props: Record<string, unknown>) => JSX.Element
 
 export type UsePartialStoreFn = (store: Store, path: string) => Store;
+
+export type DefineComponentFn = (componentDef: ComponentDefinition, viewDeps?: Record<string,Component>) => Component;

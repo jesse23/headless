@@ -1,7 +1,10 @@
-import { Component, ViewModelDefinition } from '@headless/core';
-import { defineComponentDecl } from '@headless/react';
+import {
+  Component,
+  ViewModelDefinition,
+  defineComponentDeclView
+} from '@headless/core';
 
-const _mockViewStore: Record<string, ViewModelDefinition> = {
+const _mockViewModelStore: Record<string, ViewModelDefinition> = {
   RemoteExample: {
     schemaVersion: '1.0.0',
     name: 'RemoteExample',
@@ -33,20 +36,25 @@ const _mockViewStore: Record<string, ViewModelDefinition> = {
   },
 };
 
-const updateView = (viewName: string, viewDef: ViewModelDefinition) => {
-  _mockViewStore[viewName] = viewDef;
+const updateComponent = (viewName: string, viewDef: ViewModelDefinition) => {
+  _mockViewModelStore[viewName] = viewDef;
 };
 
 /**
  * get View
  * @param viewName  name of the view
  */
-const getComponent = async (viewName: string, _: unknown): Promise<Component> => {
-  const viewDefinition = (await Promise.resolve(_mockViewStore[viewName] || null)) as ViewModelDefinition;
+const getComponent = async (
+  viewName: string,
+  _: unknown
+): Promise<Component> => {
+  const viewDefinition = (await Promise.resolve(
+    _mockViewModelStore[viewName] || null
+  )) as ViewModelDefinition;
   if (!viewDefinition) {
     throw new Error(`View not found: ${viewName}`);
   } else {
-    return defineComponentDecl(viewDefinition);
+    return await defineComponentDeclView(viewDefinition);
   }
 };
 
@@ -55,8 +63,8 @@ const getComponent = async (viewName: string, _: unknown): Promise<Component> =>
  *
  * @returns list of views
  */
-const listViews = (): string[] => {
-  return Object.keys(_mockViewStore);
+const getComponents = (): string[] => {
+  return Object.keys(_mockViewModelStore);
 };
 
 /**
@@ -64,6 +72,6 @@ const listViews = (): string[] => {
  */
 export const mockViewStore = {
   getComponent,
-  updateView,
-  listViews,
+  getComponents,
+  updateComponent,
 };

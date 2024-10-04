@@ -1,5 +1,5 @@
 import { Data, ViewModelDefinition } from './types';
-import { eventBus, Subscription } from '@headless/ops';
+import { eventBus, Subscription } from '@headless/interop';
 
 export const subscribeEvents = (
   viewDef: ViewModelDefinition,

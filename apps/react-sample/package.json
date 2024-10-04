@@ -2,10 +2,10 @@
   "name": "@headless/react-sample",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
-    "start": "vite",
-    "build": "tsc -b && vite build",
+    "start": "NODE_OPTIONS='--import tsx' vite",
+    "build": "tsc -b && NODE_OPTIONS='--import tsx' vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },

@@ -1,0 +1,20 @@
+{
+  "name": "@headless/reactivity",
+  "version": "1.0.0",
+  "description": "sample view models to test headless",
+  "export": {
+    "./react": {
+      "import": "./dist/react.js",
+      "require": "./dist/react.js"
+    }
+  },
+  "scripts": {
+    "audit": "eslint src test --ext .js,.jsx,.ts,.tsx && tsc -p tsconfig.json",
+    "build": "tsx esbuild",
+    "test": "vitest run",
+    "clean": "rimraf dist doc *.log *.tgz node_modules/.*",
+    "docs": "typedoc src/index.ts"
+  },
+  "author": "jesse23",
+  "license": "ISC"
+}

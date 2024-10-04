@@ -6,3 +6,4 @@ export * from './libs/types';
 export * from './libs/utils';
 export * from './libs/deps';
 export * from './libs/views';
+export * from './libs/components';

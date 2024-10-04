@@ -1,6 +1,5 @@
 import { access, readFile } from 'node:fs/promises';
-import { Data, ViewModelDefinition } from '@headless/core';
-import { defineComponentDeclAsText } from '@headless/react';
+import { Data, ViewModelDefinition, generateComponentContent } from '@headless/core';
 import { Window } from 'happy-dom';
 
 export const placeHolder = (a: string) => a;
@@ -87,11 +86,6 @@ export const transpileViewModel = async (
   const cssRelPath = jsonPath
     .replace('ViewModel.json', '.module.scss')
     .replace(/^.*\/viewmodel\//, '../css/');
-  /*
-  const componentName = hyphenToCamelCase(
-    jsonPath.replace(/^.*\/viewmodel\//, '').replace('ViewModel.json', '')
-  );
-  */
   const [jsonContent, htmlContent, cssExists] = await Promise.all([
     readFile(jsonPath, 'utf-8'),
     readFile(htmlPath, 'utf-8'),
@@ -111,7 +105,7 @@ export const transpileViewModel = async (
 
   // TODO: remove react later
   output.push(
-    `import { createComponentDefinition, useComponentDefinition, useViewDeps, usePartialStore, createElement, registerLibDeps } from '@headless/react';`
+    `import { registerLibDeps, defineComponentDecl } from '@headless/core';`
   );
   output.push('');
 
@@ -129,12 +123,12 @@ export const transpileViewModel = async (
     )));
   }
 
-  let content = defineComponentDeclAsText(vmDef, parseView(htmlContent)).join(
+  let content = generateComponentContent(vmDef, parseView(htmlContent)).join(
     '\n'
   );
 
   if (cssExists) {
-    content = content.replace('styles: viewDef.styles || {},', 'styles,');
+    content = content.replace('// styles placeholder', 'viewDef.styles = styles;');
   }
 
   output.push(content);
