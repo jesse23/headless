@@ -1,4 +1,5 @@
 import { Config } from '@stencil/core';
+import AutoImport from 'unplugin-auto-import/rollup';
 
 export const config: Config = {
   namespace: 'stencil-sample',
@@ -20,7 +21,15 @@ export const config: Config = {
       serviceWorker: null, // disable service workers
     },
   ],
+  plugins: [AutoImport({
+    include: [
+      /\.[tj]sx$/, // .ts, .tsx, .js, .jsx
+    ],
+    imports: {
+      '@stencil/core': ['h'],
+    }
+  })],
   testing: {
-    browserHeadless: "new",
+    browserHeadless: 'new',
   },
 };

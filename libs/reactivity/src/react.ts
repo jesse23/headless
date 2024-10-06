@@ -1,7 +1,6 @@
 import {
   Data,
   cloneJson,
-  getValue,
   UseStoreFn,
   ViewModelDefinition,
   applyValues,
@@ -10,15 +9,14 @@ import {
   initActionsFromActionFn,
   createActionFromActionFn,
   ComponentDefinition,
-  applyValue,
   createComponentDefinition,
   Component,
-  UsePartialStoreFn,
   getViewDeps,
   registerDefineComponent,
+  createPartialStore,
+  GetPartialStoreFn,
 } from '@headless/core';
 import { useRef, useEffect, useState, createElement } from 'react';
-
 
 /**
  * Async init hook
@@ -49,22 +47,8 @@ const useStore: UseStoreFn = (initFn) => {
   return { getData, updateData };
 };
 
-const usePartialStore: UsePartialStoreFn = (store, path) => {
-  const { getData: getStoreData, updateData: updateStoreData } = store;
-
-  const getData = useRef(() => getValue(getStoreData(), path) as Data).current;
-  const updateData = useRef((values: Data): void => {
-    const updatedValues = Object.entries(values).reduce(
-      (prev, [path, value]) => {
-        const prevValue = getValue(prev, path);
-        return prevValue === value ? prev : applyValue(path, value, prev);
-      },
-      getData()
-    );
-    updateStoreData({ [path]: updatedValues });
-  }).current;
-
-  return { getData, updateData };
+const usePartialStore: GetPartialStoreFn = (store, path) => {
+  return useRef(createPartialStore(store, path)).current;
 };
 
 const useComponentDefinition = (
@@ -129,8 +113,6 @@ const useComponentDefinition = (
   };
 };
 
-
-
 /**
  * define component API for JS Component
  *
@@ -163,7 +145,12 @@ export const defineComponent = (
       actions,
       components,
       styles,
-      functions: { createElement, usePartialStore, getData, updateData },
+      functions: {
+        createElement,
+        getPartialStore: usePartialStore,
+        getData,
+        updateData,
+      },
     });
   };
   Component.displayName = componentDef.name || 'anonymous';
@@ -172,11 +159,10 @@ export const defineComponent = (
 
 registerDefineComponent(defineComponent);
 
-
 ///////////////////////////////
 /**
  * Hooks to use view model, for review purpose
- * 
+ *
  * @param viewDef view model definition without html and render function
  * @param props input properties
  * @returns required context for render function

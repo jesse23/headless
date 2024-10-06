@@ -204,6 +204,6 @@ export interface ComponentDefinition {
 
 export type Component = (props: Record<string, unknown>) => JSX.Element
 
-export type UsePartialStoreFn = (store: Store, path: string) => Store;
+export type GetPartialStoreFn = (store: Store, path: string) => Store;
 
 export type DefineComponentFn = (componentDef: ComponentDefinition, viewDeps?: Record<string,Component>) => Component;

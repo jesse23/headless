@@ -1,5 +1,5 @@
-import { EventExampleCorrectChildViewModel } from '@headless/components';
-import { useViewModel } from '../../libs/solidUtils';
+import { EventExampleCorrectChildViewModel } from '@headless/components/models';
+import { useViewModel } from '@headless/reactivity/solid';
 
 export const EventExampleCorrectChild = (props: Record<string, unknown>) => {
   const { getData } = useViewModel(EventExampleCorrectChildViewModel, props);

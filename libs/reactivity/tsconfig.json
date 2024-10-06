@@ -1,7 +1,11 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    // needed for stencil
+    "jsx": "react",
+    "jsxFactory": "h",
+    "experimentalDecorators": true,
     "outDir": "./dist",
   },
-  "include": ["src/*.ts"],
+  "include": ["src/*.ts", "src/stencil/dynamic-component.tsx"]
 }

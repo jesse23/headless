@@ -548,7 +548,7 @@ globalSwf.swf = {
 // ../react/src/reactUtils.ts
 import { useRef, useEffect, useState, createElement } from "react";
 import { createElement as createElement2 } from "react";
-var usePartialStore = (store, path) => {
+var getPartialStore = (store, path) => {
   const { getData: getStoreData, updateData: updateStoreData } = store;
   const getData = useRef(() => getValue(getStoreData(), path)).current;
   const updateData = useRef((values) => {
@@ -684,7 +684,7 @@ var viewDef = {
 var viewDepDefs = viewDef.imports || [];
 var componentDef = createComponentDefinition(viewDef);
 var renderFn = (param) => {
-  const { props, actions, styles, functions: { createElement: createElement3, usePartialStore: usePartialStore2, getData, updateData }, components: {} } = param;
+  const { props, actions, styles, functions: { createElement: createElement3, getPartialStore: usePartialStore2, getData, updateData }, components: {} } = param;
   let data = { getData, updateData };
   data = data.getData();
   return createElement3("div", {
@@ -711,7 +711,7 @@ var Component = (props) => {
     actions,
     styles: SimpleButton_module_default,
     components: viewDeps,
-    functions: { createElement: createElement2, usePartialStore, getData, updateData }
+    functions: { createElement: createElement2, getPartialStore, getData, updateData }
   });
 };
 Component.displayName = viewDef.name || "anonymous";

@@ -44,7 +44,7 @@ var viewDef = {
 var viewDepDefs = viewDef.imports || [];
 var componentDef = createComponentDefinition(viewDef);
 var renderFn = (param) => {
-  const { props, actions, styles, functions: { createElement: createElement2, usePartialStore: usePartialStore2, getData, updateData }, components: {} } = param;
+  const { props, actions, styles, functions: { createElement: createElement2, getPartialStore: usePartialStore2, getData, updateData }, components: {} } = param;
   let data = { getData, updateData };
   data = data.getData();
   return createElement2("div", {
@@ -71,7 +71,7 @@ var Component = (props) => {
     actions,
     styles: SimpleButton_module_default,
     components: viewDeps,
-    functions: { createElement, usePartialStore, getData, updateData }
+    functions: { createElement, getPartialStore, getData, updateData }
   });
 };
 Component.displayName = viewDef.name || "anonymous";

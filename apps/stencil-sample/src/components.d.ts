@@ -5,76 +5,65 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { ComponentDefinition } from "../../../libs/core/src/index";
+export { ComponentDefinition } from "../../../libs/core/src/index";
 export namespace Components {
-    interface DataExample {
+    interface DynamicComponent {
+        "componentDef": ComponentDefinition;
+        "props": Record<string, unknown>;
     }
-    interface EventExampleContainer {
+    interface MockExample {
     }
-    interface EventExampleCorrectChild {
-        "count": number;
-    }
-    interface EventExampleWrongChild {
-        "count": number;
+    interface StencilRoot {
     }
 }
 declare global {
-    interface HTMLDataExampleElement extends Components.DataExample, HTMLStencilElement {
+    interface HTMLDynamicComponentElement extends Components.DynamicComponent, HTMLStencilElement {
     }
-    var HTMLDataExampleElement: {
-        prototype: HTMLDataExampleElement;
-        new (): HTMLDataExampleElement;
+    var HTMLDynamicComponentElement: {
+        prototype: HTMLDynamicComponentElement;
+        new (): HTMLDynamicComponentElement;
     };
-    interface HTMLEventExampleContainerElement extends Components.EventExampleContainer, HTMLStencilElement {
+    interface HTMLMockExampleElement extends Components.MockExample, HTMLStencilElement {
     }
-    var HTMLEventExampleContainerElement: {
-        prototype: HTMLEventExampleContainerElement;
-        new (): HTMLEventExampleContainerElement;
+    var HTMLMockExampleElement: {
+        prototype: HTMLMockExampleElement;
+        new (): HTMLMockExampleElement;
     };
-    interface HTMLEventExampleCorrectChildElement extends Components.EventExampleCorrectChild, HTMLStencilElement {
+    interface HTMLStencilRootElement extends Components.StencilRoot, HTMLStencilElement {
     }
-    var HTMLEventExampleCorrectChildElement: {
-        prototype: HTMLEventExampleCorrectChildElement;
-        new (): HTMLEventExampleCorrectChildElement;
-    };
-    interface HTMLEventExampleWrongChildElement extends Components.EventExampleWrongChild, HTMLStencilElement {
-    }
-    var HTMLEventExampleWrongChildElement: {
-        prototype: HTMLEventExampleWrongChildElement;
-        new (): HTMLEventExampleWrongChildElement;
+    var HTMLStencilRootElement: {
+        prototype: HTMLStencilRootElement;
+        new (): HTMLStencilRootElement;
     };
     interface HTMLElementTagNameMap {
-        "data-example": HTMLDataExampleElement;
-        "event-example-container": HTMLEventExampleContainerElement;
-        "event-example-correct-child": HTMLEventExampleCorrectChildElement;
-        "event-example-wrong-child": HTMLEventExampleWrongChildElement;
+        "dynamic-component": HTMLDynamicComponentElement;
+        "mock-example": HTMLMockExampleElement;
+        "stencil-root": HTMLStencilRootElement;
     }
 }
 declare namespace LocalJSX {
-    interface DataExample {
+    interface DynamicComponent {
+        "componentDef"?: ComponentDefinition;
+        "props"?: Record<string, unknown>;
     }
-    interface EventExampleContainer {
+    interface MockExample {
     }
-    interface EventExampleCorrectChild {
-        "count"?: number;
-    }
-    interface EventExampleWrongChild {
-        "count"?: number;
+    interface StencilRoot {
     }
     interface IntrinsicElements {
-        "data-example": DataExample;
-        "event-example-container": EventExampleContainer;
-        "event-example-correct-child": EventExampleCorrectChild;
-        "event-example-wrong-child": EventExampleWrongChild;
+        "dynamic-component": DynamicComponent;
+        "mock-example": MockExample;
+        "stencil-root": StencilRoot;
     }
 }
 export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "data-example": LocalJSX.DataExample & JSXBase.HTMLAttributes<HTMLDataExampleElement>;
-            "event-example-container": LocalJSX.EventExampleContainer & JSXBase.HTMLAttributes<HTMLEventExampleContainerElement>;
-            "event-example-correct-child": LocalJSX.EventExampleCorrectChild & JSXBase.HTMLAttributes<HTMLEventExampleCorrectChildElement>;
-            "event-example-wrong-child": LocalJSX.EventExampleWrongChild & JSXBase.HTMLAttributes<HTMLEventExampleWrongChildElement>;
+            "dynamic-component": LocalJSX.DynamicComponent & JSXBase.HTMLAttributes<HTMLDynamicComponentElement>;
+            "mock-example": LocalJSX.MockExample & JSXBase.HTMLAttributes<HTMLMockExampleElement>;
+            "stencil-root": LocalJSX.StencilRoot & JSXBase.HTMLAttributes<HTMLStencilRootElement>;
         }
     }
 }

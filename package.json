@@ -15,7 +15,8 @@
   "workspaces": [
     "apps/*",
     "libs/*",
-    "kits/*"
+    "kits/*",
+    "tools/*"
   ],
   "devDependencies": {
     "rimraf": "^3.0.2"

@@ -31,7 +31,7 @@ export const ComponentJsExample =
         console.log('RenderExample updated');
       },
     },
-    render: ({ data: { count }, actions: { increment } }) => {
+    render: ({ data: { count }, actions: { increment }}) => {
       return (
         <div className="card">
           <h2>Render Component Example</h2>

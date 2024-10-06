@@ -1,5 +1,5 @@
-import { DataExampleViewModel } from '@headless/components';
-import { useViewModel } from '../libs/solidUtils';
+import { DataExampleViewModel } from '@headless/components/models';
+import { useViewModel } from '@headless/reactivity/solid';
 import { JSXElement } from 'solid-js';
 
 export const DataExample = (() => {

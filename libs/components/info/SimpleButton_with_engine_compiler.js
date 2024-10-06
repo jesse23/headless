@@ -49,7 +49,7 @@ __export(src_exports3, {
   defineComponentDeclAsText: () => defineComponentDeclAsText,
   registerLibDeps: () => registerLibDeps,
   useComponentDefinition: () => useComponentDefinition,
-  usePartialStore: () => usePartialStore,
+  getPartialStore: () => getPartialStore,
   useViewDeps: () => useViewDeps,
   useViewModel: () => useViewModel
 });
@@ -1578,7 +1578,7 @@ globalSwf2.swf = {
 
 // ../react/src/reactUtils.ts
 import { createElement as createElement2 } from "react";
-var usePartialStore = (store, path) => {
+var getPartialStore = (store, path) => {
   const { getData: getStoreData, updateData: updateStoreData } = store;
   const getData = useRef(() => getValue(getStoreData(), path)).current;
   const updateData = useRef((values) => {
@@ -1688,7 +1688,7 @@ var createRenderFnContent = (viewDef2, node) => {
   return {
     args: ["param"],
     contents: [
-      `const { props, actions, styles, functions: { createElement, usePartialStore, getData, updateData }, components: { ${viewDepDefs2.join(
+      `const { props, actions, styles, functions: { createElement, getPartialStore, getData, updateData }, components: { ${viewDepDefs2.join(
         ", "
       )}} } = param;`,
       `let data = { getData, updateData };`,
@@ -1704,7 +1704,7 @@ var createRenderFnContent = (viewDef2, node) => {
           path = paths.slice(1).join(".");
         }
         if (path) {
-          return `const ${varName} = usePartialStore(${store}, '${path}')`;
+          return `const ${varName} = getPartialStore(${store}, '${path}')`;
         }
         return `const ${varName} = ${store}`;
       }),
@@ -1759,7 +1759,7 @@ var defineComponent = (componentDef2) => {
       actions,
       styles: {},
       components: {},
-      functions: { createElement, usePartialStore, getData, updateData }
+      functions: { createElement, getPartialStore, getData, updateData }
     });
   };
   Component2.displayName = componentDef2.name || "anonymous";
@@ -1784,7 +1784,7 @@ var defineComponentDecl = (viewDef2) => {
       actions,
       styles: viewDef2.styles || {},
       components: viewDeps,
-      functions: { createElement, usePartialStore, getData, updateData }
+      functions: { createElement, getPartialStore, getData, updateData }
     });
   };
   Component2.displayName = viewDef2.name || "anonymous";
@@ -1816,7 +1816,7 @@ export const Component = (props) => {
     actions,
     styles: viewDef.styles || {},
     components: viewDeps,
-    functions: { createElement, usePartialStore, getData, updateData },
+    functions: { createElement, getPartialStore, getData, updateData },
   });
 };
 Component.displayName = viewDef.name || 'anonymous';
@@ -1847,7 +1847,7 @@ var viewDef = {
 var viewDepDefs = viewDef.imports || [];
 var componentDef = createComponentDefinition(viewDef);
 var renderFn = (param) => {
-  const { props, actions, styles, functions: { createElement: createElement3, usePartialStore: usePartialStore2, getData, updateData }, components: {} } = param;
+  const { props, actions, styles, functions: { createElement: createElement3, getPartialStore: usePartialStore2, getData, updateData }, components: {} } = param;
   let data = { getData, updateData };
   data = data.getData();
   return createElement3("div", {
@@ -1874,7 +1874,7 @@ var Component = (props) => {
     actions,
     styles: SimpleButton_module_default,
     components: viewDeps,
-    functions: { createElement: createElement2, usePartialStore, getData, updateData }
+    functions: { createElement: createElement2, getPartialStore, getData, updateData }
   });
 };
 Component.displayName = viewDef.name || "anonymous";

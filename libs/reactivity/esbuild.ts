@@ -1,7 +1,12 @@
 import { build } from '@headless/tooling/esbuild';
 import path from 'path';
 
-const components = ['./src/react.ts', './src/vue.ts'];
+const components = [
+  './src/react.ts',
+  './src/vue.ts',
+  './src/solid.ts',
+  './src/angular.ts',
+];
 
 // Build each component separately
 components.forEach((filePath) => {

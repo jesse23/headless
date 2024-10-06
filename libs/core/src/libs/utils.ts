@@ -1,6 +1,8 @@
 import {
     Data,
     FunctionType,
+    Store,
+    GetPartialStoreFn,
     Value,
 } from './types';
 
@@ -324,3 +326,26 @@ export const cloneJson = ( input: Data ): Data => {
     return input ? JSON.parse( JSON.stringify( input ) ) : input;
 };
 
+
+/**
+ * Create a partial store from the parent store by providing the path
+ * 
+ * NOTE: te stability of store (mainly getData and updateData) should be guaranteed by caller. No
+ * need to be strictly stable but should be at least logically stable.
+ * 
+ * @param store parent store
+ * @param path path to the partial store
+ * @returns partial store
+ */
+export const createPartialStore: GetPartialStoreFn = (store: Store, path: string) => {
+  const { getData: getStore, updateData: updateStore } = store;
+
+  const getData = () => getValue(getStore(), path) as Data;
+
+  const updateData = (values: Data): void => {
+    const updatedValues = applyValues(getData(), values);
+    updateStore({ [path]: updatedValues });
+  };
+
+  return { getData, updateData };
+};

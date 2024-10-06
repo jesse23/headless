@@ -118,7 +118,7 @@ const generateRenderFnContent = (
   return {
     args: ['param'],
     contents: [
-      `const { props, actions, styles, functions: { createElement, usePartialStore, getData, updateData }, components: { ${viewDepDefs.join(
+      `const { props, actions, styles, functions: { createElement, getPartialStore, getData, updateData }, components: { ${viewDepDefs.join(
         ', '
       )}} } = param;`,
       `  let data = { getData, updateData };`,
@@ -135,7 +135,7 @@ const generateRenderFnContent = (
           path = paths.slice(1).join('.');
         }
         if (path) {
-          return `  const ${varName} = usePartialStore(${store}, '${path}')`;
+          return `  const ${varName} = getPartialStore(${store}, '${path}')`;
         }
         return `  const ${varName} = ${store}`;
       }),

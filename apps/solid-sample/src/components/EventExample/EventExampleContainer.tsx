@@ -1,5 +1,5 @@
-import { EventExampleContainerViewModel } from '@headless/components';
-import { useViewModel } from '../../libs/solidUtils';
+import { EventExampleContainerViewModel } from '@headless/components/models';
+import { useViewModel } from '@headless/reactivity/solid';
 import { EventExampleWrongChild, EventExampleCorrectChild } from '../'
 
 export function EventExampleContainer() {

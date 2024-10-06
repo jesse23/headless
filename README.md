@@ -13,10 +13,10 @@ test bad for headless ui
 - [x] Clean up aw factors
 - [ ] Extend the design to vue
       - [x] defineComponent
-      - [ ] defineComponentDeclView
-      - [ ] defineComponentDecl
-- [ ] Extend the design to solid
-- [ ] Extend the design to stencil
+      - [x] defineComponentDeclView
+      - [x] defineComponentDecl
+- [x] Extend the design to solid
+- [x] Extend the design to stencil
 - [ ] Example to use component library
 - [ ] Re-enable strict mode
 

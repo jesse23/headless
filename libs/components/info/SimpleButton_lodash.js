@@ -4799,7 +4799,7 @@ var src_exports3 = {};
 __export(src_exports3, {
   defineComponent: () => defineComponent,
   defineComponentDecl: () => defineComponentDecl,
-  usePartialStore: () => usePartialStore,
+  getPartialStore: () => getPartialStore,
   useStore: () => useStore,
   useViewModel: () => useViewModel
 });
@@ -6312,7 +6312,7 @@ globalSwf2.swf = {
 };
 
 // ../react/src/reactUtils.ts
-var usePartialStore = (store, path) => {
+var getPartialStore = (store, path) => {
   const { getData: getStoreData, updateData: updateStoreData } = store;
   const getData = useRef(() => getValue(getStoreData(), path)).current;
   const updateData = useRef((values) => {
@@ -6428,9 +6428,9 @@ var defineComponentDecl = (viewDef) => {
     ...viewDepDefs,
     "styles",
     "createElement",
-    "usePartialStore"
+    "getPartialStore"
   ];
-  const argv = [viewDef.styles || {}, createElement, usePartialStore];
+  const argv = [viewDef.styles || {}, createElement, getPartialStore];
   const renderView = bindTrailingArgs(
     new Function(
       ...argc,
@@ -6447,7 +6447,7 @@ var defineComponentDecl = (viewDef) => {
             path = paths.slice(1).join(".");
           }
           if (path) {
-            return `const ${varName} = usePartialStore(${store}, '${path}')`;
+            return `const ${varName} = getPartialStore(${store}, '${path}')`;
           }
           return `const ${varName} = ${store}`;
         }),
