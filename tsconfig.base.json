@@ -34,11 +34,10 @@
       "@headless/components/register": ["libs/components/src/register"],
       "@headless/components/*": ["libs/components/src/*"],
       "@headless/reactivity/*": ["libs/reactivity/src/*"],
-      "@headless/tooling": ["tools/tooling"],
       "@headless/node": ["tools/node/src"],
       "@headless/esbuild": ["tools/esbuild/src"],
       "@headless/vite": ["tools/vite/src"],
-      "@headless/vite/test": ["tools/vitest/src"]
+      "@headless/vitest": ["tools/vitest/src"]
     }
   },
   "exclude": ["node_modules"]
