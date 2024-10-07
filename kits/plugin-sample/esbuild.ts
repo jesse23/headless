@@ -1,4 +1,4 @@
-import { build } from '@headless/tooling/esbuild';
+import { build } from '@headless/esbuild';
 
 build({
   // for plugin, externalGlobal is the right approach, the expectation is
@@ -7,7 +7,7 @@ build({
   externalGlobal: {
     // swf
     '@headless/core': 'globalThis.swf.core',
-    '@headless/compiler': 'globalThis.swf.compiler',
+    '@headless/transform': 'globalThis.swf.compiler',
     '@headless/interop': 'globalThis.swf.interop',
     '@headless/components': 'globalThis.swf.components',
     // react

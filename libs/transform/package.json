@@ -1,0 +1,26 @@
+{
+  "name": "@headless/transform",
+  "version": "1.0.0",
+  "description": "transform view and view model to js code",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "types": "src/index.ts",
+  "export": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    },
+    "./register": {
+      "import": "./dist/register.js",
+      "require": "./dist/register.js"
+    }
+  },
+  "scripts": {
+    "audit": "eslint src test --ext .js,.jsx,.ts,.tsx && tsc",
+    "build": "tsx esbuild",
+    "test": "vitest run",
+    "clean": "rimraf dist doc *.log *.tgz node_modules/.*"
+  },
+  "author": "jesse23",
+  "license": "ISC"
+}

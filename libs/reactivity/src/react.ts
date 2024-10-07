@@ -1,20 +1,24 @@
 import {
   Data,
-  cloneJson,
+  Component,
   UseStoreFn,
+  GetPartialStoreFn,
+  ComponentDefinition,
   ViewModelDefinition,
+} from '@headless/types';
+import {
+  cloneJson,
   applyValues,
+  createPartialStore,
+} from '@headless/utils';
+import {
+  getViewDeps,
   subscribeEvents,
   unsubscribeEvents,
   initActionsFromActionFn,
   createActionFromActionFn,
-  ComponentDefinition,
   createComponentDefinition,
-  Component,
-  getViewDeps,
   registerDefineComponent,
-  createPartialStore,
-  GetPartialStoreFn,
 } from '@headless/core';
 import { useRef, useEffect, useState, createElement } from 'react';
 

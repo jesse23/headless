@@ -24,7 +24,7 @@
 
     /* Overwrites */
     "allowJs": true,
-    "types": ["node", "vitest/globals", "@headless/core/src/decl.d.ts"],
+    "types": ["node", "vitest/globals", "@headless/types/decl.d.ts"],
   },
   "include": ["src"],
 }

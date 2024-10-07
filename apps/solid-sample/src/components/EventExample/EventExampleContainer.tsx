@@ -1,6 +1,7 @@
 import { EventExampleContainerViewModel } from '@headless/components/models';
 import { useViewModel } from '@headless/reactivity/solid';
-import { EventExampleWrongChild, EventExampleCorrectChild } from '../'
+import { EventExampleWrongChild} from './EventExampleWrongChild';
+import { EventExampleCorrectChild } from './EventExampleCorrectChild';
 
 export function EventExampleContainer() {
   const { getData, actions } = useViewModel(EventExampleContainerViewModel, {});

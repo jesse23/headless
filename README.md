@@ -17,15 +17,46 @@ test bad for headless ui
       - [x] defineComponentDecl
 - [x] Extend the design to solid
 - [x] Extend the design to stencil
+- [ ] Compile view model
+- [ ] Refine reactivity and components
+- [ ] Retest kit, plugin and app
 - [ ] Example to use component library
 - [ ] Re-enable strict mode
 
-# Libraries
-- [x] lv0: tooling    -> compile util but has dependencies with view
-- [x] lv0: view       -> html compiler, generic to all frameworks
-- [x] lv0: interop        -> interops and event bus, lv0 since no deps on core
-  - [x] lv1: core       -> core engine and utils
-    - [x] lv2: react      -> react related hooks
-      - [x] lv3: components -> components lib, should only depend on core
-        - core is used only for some typing
-        - react is used only for defineComponent API
+# Library Dependencies
+## Approach 1 (easy to leak to react)
+- lv0: react, tooling(webpack)
+- lv1: engine/core, view-compiler....
+- lv2: components
+- lv3: kit, app
+
+## Approach 2 (react usage is managed)
+- lv0: types, utils, transform
+- lv1: [ core, interop ], tooling(utils) -> [ webpack, vite, vitest, esbuild ] 
+- lv2: reactivity(react, vue, stencil...)?, components
+- lv3: kit, plugin, app
+
+# Build Strategy
+## Internal Dependency (maybe as deps too)
+utils, tooling, core, interop, (transform)
+
+## Ship as source 
+webpack, vite, vitest, esbuild
+
+## Build to single entry
+types, transform, core, interop, plugin
+
+## Build to multiple entry
+reactivity, components
+
+# Call to transform
+- transpileViewModelJson         [tooling]
+  - generateComponentContent     [transform]
+    - generateRenderFnContent    [transform]
+      - transform                [transform]
+
+- defineComponentDeclViewSync    [core]
+  - generateRenderFnContent      [transform]
+    - transform                  [transform]
+
+

@@ -26,6 +26,7 @@
     "../../libs/reactivity/src/stencil",
     "../../libs/models/src",
     "../../libs/components/src/js-components",
+    "../../libs/types/decl.d.ts", "../../libs/utils/src/types.ts",
   ],
   "exclude": [
     "node_modules"

@@ -1,4 +1,4 @@
-import { ViewModelObject } from '@headless/core';
+import { ViewModelObject } from '@headless/types';
 
 export const loadData = async (): Promise<{
   data: ViewModelObject[];

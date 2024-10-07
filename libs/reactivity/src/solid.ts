@@ -13,16 +13,20 @@
  */
 import {
   Data,
-  cloneJson,
   UseStoreFn,
-  ViewModelDefinition,
   ComponentDefinition,
+  ViewModelDefinition,
+} from '@headless/types';
+import {
+  cloneJson,
+  applyValues,
+} from '@headless/utils';
+import {
   initActionsFromActionFn,
   createActionFromActionFn,
   subscribeEvents,
   unsubscribeEvents,
   createComponentDefinition,
-  applyValues,
 } from '@headless/core';
 import { createSignal, createEffect, onMount, onCleanup } from 'solid-js';
 

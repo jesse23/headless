@@ -1,4 +1,4 @@
-import { DataProvider } from '@headless/core';
+import { DataProvider } from '@headless/types';
 import styles from './SimpleList.module.scss';
 
 export const SimpleList = ({

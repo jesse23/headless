@@ -1,0 +1,16 @@
+{
+  "name": "@headless/types",
+  "version": "1.0.0",
+  "description": "typings",
+  "main": "types.ts",
+  "module": "types.ts",
+  "scripts": {
+    "audit": "eslint src test --ext .js,.jsx,.ts,.tsx && tsc -p tsconfig.json",
+    "build": "dts-bundle-generator -o dist/decl.d.ts src/index.ts",
+    "test": "vitest run",
+    "clean": "rimraf dist doc *.log *.tgz node_modules/.*",
+    "docs": "typedoc src/index.ts"
+  },
+  "author": "jesse23",
+  "license": "ISC"
+}

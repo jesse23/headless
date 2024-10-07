@@ -1,6 +1,8 @@
 import {
   Component,
   ViewModelDefinition,
+} from '@headless/types';
+import {
   defineComponentDeclView
 } from '@headless/core';
 

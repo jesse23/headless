@@ -1,4 +1,4 @@
-import { FunctionType } from "./types";
+import { FunctionType } from "@headless/types";
 
 const _libDeps = {} as Record<string,Promise<Record<string, FunctionType>>>;
 

@@ -933,7 +933,7 @@ var compileText_default = {
   compileToTemplate: compileToTemplate2
 };
 
-// ../view/src/compileAwInclude.ts
+// ../view/src/compileNgInclude.ts
 function when3(node, _) {
   return node.nodeType === NodeType.ELEMENT_NODE && node.nodeName === "ng-INCLUDE";
 }
@@ -988,7 +988,7 @@ function compileToTemplate3(node, context) {
     };
   }
 }
-var compileAwInclude_default = {
+var compileNgInclude_default = {
   when: when3,
   compile: compile3,
   compileToTemplate: compileToTemplate3
@@ -1073,10 +1073,10 @@ function compile6(node, context) {
   const currClassValue = node.classList ? node.classList.value : "";
   const match = currClassValue.match(/^{{(.*)}}$/);
   if (match) {
-    const classExpr = `processAwClass(${expr}) + ' ' + ${match[1]}`;
+    const classExpr = `processNgClass(${expr}) + ' ' + ${match[1]}`;
     node.setAttribute("class", `{{${classExpr}}}`);
   } else {
-    const classExpr = currClassValue ? `processAwClass(${expr}) + ' ${currClassValue}'` : `processAwClass(${expr})`;
+    const classExpr = currClassValue ? `processNgClass(${expr}) + ' ${currClassValue}'` : `processNgClass(${expr})`;
     node.setAttribute("class", `{{${classExpr}}}`);
   }
   return context.compileFn(node, context);
@@ -1163,7 +1163,7 @@ var compileTransclude_default = {
   compileToTemplate: compileToTemplate5
 };
 
-// ../view/src/compileAwTransclude.ts
+// ../view/src/compileNgTransclude.ts
 var Attr5 = "ng-transclude";
 function when8(node, _) {
   return node.nodeType === NodeType.ELEMENT_NODE && node.hasAttribute(Attr5);
@@ -1234,7 +1234,7 @@ function compileToTemplate6(node, context) {
     options
   };
 }
-var compileAwTransclude_default = {
+var compileNgTransclude_default = {
   when: when8,
   compile: compile8,
   compileToTemplate: compileToTemplate6
@@ -1558,12 +1558,12 @@ var createCompiler = () => {
   compiler.add(compileClass_default);
   compiler.add(compileTransclude_default);
   compiler.add(compileNgTransclude_default);
-  compiler.add(compileAwTransclude_default);
+  compiler.add(compileNgTransclude_default);
   compiler.add(compileEnter_default);
   compiler.add(compilePropModel_default);
   compiler.add(compileClick_default);
   compiler.add(compileReactButton_default);
-  compiler.add(compileAwInclude_default);
+  compiler.add(compileNgInclude_default);
   compiler.add(compileElement_default);
   compiler.add(compileText_default);
   return compiler;

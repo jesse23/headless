@@ -26,15 +26,20 @@
       "@headless/kit-sample": ["kits/kit-sample/src"],
       "@headless/core": ["libs/core/src"],
       "@headless/core/register": ["libs/core/src/register"],
-      "@headless/compiler": ["libs/compiler/src"],
-      "@headless/compiler/register": ["libs/compiler/src/register"],
+      "@headless/transform": ["libs/compiler/src"],
+      "@headless/transform/register": ["libs/compiler/src/register"],
       "@headless/interop": ["libs/interop/src"],
       "@headless/interop/register": ["libs/interop/src/register"],
       "@headless/components": ["libs/components/src"],
       "@headless/components/register": ["libs/components/src/register"],
       "@headless/components/*": ["libs/components/src/*"],
       "@headless/reactivity/*": ["libs/reactivity/src/*"],
-      "@headless/tooling": ["tools/tooling"]
+      "@headless/types/*": ["libs/types/src/*"],
+      "@headless/utils": ["libs/utils/src"],
+      "@headless/tooling": ["tools/node/src"],
+      "@headless/esbuild": ["tools/esbuild/src"],
+      "@headless/vite": ["tools/vite/src"],
+      "@headless/vitest": ["tools/vitest/src"]
     }
   },
   "exclude": ["node_modules"]

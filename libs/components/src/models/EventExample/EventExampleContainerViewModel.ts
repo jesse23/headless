@@ -1,4 +1,5 @@
-import { registerLibDeps, ViewModelDefinition } from '@headless/core';
+import { ViewModelDefinition } from '@headless/types'
+import { registerLibDeps } from '@headless/core';
 import { eventBus } from '@headless/interop';
 
 registerLibDeps('js/EventExampleContainerService', Promise.resolve({

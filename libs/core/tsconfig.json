@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./dist",
-   "types": ["node", "jest", "./src/decl.d.ts"],
+   "types": ["node", "jest", "@headless/types/decl.d.ts"],
   },
   "include": ["src/**/*.ts"],
 }

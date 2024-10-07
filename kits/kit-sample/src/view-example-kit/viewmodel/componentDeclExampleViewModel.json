@@ -1,0 +1,48 @@
+{
+    "name": "componentDeclExample",
+    "data": {
+        "count": 0
+    },
+    "actions": {
+        "increment": {
+            "actionType": "JSFunction",
+            "method": "increment",
+            "inputData": {
+                "count": "{{data.count}}"
+            },
+            "outputData": {
+                "count": ""
+            },
+            "deps": "js/componentDeclExampleService"
+        },
+        "onMountAction": {
+            "actionType": "JSFunction",
+            "method": "loadComponent",
+            "inputData": {},
+            "outputData": {
+                "count": ""
+            },
+            "deps": "js/componentDeclExampleService"
+        },   
+        "onUpdateAction": {
+            "actionType": "JSFunction",
+            "method": "updateComponent",
+            "inputData": {},
+            "deps": "js/componentDeclExampleService"
+        },   
+        "onUnmountAction": {
+            "actionType": "JSFunction",
+            "method": "unloadComponent",
+            "inputData": {},
+            "outputData": {
+                "count": ""
+            },
+            "deps": "js/componentDeclExampleService"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount":  "onMountAction",
+        "onUpdate": "onUpdateAction",
+        "onUnmount": "onUnmountAction"
+    }
+}

@@ -3,7 +3,7 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "outDir": "./dist",
-    "types": ["@headless/core/src/decl.d.ts"],
+    "types": ["@headless/types/decl.d.ts"],
   },
-  "include": ["src/*.tsx", "src/*.ts", "src/js-components/ComponentJsExample.tsx"],
+  "include": ["src"],
 }

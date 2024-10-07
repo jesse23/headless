@@ -1,4 +1,5 @@
-import { registerLibDeps, ViewModelDefinition } from "@headless/core";
+import { ViewModelDefinition } from '@headless/types'
+import { registerLibDeps } from "@headless/core";
 
 registerLibDeps('js/EventExampleWrongChild', Promise.resolve({
   doubleValue: (propVal: number, eventVal: number) => propVal + eventVal,
