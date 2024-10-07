@@ -35,7 +35,8 @@
       "@headless/components/*": ["libs/components/src/*"],
       "@headless/reactivity/*": ["libs/reactivity/src/*"],
       "@headless/tooling": ["tools/tooling"],
-      "@headless/node": ["tools/node/src"]
+      "@headless/node": ["tools/node/src"],
+      "@headless/esbuild": ["tools/esbuild/src"]
     }
   },
   "exclude": ["node_modules"]

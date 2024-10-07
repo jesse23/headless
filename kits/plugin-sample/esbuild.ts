@@ -1,4 +1,4 @@
-import { build } from '@headless/tooling/esbuild';
+import { build } from '@headless/esbuild';
 
 build({
   // for plugin, externalGlobal is the right approach, the expectation is

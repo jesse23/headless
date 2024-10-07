@@ -1,5 +1,5 @@
 import {Plugin} from 'esbuild';
-import {transpileViewModel, transpileJson } from '@Headless/node';
+import {transpileViewModel, transpileJson } from '@headless/esbuild';
 
 export const declViewPlugin: Plugin = {
   name: 'declViewPlugin',
