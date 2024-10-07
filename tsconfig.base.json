@@ -36,7 +36,9 @@
       "@headless/reactivity/*": ["libs/reactivity/src/*"],
       "@headless/tooling": ["tools/tooling"],
       "@headless/node": ["tools/node/src"],
-      "@headless/esbuild": ["tools/esbuild/src"]
+      "@headless/esbuild": ["tools/esbuild/src"],
+      "@headless/vite": ["tools/vite/src"],
+      "@headless/vite/test": ["tools/vitest/src"]
     }
   },
   "exclude": ["node_modules"]

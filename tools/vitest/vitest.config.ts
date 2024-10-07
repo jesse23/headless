@@ -1,6 +1,6 @@
 import tsconfigPaths from 'vite-tsconfig-paths';
 
-export default {
+export const vitestConfig = {
   test: {
     globals: true,
     environment: 'happy-dom',
