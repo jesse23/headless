@@ -24,7 +24,6 @@
     "esbuild-plugin-ts-references": "^0.2.2",
     "esbuild-sass-plugin": "^2.10.0",
     "eslint": "^8.41.0",
-    "happy-dom": "^10.3.2",
     "prettier": "^2.8.8",
     "rimraf": "^3.0.2",
     "tsx": "^3.12.7",

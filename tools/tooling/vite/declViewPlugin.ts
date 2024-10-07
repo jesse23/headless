@@ -1,7 +1,9 @@
 // https://github.com/vitejs/vite/issues/5370
-// either we use approach below or we have to prebuild the tooling package
-// import {transpileViewModelJson, transpileJson } from '@headless/tooling';
-import {transpileJson, transpileViewModel } from '../utils';
+// 3 solutions:
+// - use tsx and commonjs at app side
+// - use absolute path here
+// - use pre-bundled version
+import {transpileJson, transpileViewModel } from '@headless/node';
 
 // https://github.com/vitejs/vite/discussions/12788
 export const declViewPlugin = ()/*: PluginOption*/ => {

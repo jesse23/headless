@@ -34,7 +34,8 @@
       "@headless/components/register": ["libs/components/src/register"],
       "@headless/components/*": ["libs/components/src/*"],
       "@headless/reactivity/*": ["libs/reactivity/src/*"],
-      "@headless/tooling": ["tools/tooling"]
+      "@headless/tooling": ["tools/tooling"],
+      "@headless/node": ["tools/node/src"]
     }
   },
   "exclude": ["node_modules"]
