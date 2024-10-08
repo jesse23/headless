@@ -4,7 +4,7 @@ import {
     Store,
     GetPartialStoreFn,
     Value,
-} from './types';
+} from '@headless/types';
 
 export const BaseIndent = '  ';
 
@@ -96,17 +96,6 @@ export const bindTrailingArgs = ( fn: FunctionType, ...boundArgs: unknown[] ): F
     return function( ...args: unknown[] ): unknown {
         return fn( ...args, ...boundArgs );
     };
-};
-
-/**
- * Polyfill to match dynamic import result back to ES5 supported module
- *
- * @param obj - function to evaluate after loading the dependencies.
- * @returns ES5 module object
- */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const interopES6Default = ( obj: any  ): any => {
-    return obj && obj.__esModule && obj.default ? obj.default : obj;
 };
 
 

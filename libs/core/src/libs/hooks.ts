@@ -1,4 +1,4 @@
-import { Action, ViewModelDefinition } from './types';
+import { Action, ViewModelDefinition } from '@headless/types';
 
 export const execLifecycleHook = async (
   viewDef: ViewModelDefinition,

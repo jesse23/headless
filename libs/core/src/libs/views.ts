@@ -1,4 +1,4 @@
-import { Component } from './types';
+import { Component } from '@headless/types';
 
 const _ctx = {
   views: {} as Record<string, unknown>,

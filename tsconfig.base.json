@@ -35,6 +35,7 @@
       "@headless/components/*": ["libs/components/src/*"],
       "@headless/reactivity/*": ["libs/reactivity/src/*"],
       "@headless/types/*": ["libs/types/src/*"],
+      "@headless/utils": ["libs/utils/src"],
       "@headless/node": ["tools/node/src"],
       "@headless/esbuild": ["tools/esbuild/src"],
       "@headless/vite": ["tools/vite/src"],

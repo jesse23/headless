@@ -1,9 +1,11 @@
 import {
-  camelCaseToHyphen,
   Component,
   ComponentDefinition,
-  registerDefineComponent,
   ViewModelDefinition,
+} from '@headless/types';
+import {
+  camelCaseToHyphen,
+  registerDefineComponent,
 } from '@headless/core';
 
 export const removeImports = (viewDef: ViewModelDefinition): ViewModelDefinition => {

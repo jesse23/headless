@@ -1,5 +1,5 @@
-import { Value, Data, Store, Action, ActionFn } from './types';
-import { cloneJson, getValue, parseExpr } from './utils';
+import { Data, Value, Store, Action, ActionFn } from '@headless/types';
+import { cloneJson, getValue, parseExpr } from '@headless/utils';
 import { getLibDeps } from './deps';
 
 /**

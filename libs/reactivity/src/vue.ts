@@ -1,4 +1,24 @@
 import {
+  Data,
+  Component,
+  UseStoreFn,
+  GetPartialStoreFn,
+  ComponentDefinition,
+  ViewModelDefinition,
+} from '@headless/types';
+import {
+  cloneJson,
+  applyValues,
+  subscribeEvents,
+  unsubscribeEvents,
+  initActionsFromActionFn,
+  createActionFromActionFn,
+  createComponentDefinition,
+  registerDefineComponent,
+  getViewDeps,
+  createPartialStore,
+} from '@headless/core';
+import {
   ref,
   onMounted,
   onUnmounted,
@@ -8,24 +28,6 @@ import {
   toRaw,
   Slots,
 } from 'vue';
-import {
-  Data,
-  cloneJson,
-  UseStoreFn,
-  ViewModelDefinition,
-  applyValues,
-  subscribeEvents,
-  unsubscribeEvents,
-  ComponentDefinition,
-  initActionsFromActionFn,
-  createActionFromActionFn,
-  GetPartialStoreFn,
-  Component,
-  createComponentDefinition,
-  registerDefineComponent,
-  getViewDeps,
-  createPartialStore,
-} from '@headless/core';
 
 export const useStore: UseStoreFn = (initFn) => {
   const lastState = ref(initFn());

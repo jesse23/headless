@@ -13,10 +13,12 @@
  */
 import {
   Data,
-  cloneJson,
   UseStoreFn,
-  ViewModelDefinition,
   ComponentDefinition,
+  ViewModelDefinition,
+} from '@headless/types';
+import {
+  cloneJson,
   initActionsFromActionFn,
   createActionFromActionFn,
   subscribeEvents,

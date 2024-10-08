@@ -1,5 +1,20 @@
-
-import { Action, applyValues, cloneJson, ComponentDefinition, createActionFromActionFn, createPartialStore, Data, initActionsFromActionFn, Store, subscribeEvents, unsubscribeEvents, GetPartialStoreFn, ViewModelDefinition } from '@headless/core';
+import {
+  Data,
+  Store,
+  Action,
+  GetPartialStoreFn,
+  ComponentDefinition,
+  ViewModelDefinition,
+} from '@headless/types';
+import {
+  applyValues,
+  cloneJson,
+  createActionFromActionFn,
+  createPartialStore,
+  initActionsFromActionFn,
+  subscribeEvents,
+  unsubscribeEvents,
+} from '@headless/core';
 import { Component, Prop, State, h } from '@stencil/core';
 
 @Component({
@@ -16,27 +31,27 @@ export class DynamicComponent {
 
   getProps = () => {
     return this.props;
-  }
+  };
 
   // data
   @State() data: Data;
 
   getData = () => {
     return this.data;
-  }
+  };
 
   updateData = (values: Data) => {
     this.data = applyValues(this.getData(), values);
-  }
+  };
 
   // partial store
   private storeMap: Record<string, Store> = {};
   getPartialStore: GetPartialStoreFn = (store, path) => {
-    if(!this.storeMap[path]) {
+    if (!this.storeMap[path]) {
       this.storeMap[path] = createPartialStore(store, path);
     }
     return this.storeMap[path];
-  }
+  };
 
   // action
   private actions: Record<string, Action>;
@@ -49,7 +64,7 @@ export class DynamicComponent {
         getData: this.getData,
         updateData: this.updateData,
       },
-      this.getProps,
+      this.getProps
     );
   }
 
@@ -67,11 +82,14 @@ export class DynamicComponent {
           getData: this.getData,
           updateData: this.updateData,
         },
-        this.getProps.bind(this),
+        this.getProps.bind(this)
       )();
     }
 
-    this.subscriptions = subscribeEvents({ onEvent: this.componentDef.onEvent } as ViewModelDefinition, this.actions);
+    this.subscriptions = subscribeEvents(
+      { onEvent: this.componentDef.onEvent } as ViewModelDefinition,
+      this.actions
+    );
   }
 
   async disconnectedCallback() {
@@ -88,7 +106,7 @@ export class DynamicComponent {
           getData: this.getData,
           updateData: this.updateData,
         },
-        this.getProps.bind(this),
+        this.getProps.bind(this)
       )();
     }
   }
@@ -104,7 +122,7 @@ export class DynamicComponent {
           getData: this.getData,
           updateData: this.updateData,
         },
-        this.getProps,
+        this.getProps
       )();
     }
   }

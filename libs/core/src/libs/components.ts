@@ -1,5 +1,3 @@
-import { createActionFn } from './actions';
-import { createCompiler } from '@headless/compiler';
 import {
   Component,
   ComponentDefinition,
@@ -7,7 +5,9 @@ import {
   DefineComponentFn,
   RenderFn,
   ViewModelDefinition,
-} from './types';
+} from '@headless/types';
+import { createCompiler } from '@headless/compiler';
+import { createActionFn } from './actions';
 import { getViewDeps } from './views';
 import { parseView } from './utils';
 
