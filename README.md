@@ -28,10 +28,11 @@ test bad for headless ui
 - lv3: kit, app
 
 ## Approach 2 (react usage is managed)
-- lv0: utils, types, tooling(utils)
-- lv1: [ core, interop, view-compiler ], [ webpack, vite, vitest, esbuild ] 
-- lv2: reactivity(react, vue, stencil...), components
-- lv3: kit, plugin, app
+- lv0: utils, types 
+- lv1: transform, tooling(utils)
+- lv2: [ core, interop ], [ webpack, vite, vitest, esbuild ] 
+- lv3: reactivity(react, vue, stencil...), components
+- lv4: kit, plugin, app
 
 # Open Questions
 Which library should be shipped as source?
@@ -39,11 +40,14 @@ Which library should be peer dependency and shared at the app build?
 Which library should be build as plugin?
 
 
-# Temp
+# Call to transform
 - transpileViewModelJson         [tooling]
-  - defineComponentDeclViewSync  [core/components]
-  - generateComponentContent     [core/components -> compiler]
-    - generateRenderFnContent    [core/components -> compiler]
-      - transform           [compiler]
+  - generateComponentContent     [transform]
+    - generateRenderFnContent    [transform]
+      - transform                [transform]
+
+- defineComponentDeclViewSync    [core]
+  - generateRenderFnContent      [transform]
+    - transform                  [transform]
 
 
