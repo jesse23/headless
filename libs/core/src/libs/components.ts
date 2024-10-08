@@ -6,10 +6,10 @@ import {
   RenderFn,
   ViewModelDefinition,
 } from '@headless/types';
-import { createCompiler } from '@headless/compiler';
+import { createCompiler } from 'libs/transform/src';
 import { createActionFn } from './actions';
 import { getViewDeps } from './views';
-import { parseView } from './utils';
+import { parseView } from '@headless/utils';
 
 let defineComponent: DefineComponentFn = () => {
   throw new Error('defineComponent is not implemented');

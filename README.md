@@ -33,5 +33,18 @@ test bad for headless ui
 - lv2: reactivity(react, vue, stencil...), components
 - lv3: kit, plugin, app
 
+# Open Questions
+Which library should be shipped as source?
+Which library should be peer dependency and shared at the app build?
+Which library should be build as plugin?
+
+
+# Temp
+- transpileViewModelJson         [tooling]
+  - defineComponentDeclViewSync  [core/components]
+  - generateComponentContent     [core/components -> compiler]
+    - generateRenderFnContent    [core/components -> compiler]
+      - createCompiler           [compiler]
+      - TBD
 
 

@@ -1,7 +1,7 @@
 {
-  "name": "@headless/compiler",
+  "name": "@headless/transform",
   "version": "1.0.0",
-  "description": "compile view html to js",
+  "description": "transform view and view model to js code",
   "main": "dist/index.js",
   "module": "src/index.ts",
   "types": "src/index.ts",
