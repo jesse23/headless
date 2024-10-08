@@ -1,1 +1,1 @@
-export * from './libs/compiler';
+export * from './view/compiler';

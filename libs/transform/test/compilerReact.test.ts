@@ -1,6 +1,6 @@
 /* eslint-env jest */
-import { createCompiler } from '../src/libs/compiler';
-import { parseView } from '@headless/core';
+import { createCompiler } from '../src/view/compiler';
+import { parseView } from '@headless/utils';
 
 const compiler = createCompiler();
 
