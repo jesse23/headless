@@ -39,14 +39,12 @@ describe( 'Test view compiler to React', () => {
             'createElement( "div", {',
             '  "className": props.className ? props.className : "",',
             '  "style": props.style || {}',
-            '}, [',
+            '}, ',
             '  createElement( "code", {',
-            '    "key": 0',
             '  } ),',
             '  createElement( "p", {',
-            '    "key": 1',
             '  } )',
-            '] )'
+            ' )'
         ].join( '\n' ) );
     } );
 
@@ -56,9 +54,9 @@ describe( 'Test view compiler to React', () => {
             'createElement( "div", {',
             '  "className": props.className ? props.className : "",',
             '  "style": props.style || {}',
-            '}, [',
+            '}, ',
             '  "Ouch"',
-            '] )'
+            ' )'
         ].join( '\n' ) );
     } );
 
@@ -68,9 +66,9 @@ describe( 'Test view compiler to React', () => {
             'createElement( "div", {',
             '  "className": props.className ? props.className : "",',
             '  "style": props.style || {}',
-            '}, [',
+            '}, ',
             '  a + b',
-            '] )'
+            ' )'
         ].join( '\n' ) );
     } );
 
@@ -81,13 +79,13 @@ describe( 'Test view compiler to React', () => {
             'createElement( "div", {',
             '  "className": props.className ? props.className : "",',
             '  "style": props.style || {}',
-            '}, [',
+            '}, ',
             '  "a \\n",',
             '  b,',
             '  "  c\\n  ",',
             '  d,',
             '  "f"',
-            '] )'
+            ' )'
         ].join( '\n' ) );
     } );
 
@@ -97,18 +95,16 @@ describe( 'Test view compiler to React', () => {
             'createElement( "div", {',
             '  "className": props.className ? props.className : "",',
             '  "style": props.style || {}',
-            '}, [',
+            '}, ',
             '  "a",',
             '  createElement( "div", {',
-            '    "key": 1',
             '  } ),',
             '  b,',
             '  "c",',
             '  createElement( "p", {',
-            '    "key": 3',
             '  } ),',
             '  "d"',
-            '] )'
+            ' )'
         ].join( '\n' ) );
     } );
 
@@ -129,9 +125,9 @@ describe( 'Test view compiler to React', () => {
             '  "title": "aaa",',
             '  "className": props.className ? props.className : "",',
             '  "style": props.style || {}',
-            '}, [',
+            '}, ',
             '  "Ouch"',
-            '] )'
+            ' )'
         ].join( '\n' ) );
     } );
 
@@ -142,9 +138,9 @@ describe( 'Test view compiler to React', () => {
             '  "title": aaa,',
             '  "className": props.className ? props.className : "",',
             '  "style": props.style || {}',
-            '}, [',
+            '}, ',
             '  "Ouch"',
-            '] )'
+            ' )'
         ].join( '\n' ) );
     } );
 
@@ -199,19 +195,18 @@ describe( 'Test view compiler to React', () => {
             '  createElement( "div", {',
             '    "className": props.className ? props.className : "",',
             '    "style": props.style || {}',
-            '  }, [',
+            '  }, ',
             '    props.children',
-            '  ] ) :',
+            '   ) :',
             '  createElement( "div", {',
             '    "className": props.className ? props.className : "",',
             '    "style": props.style || {}',
-            '  }, [',
+            '  }, ',
             '    createElement( "div", {',
-            '      "key": 0',
-            '    }, [',
+            '    }, ',
             '      var',
-            '    ] )',
-            '  ] )',
+            '     )',
+            '   )',
             ')'
         ].join( '\n' ) );
     } );

@@ -27,7 +27,7 @@
 import {
     preProcessTemplate
 } from './compileUtils';
-import { CompileContext } from './types';
+import { CompileContext, TransformFn } from './types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default class CompilerFactory {
@@ -63,13 +63,12 @@ export default class CompilerFactory {
      * @param {boolean} pretty if true compile to JSX
      * @returns {object} view compile result
      */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-    compileView( node: HTMLElement, vmContext = {} as any, pretty = false ) {
+    compileView: TransformFn = ( node, vmContext = {}, toJSX = false ) =>{
         const output = this.compile( preProcessTemplate( node, vmContext ), {
             level: 0,
             deps: vmContext.viewDesc || vmContext.viewDeps || {},
             props: vmContext.props || {},
-            toTemplate: pretty,
+            toTemplate: toJSX,
         } as CompileContext );
 
         return {

@@ -24,3 +24,19 @@ export interface PathContext {
     scope: string;
     path: string | undefined;
 }
+
+export interface TransformContext {
+    [key: string]: any;
+}
+
+export interface TransformResult {
+  contents: string,
+  inlineDeps: Record<string, string>,
+  viewDeps: Record<string, string>,
+  libDeps: Record<string, string>,
+  options: Record<string, string>,
+  partialStore: Record<string, string>,
+  props: Record<string, string>
+}
+
+export type TransformFn = (node: HTMLElement, vmContext?: TransformContext, toJSX?: boolean) => TransformResult;
