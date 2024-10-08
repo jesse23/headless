@@ -1,5 +1,5 @@
 import { Data, ViewModelDefinition } from '@headless/types';
-import { generateComponentContent } from '@headless/transform';
+import { generateComponentContent, hyphenToCamelCase } from '@headless/transform';
 import { access, readFile } from 'node:fs/promises';
 import { Window } from 'happy-dom';
 
@@ -16,18 +16,6 @@ const parseView = (input: string): HTMLElement => {
   );
   return (fragment.firstChild ||
     document.createElement('div')) as unknown as HTMLElement;
-};
-
-/**
- * convert sting like 'my-button' to 'MyButton'
- *
- * @param str input string as 'my-button'
- * @returns output string as 'MyButton'
- */
-export const hyphenToCamelCase = (str: string): string => {
-  return str
-    .replace(/^./, str[0].toUpperCase())
-    .replace(/-(.)/g, (_, firstMatch) => firstMatch.toUpperCase());
 };
 
 /**

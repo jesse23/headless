@@ -28,11 +28,10 @@ test bad for headless ui
 - lv3: kit, app
 
 ## Approach 2 (react usage is managed)
-- lv0: utils, types 
-- lv1: transform, tooling(utils)
-- lv2: [ core, interop ], [ webpack, vite, vitest, esbuild ] 
-- lv3: reactivity(react, vue, stencil...), components
-- lv4: kit, plugin, app
+- lv0: utils, transform, types 
+- lv1: [ core, interop ], tooling(utils) -> [ webpack, vite, vitest, esbuild ] 
+- lv2: reactivity(react, vue, stencil...), components
+- lv3: kit, plugin, app
 
 # Open Questions
 Which library should be shipped as source?
