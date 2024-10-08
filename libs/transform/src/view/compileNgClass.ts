@@ -31,11 +31,11 @@ function compile( node: HTMLElement, context: CompileContext ): CompileResult {
     const match = currClassValue.match( /^{{(.*)}}$/ );
 
     if( match ) {
-        const classExpr = `processAwClass(${expr}) + ' ' + ${match[1]}`;
+        const classExpr = `processNgClass(${expr}) + ' ' + ${match[1]}`;
         node.setAttribute( 'class', `{{${classExpr}}}` );
     } else {
-        const classExpr = currClassValue ? `processAwClass(${expr}) + ' ${currClassValue}'` :
-            `processAwClass(${expr})`;
+        const classExpr = currClassValue ? `processNgClass(${expr}) + ' ${currClassValue}'` :
+            `processNgClass(${expr})`;
         node.setAttribute( 'class', `{{${classExpr}}}` );
     }
 

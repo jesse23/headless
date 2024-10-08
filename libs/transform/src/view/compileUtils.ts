@@ -85,7 +85,7 @@ export function preProcessTemplate( elem: HTMLElement, vmContext: any ): HTMLEle
  * @param awClassDef ng-class definition
  * @returns class list as
  */
-export function processAwClass( awClassDef: Record<string, boolean> ) {
+export function processNgClass( awClassDef: Record<string, boolean> ) {
     const res = [];
     for( const key in awClassDef ) {
         if( awClassDef[key] ) {
