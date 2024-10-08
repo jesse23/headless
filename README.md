@@ -17,6 +17,9 @@ test bad for headless ui
       - [x] defineComponentDecl
 - [x] Extend the design to solid
 - [x] Extend the design to stencil
+- [ ] Compile view model
+- [ ] Refine reactivity and components
+- [ ] Retest kit, plugin and app
 - [ ] Example to use component library
 - [ ] Re-enable strict mode
 
@@ -28,16 +31,23 @@ test bad for headless ui
 - lv3: kit, app
 
 ## Approach 2 (react usage is managed)
-- lv0: utils, transform, types 
+- lv0: types, utils, transform
 - lv1: [ core, interop ], tooling(utils) -> [ webpack, vite, vitest, esbuild ] 
-- lv2: reactivity(react, vue, stencil...), components
+- lv2: reactivity(react, vue, stencil...)?, components
 - lv3: kit, plugin, app
 
-# Open Questions
-Which library should be shipped as source?
-Which library should be peer dependency and shared at the app build?
-Which library should be build as plugin?
+# Build Strategy
+## Internal Dependency (maybe as deps too)
+utils, tooling, core, interop, (transform)
 
+## Ship as source 
+webpack, vite, vitest, esbuild
+
+## Build to single entry
+types, transform, core, interop, plugin
+
+## Build to multiple entry
+reactivity, components
 
 # Call to transform
 - transpileViewModelJson         [tooling]

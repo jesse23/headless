@@ -1,9 +1,9 @@
 import {
-  Component,
-  ComponentDefinition,
   Data,
-  DefineComponentFn,
   RenderFn,
+  Component,
+  DefineComponentFn,
+  ComponentDefinition,
   ViewModelDefinition,
 } from '@headless/types';
 import { generateRenderFnContent } from '@headless/transform';
