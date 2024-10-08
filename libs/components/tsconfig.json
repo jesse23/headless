@@ -1,9 +1,9 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "outDir": "./dist",
-    "types": ["@headless/core/src/decl.d.ts"],
+    "types": ["@headless/types"],
   },
-  "include": ["src/*.tsx", "src/*.ts", "src/js-components/ComponentJsExample.tsx"],
+  "include": ["src"],
 }
