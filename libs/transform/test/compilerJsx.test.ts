@@ -1,12 +1,10 @@
 /* eslint-env jest */
-import { createCompiler } from '../src/view/compiler';
+import { transform } from '../src/view/compiler';
 import { parseView } from '@headless/utils';
-
-const compiler = createCompiler();
 
 describe( 'Test view compiler to JSX', () => {
     it( 'Test DOM element to JSX', () => {
-        const output = compiler.compileView( parseView( '<div></div>' ), {}, true );
+        const output = transform( parseView( '<div></div>' ), {}, true );
         expect( output.contents ).toEqual( [
             '<div className={props.className ? props.className : ""} style={props.style || {}}>',
             '</div>'
@@ -14,7 +12,7 @@ describe( 'Test view compiler to JSX', () => {
     } );
 
     it( 'Test custom element to JSX', () => {
-        const output = compiler.compileView( parseView( '<simple-button></simple-button>' ), {
+        const output = transform( parseView( '<simple-button></simple-button>' ), {
             viewDeps: {
                 SimpleButton: true
             }
@@ -26,7 +24,7 @@ describe( 'Test view compiler to JSX', () => {
     } );
 
     it( 'Test sub element to JSX', () => {
-        const output = compiler.compileView( parseView( '<div><code></code><p></p></div>' ), {}, true );
+        const output = transform( parseView( '<div><code></code><p></p></div>' ), {}, true );
         expect( output.contents ).toEqual( [
             '<div className={props.className ? props.className : ""} style={props.style || {}}>',
             '  <code>',
@@ -38,7 +36,7 @@ describe( 'Test view compiler to JSX', () => {
     } );
 
     it( 'Test text node to JSX', () => {
-        const output = compiler.compileView( parseView( 'Ouch' ), {}, true );
+        const output = transform( parseView( 'Ouch' ), {}, true );
         expect( output.contents ).toEqual( [
             '<div className={props.className ? props.className : ""} style={props.style || {}}>',
             '  Ouch',
@@ -47,7 +45,7 @@ describe( 'Test view compiler to JSX', () => {
     } );
 
     it( 'Test variable text node to JSX', () => {
-        const output = compiler.compileView( parseView( '{{ a + b }}' ), {}, true );
+        const output = transform( parseView( '{{ a + b }}' ), {}, true );
         expect( output.contents ).toEqual( [
             '<div className={props.className ? props.className : ""} style={props.style || {}}>',
             '  { a + b }',
@@ -57,7 +55,7 @@ describe( 'Test view compiler to JSX', () => {
 
     // NOTE: the \\n will write the \n as sting in target JS code and react will consume it back to CR in rendering
     it( 'Test mix text node to JSX', () => {
-        const output = compiler.compileView( parseView( 'a \n{{b }}  c\n  {{  d  }}f' ), {}, true );
+        const output = transform( parseView( 'a \n{{b }}  c\n  {{  d  }}f' ), {}, true );
         expect( output.contents ).toEqual( [
             '<div className={props.className ? props.className : ""} style={props.style || {}}>',
             '  a \n{b }  c\n  {  d  }f',
@@ -66,7 +64,7 @@ describe( 'Test view compiler to JSX', () => {
     } );
 
     it( 'Test element node with text to JSX', () => {
-        const output = compiler.compileView( parseView( 'a<div></div>{{b}}c<p></p>d' ), {}, true );
+        const output = transform( parseView( 'a<div></div>{{b}}c<p></p>d' ), {}, true );
         expect( output.contents ).toEqual( [
             '<div className={props.className ? props.className : ""} style={props.style || {}}>',
             '  a',
@@ -81,7 +79,7 @@ describe( 'Test view compiler to JSX', () => {
     } );
 
     it( 'Test element with comment to JSX', () => {
-        const output = compiler.compileView( parseView( '<!--comment1--><div><!--comment2--></div><!--comment3-->' ), {}, true );
+        const output = transform( parseView( '<!--comment1--><div><!--comment2--></div><!--comment3-->' ), {}, true );
         expect( output.contents ).toEqual( [
             '<div className={props.className ? props.className : ""} style={props.style || {}}>',
             '</div>'
@@ -89,7 +87,7 @@ describe( 'Test view compiler to JSX', () => {
     } );
 
     it( 'Test element with attribute to JSX', () => {
-        const output = compiler.compileView( parseView( '<div title="aaa">Ouch</div>' ), {}, true );
+        const output = transform( parseView( '<div title="aaa">Ouch</div>' ), {}, true );
         expect( output.contents ).toEqual( [
             '<div title="aaa" className={props.className ? props.className : ""} style={props.style || {}}>',
             '  Ouch',
@@ -98,7 +96,7 @@ describe( 'Test view compiler to JSX', () => {
     } );
 
     it( 'Test element with attribute variable to JSX', () => {
-        const output = compiler.compileView( parseView( '<div title="{{aaa}}">Ouch</div>' ), {}, true );
+        const output = transform( parseView( '<div title="{{aaa}}">Ouch</div>' ), {}, true );
         expect( output.contents ).toEqual( [
             '<div title={aaa} className={props.className ? props.className : ""} style={props.style || {}}>',
             '  Ouch',
@@ -108,7 +106,7 @@ describe( 'Test view compiler to JSX', () => {
 
     // Note: input tag is not correct in HTML but react supports it
     it( 'Test element with attribute in react attribute map to JSX', () => {
-        const output = compiler.compileView( parseView( '<input autocomplete="on">' ), {}, true );
+        const output = transform( parseView( '<input autocomplete="on">' ), {}, true );
         expect( output.contents ).toEqual( [
             '<input autoComplete="on" className={props.className ? props.className : ""} style={props.style || {}}>',
             '</input>'
@@ -116,7 +114,7 @@ describe( 'Test view compiler to JSX', () => {
     } );
 
     it( 'Test element with custom attribute mapper to JSX', () => {
-        const output = compiler.compileView( parseView( '<simple-button action="{{actions.update}}">Test Button</simple-button>' ), {
+        const output = transform( parseView( '<simple-button action="{{actions.update}}">Test Button</simple-button>' ), {
             viewDeps: {
                 SimpleButton: {
                     props: {
@@ -135,7 +133,7 @@ describe( 'Test view compiler to JSX', () => {
     } );
 
     it( 'Test ng-include to JSX', () => {
-        const output = compiler.compileView( parseView( '<ng-include src="myTable">' ), {}, true );
+        const output = transform( parseView( '<ng-include src="myTable">' ), {}, true );
         expect( output.contents ).toEqual( [
             '<MyTable />'
         ].join( '\n' ) );
@@ -145,7 +143,7 @@ describe( 'Test view compiler to JSX', () => {
     } );
 
     it( 'Test exist-when to JSX', () => {
-        const output = compiler.compileView( parseView( '<div exist-when="item.count > 0"></div>' ), {}, true );
+        const output = transform( parseView( '<div exist-when="item.count > 0"></div>' ), {}, true );
         expect( output.contents ).toEqual( [
             '( item.count > 0 ) ? (',
             '  <div className={props.className ? props.className : ""} style={props.style || {}}>',
@@ -155,7 +153,7 @@ describe( 'Test view compiler to JSX', () => {
     } );
 
     it( 'Test visible-when to JSX', () => {
-        const output = compiler.compileView( parseView( '<div visible-when="item.count > 0"></div>' ), {}, true );
+        const output = transform( parseView( '<div visible-when="item.count > 0"></div>' ), {}, true );
         expect( output.contents ).toEqual( [
             '<div className={props.className ? props.className : ""} style={(item.count > 0) ? {} : { display: \'none\' }}>',
             '</div>'
@@ -163,7 +161,7 @@ describe( 'Test view compiler to JSX', () => {
     } );
 
     it( 'Test ng-repeat to JSX', () => {
-        const output = compiler.compileView( parseView( '<div ng-repeat="item in data.items">{{item.name}}</div>' ), {}, true );
+        const output = transform( parseView( '<div ng-repeat="item in data.items">{{item.name}}</div>' ), {}, true );
         expect( output.contents ).toEqual( [
             'processRepeat(data.items, key => {',
             // eslint-disable-next-line no-template-curly-in-string
@@ -181,7 +179,7 @@ describe( 'Test view compiler to JSX', () => {
     } );
 
     it( 'Test transclude to JSX', () => {
-        const output = compiler.compileView( parseView( '<div transclude><div>{{var}}</div></div>' ), {}, true );
+        const output = transform( parseView( '<div transclude><div>{{var}}</div></div>' ), {}, true );
         expect( output.contents ).toEqual( [
             '( props.children ) ? (',
             '  <div className={props.className ? props.className : ""} style={props.style || {}}>',

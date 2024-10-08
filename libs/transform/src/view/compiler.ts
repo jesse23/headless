@@ -15,8 +15,14 @@ import CompilerFactory from './compilerFactory';
 
 // 20200713 - special test
 import compileReactButton from './compileReactButton';
+import { TransformFn } from './types';
 
-export const createCompiler = () => {
+export const transform: TransformFn = (node, vmContext = {}, toJSX = false) => {
+  const compiler = createCompiler();
+  return compiler.compileView(node, vmContext, toJSX);
+};
+
+const createCompiler = () => {
   const compiler = new CompilerFactory();
 
   // Special Compiler

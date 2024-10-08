@@ -1,12 +1,10 @@
 /* eslint-env jest */
-import { createCompiler } from '../src/view/compiler';
+import { transform } from '../src/view/compiler';
 import { parseView } from '@headless/utils';
-
-const compiler = createCompiler();
 
 describe( 'Test view compiler to React', () => {
     it( 'Test DOM element to React', () => {
-        const output = compiler.compileView( parseView( '<div></div>' ) );
+        const output = transform( parseView( '<div></div>' ) );
         expect( output.contents ).toEqual( [
             'createElement( "div", {',
             '  "className": props.className ? props.className : "",',
@@ -16,7 +14,7 @@ describe( 'Test view compiler to React', () => {
     } );
 
     it( 'Test custom element to React', () => {
-        const output = compiler.compileView( parseView( '<simple-button></simple-button>' ), {
+        const output = transform( parseView( '<simple-button></simple-button>' ), {
             viewDesc: {
                 SimpleButton: {
                     props: {
@@ -34,7 +32,7 @@ describe( 'Test view compiler to React', () => {
     } );
 
     it( 'Test sub element to React', () => {
-        const output = compiler.compileView( parseView( '<div><code></code><p></p></div>' ) );
+        const output = transform( parseView( '<div><code></code><p></p></div>' ) );
         expect( output.contents ).toEqual( [
             'createElement( "div", {',
             '  "className": props.className ? props.className : "",',
@@ -49,7 +47,7 @@ describe( 'Test view compiler to React', () => {
     } );
 
     it( 'Test text node to React', () => {
-        const output = compiler.compileView( parseView( 'Ouch' ) );
+        const output = transform( parseView( 'Ouch' ) );
         expect( output.contents ).toEqual( [
             'createElement( "div", {',
             '  "className": props.className ? props.className : "",',
@@ -61,7 +59,7 @@ describe( 'Test view compiler to React', () => {
     } );
 
     it( 'Test variable text node to React', () => {
-        const output = compiler.compileView( parseView( '{{ a + b }}' ) );
+        const output = transform( parseView( '{{ a + b }}' ) );
         expect( output.contents ).toEqual( [
             'createElement( "div", {',
             '  "className": props.className ? props.className : "",',
@@ -74,7 +72,7 @@ describe( 'Test view compiler to React', () => {
 
     // NOTE: the \\n will write the \n as sting in target JS code and react will consume it back to CR in rendering
     it( 'Test mix text node to React', () => {
-        const output = compiler.compileView( parseView( 'a \n{{b }}  c\n  {{  d  }}f' ) );
+        const output = transform( parseView( 'a \n{{b }}  c\n  {{  d  }}f' ) );
         expect( output.contents ).toEqual( [
             'createElement( "div", {',
             '  "className": props.className ? props.className : "",',
@@ -90,7 +88,7 @@ describe( 'Test view compiler to React', () => {
     } );
 
     it( 'Test element node with text to React', () => {
-        const output = compiler.compileView( parseView( 'a<div></div>{{b}}c<p></p>d' ) );
+        const output = transform( parseView( 'a<div></div>{{b}}c<p></p>d' ) );
         expect( output.contents ).toEqual( [
             'createElement( "div", {',
             '  "className": props.className ? props.className : "",',
@@ -109,7 +107,7 @@ describe( 'Test view compiler to React', () => {
     } );
 
     it( 'Test element with comment to React', () => {
-        const output = compiler.compileView( parseView( '<!--comment1--><div><!--comment2--></div><!--comment3-->' ) );
+        const output = transform( parseView( '<!--comment1--><div><!--comment2--></div><!--comment3-->' ) );
         expect( output.contents ).toEqual( [
             'createElement( "div", {',
             '  "className": props.className ? props.className : "",',
@@ -119,7 +117,7 @@ describe( 'Test view compiler to React', () => {
     } );
 
     it( 'Test element with attribute to React', () => {
-        const output = compiler.compileView( parseView( '<div title="aaa">Ouch</div>' ) );
+        const output = transform( parseView( '<div title="aaa">Ouch</div>' ) );
         expect( output.contents ).toEqual( [
             'createElement( "div", {',
             '  "title": "aaa",',
@@ -132,7 +130,7 @@ describe( 'Test view compiler to React', () => {
     } );
 
     it( 'Test element with attribute variable to React', () => {
-        const output = compiler.compileView( parseView( '<div title="{{aaa}}">Ouch</div>' ) );
+        const output = transform( parseView( '<div title="{{aaa}}">Ouch</div>' ) );
         expect( output.contents ).toEqual( [
             'createElement( "div", {',
             '  "title": aaa,',
@@ -145,7 +143,7 @@ describe( 'Test view compiler to React', () => {
     } );
 
     it( 'Test element with attribute in react attribute map to React', () => {
-        const output = compiler.compileView( parseView( '<input autocomplete="on">' ) );
+        const output = transform( parseView( '<input autocomplete="on">' ) );
         expect( output.contents ).toEqual( [
             'createElement( "input", {',
             '  "autoComplete": "on",',
@@ -156,7 +154,7 @@ describe( 'Test view compiler to React', () => {
     } );
 
     it( 'Test ng-include to React', () => {
-        const output = compiler.compileView( parseView( '<ng-include src="myTable">' ) );
+        const output = transform( parseView( '<ng-include src="myTable">' ) );
         expect( output.contents ).toEqual( [
             'createElement( MyTable, {',
             '} )'
@@ -167,7 +165,7 @@ describe( 'Test view compiler to React', () => {
     } );
 
     it( 'Test exist-when to React', () => {
-        const output = compiler.compileView( parseView( '<div exist-when="item.count > 0"></div>' ) );
+        const output = transform( parseView( '<div exist-when="item.count > 0"></div>' ) );
         expect( output.contents ).toEqual( [
             '( ( item.count > 0 ) ?',
             '  createElement( "div", {',
@@ -179,7 +177,7 @@ describe( 'Test view compiler to React', () => {
     } );
 
     it( 'Test visible-when to React', () => {
-        const output = compiler.compileView( parseView( '<div visible-when="item.count > 0"></div>' ) );
+        const output = transform( parseView( '<div visible-when="item.count > 0"></div>' ) );
         expect( output.contents ).toEqual( [
             'createElement( "div", {',
             '  "className": props.className ? props.className : "",',
@@ -189,7 +187,7 @@ describe( 'Test view compiler to React', () => {
     } );
 
     it( 'Test transclude to React', () => {
-        const output = compiler.compileView( parseView( '<div transclude><div>{{var}}</div></div>' ) );
+        const output = transform( parseView( '<div transclude><div>{{var}}</div></div>' ) );
         expect( output.contents ).toEqual( [
             '( ( props.children ) ?',
             '  createElement( "div", {',
@@ -212,7 +210,7 @@ describe( 'Test view compiler to React', () => {
     } );
 
     it( 'Test view model option useDomNode in React', () => {
-        const output = compiler.compileView( parseView( '<div></div>' ), {
+        const output = transform( parseView( '<div></div>' ), {
             options: {
                 useDomNode: true
             }

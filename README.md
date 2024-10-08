@@ -44,7 +44,6 @@ Which library should be build as plugin?
   - defineComponentDeclViewSync  [core/components]
   - generateComponentContent     [core/components -> compiler]
     - generateRenderFnContent    [core/components -> compiler]
-      - createCompiler           [compiler]
-      - TBD
+      - transform           [compiler]
 
 

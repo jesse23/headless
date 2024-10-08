@@ -6,7 +6,7 @@ import {
   RenderFn,
   ViewModelDefinition,
 } from '@headless/types';
-import { createCompiler } from 'libs/transform/src';
+import { transform } from '@headless/transform';
 import { createActionFn } from './actions';
 import { getViewDeps } from './views';
 import { parseView } from '@headless/utils';
@@ -108,8 +108,7 @@ const generateRenderFnContent = (
 } => {
   const viewDepDefs = (viewDef.imports || []) as string[];
 
-  const compiler = createCompiler();
-  const viewCompileResult = compiler.compile(node, {
+  const viewCompileResult = transform(node, {
     index: 0,
     level: 0,
     deps: viewDepDefs.reduce((prev, name) => ({ ...prev, [name]: {} }), {}),
