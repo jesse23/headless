@@ -30,7 +30,7 @@ export interface TransformContext {
 }
 
 export interface TransformResult {
-  contents: string,
+  contents: string[],
   inlineDeps: Record<string, string>,
   viewDeps: Record<string, string>,
   libDeps: Record<string, string>,
