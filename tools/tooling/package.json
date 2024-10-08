@@ -1,5 +1,5 @@
 {
-  "name": "@headless/node",
+  "name": "@headless/tooling",
   "version": "1.0.0",
   "description": "nodejs utilities",
   "main": "dist/index.js",

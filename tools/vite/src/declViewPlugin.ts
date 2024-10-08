@@ -3,7 +3,7 @@
 // - use tsx and commonjs at app side
 // - use absolute path here
 // - use pre-bundled version
-import {transpileJson, transpileViewModel } from '@headless/node';
+import {transpileJson, transpileViewModel } from '@headless/tooling';
 
 // https://github.com/vitejs/vite/discussions/12788
 export const declViewPlugin = ()/*: PluginOption*/ => {

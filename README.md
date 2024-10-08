@@ -20,12 +20,18 @@ test bad for headless ui
 - [ ] Example to use component library
 - [ ] Re-enable strict mode
 
-# Libraries
-- [x] lv0: tooling    -> compile util but has dependencies with view
-- [x] lv0: view       -> html compiler, generic to all frameworks
-- [x] lv0: interop        -> interops and event bus, lv0 since no deps on core
-  - [x] lv1: core       -> core engine and utils
-    - [x] lv2: react      -> react related hooks
-      - [x] lv3: components -> components lib, should only depend on core
-        - core is used only for some typing
-        - react is used only for defineComponent API
+# Library Dependencies
+## Approach 1 (easy to leak to react)
+- lv0: react, tooling(webpack)
+- lv1: engine/core, view-compiler....
+- lv2: components
+- lv3: kit, app
+
+## Approach 2 (react usage is managed)
+- lv0: utils, types, tooling(utils)
+- lv1: [ core, interop, view-compiler ], [ webpack, vite, vitest, esbuild ] 
+- lv2: reactivity(react, vue, stencil...), components
+- lv3: kit, plugin, app
+
+
+
