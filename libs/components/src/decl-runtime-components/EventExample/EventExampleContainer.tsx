@@ -1,7 +1,8 @@
+import { Component } from '@headless/types';
+import { defineComponentDeclViewSync } from '@headless/core';
 import { EventExampleWrongChild } from './EventExampleWrongChild';
 import { EventExampleCorrectChild } from './EventExampleCorrectChild';
 import { EventExampleContainerViewModel } from '../../models';
-import { Component, defineComponentDeclViewSync } from '@headless/core';
 
 export const EventExampleContainer = defineComponentDeclViewSync(EventExampleContainerViewModel, {
   EventExampleWrongChild,

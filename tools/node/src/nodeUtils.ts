@@ -1,4 +1,5 @@
-import { Data, ViewModelDefinition, generateComponentContent } from '@headless/core';
+import { Data, ViewModelDefinition } from '@headless/types';
+import { generateComponentContent } from '@headless/core';
 import { access, readFile } from 'node:fs/promises';
 import { Window } from 'happy-dom';
 

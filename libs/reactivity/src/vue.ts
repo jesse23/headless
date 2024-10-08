@@ -9,6 +9,9 @@ import {
 import {
   cloneJson,
   applyValues,
+  createPartialStore,
+} from '@headless/utils';
+import {
   subscribeEvents,
   unsubscribeEvents,
   initActionsFromActionFn,
@@ -16,7 +19,6 @@ import {
   createComponentDefinition,
   registerDefineComponent,
   getViewDeps,
-  createPartialStore,
 } from '@headless/core';
 import {
   ref,

@@ -2,8 +2,8 @@
   "name": "@headless/types",
   "version": "1.0.0",
   "description": "typings",
-  "main": "decl.d.ts",
-  "module": "decl.d.ts",
+  "main": "types.ts",
+  "module": "types.ts",
   "scripts": {
     "audit": "eslint src test --ext .js,.jsx,.ts,.tsx && tsc -p tsconfig.json",
     "build": "dts-bundle-generator -o dist/decl.d.ts src/index.ts",

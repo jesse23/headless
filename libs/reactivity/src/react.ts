@@ -9,14 +9,16 @@ import {
 import {
   cloneJson,
   applyValues,
+  createPartialStore,
+} from '@headless/utils';
+import {
+  getViewDeps,
   subscribeEvents,
   unsubscribeEvents,
   initActionsFromActionFn,
   createActionFromActionFn,
   createComponentDefinition,
-  getViewDeps,
   registerDefineComponent,
-  createPartialStore,
 } from '@headless/core';
 import { useRef, useEffect, useState, createElement } from 'react';
 

@@ -5,6 +5,8 @@ import {
 } from '@headless/types';
 import {
   camelCaseToHyphen,
+} from '@headless/utils';
+import {
   registerDefineComponent,
 } from '@headless/core';
 

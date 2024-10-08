@@ -7,10 +7,12 @@ import {
   ViewModelDefinition,
 } from '@headless/types';
 import {
-  applyValues,
   cloneJson,
-  createActionFromActionFn,
+  applyValues,
   createPartialStore,
+} from '@headless/utils';
+import {
+  createActionFromActionFn,
   initActionsFromActionFn,
   subscribeEvents,
   unsubscribeEvents,

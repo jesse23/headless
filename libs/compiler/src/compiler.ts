@@ -1,20 +1,20 @@
 import compileNode from './libs/compileNode';
-import compileText from './compileText';
+import compileText from './libs/compileText';
 import compileNgInclude from './libs/compileNgInclude';
 import compileExistWhen from './libs/compileExistWhen';
-import compileVisibleWhen from './compileVisibleWhen';
+import compileVisibleWhen from './libs/compileVisibleWhen';
 import compileNgClass from './libs/compileNgClass';
 import compileNgSlot from './libs/compileNgSlot';
 import compileNgTransclude from './libs/compileNgTransclude';
-import compileTransclude from './compileTransclude';
+import compileTransclude from './libs/compileTransclude';
 import compileNgRepeat from './libs/compileNgRepeat';
 import compileNgEnter from './libs/compileNgEnter';
 import compileNgClick from './libs/compileNgClick';
 import compileNgPropModel from './libs/compileNgPropModel';
-import CompilerFactory from './compilerFactory';
+import CompilerFactory from './libs/compilerFactory';
 
 // 20200713 - special test
-import compileReactButton from './compileReactButton';
+import compileReactButton from './libs/compileReactButton';
 
 export const createCompiler = () => {
   const compiler = new CompilerFactory();
