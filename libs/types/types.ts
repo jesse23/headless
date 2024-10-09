@@ -174,6 +174,10 @@ export type ActionFn = (
   eventData?: Data
 ) => Promise<Data | void> | Data | void;
 
+
+
+
+
 export type RenderFn = ({
     props,
     data,
@@ -189,6 +193,10 @@ export type RenderFn = ({
     functions: Record<string, FunctionType>;
     components: Record<string,Component>;
   }) => JSX.Element;
+
+
+
+
 
 export interface ComponentDefinition {
   name: string;
