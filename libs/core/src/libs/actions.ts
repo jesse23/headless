@@ -77,7 +77,7 @@ export const evalOutputData = (
   outputData: Record<string, string>,
   result: Value
 ): Data => {
-  return Object.entries(outputData).reduce((prev, [path, resultPath]) => {
+  return Object.entries(outputData || {}).reduce((prev, [path, resultPath]) => {
     return {
       ...prev,
       [path]:

@@ -16,7 +16,7 @@ class ComponentClassExample extends AwBaseComponent {
   }
 
   @Lifecycle('onMount') onMount() {
-    console.log('RenderExample mounted');
+    console.log('ComponentClassExample mounted');
     return {
       count: 23,
     };
@@ -33,12 +33,12 @@ class ComponentClassExample extends AwBaseComponent {
 
   @Lifecycle('onUnmount')
   onUnmount() {
-    console.log('RenderExample unmounted');
+    console.log('ComponentClassExample unmounted');
   }
 
   @Lifecycle('onUpdate')
   onUpdate() {
-    console.log('RenderExample updated');
+    console.log('ComponentClassExample updated');
   }
 
 

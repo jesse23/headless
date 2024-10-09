@@ -28,9 +28,6 @@
             "actionType": "JSFunction",
             "method": "updateComponent",
             "inputData": {},
-            "outputData": {
-                "count": ""
-            },
             "deps": "js/componentDeclExampleService"
         },   
         "onUnmountAction": {
