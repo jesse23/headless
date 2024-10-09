@@ -142,6 +142,19 @@ describe( 'Test view compiler to React', () => {
         ].join( '\n' ) );
     } );
 
+    it( 'Test element with class variable to React', () => {
+        const output = transform( parseView( '<div class="{{styles.simpleButton + \' \' + styles.accentHighContrast}}">Ouch</div>' ) );
+        expect( output.contents ).toEqual( [
+            'createElement( "div", {',
+            '  "title": aaa,',
+            '  "className": props.className ? props.className : "",',
+            '  "style": props.style || {}',
+            '}, ',
+            '  "Ouch"',
+            ' )'
+        ].join( '\n' ) );
+    } );
+
     it( 'Test element with attribute in react attribute map to React', () => {
         const output = transform( parseView( '<input autocomplete="on">' ) );
         expect( output.contents ).toEqual( [
