@@ -63,12 +63,13 @@ export default class CompilerFactory {
      * @param {boolean} pretty if true compile to JSX
      * @returns {object} view compile result
      */
-    compileView: TransformFn = ( node, vmContext = {}, toJSX = false ) =>{
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+    compileView( node: HTMLElement, vmContext = {} as any, pretty = false ) {
         const output = this.compile( preProcessTemplate( node, vmContext ), {
             level: 0,
             deps: vmContext.viewDesc || vmContext.viewDeps || {},
             props: vmContext.props || {},
-            toTemplate: toJSX,
+            toTemplate: pretty,
         } as CompileContext );
 
         return {

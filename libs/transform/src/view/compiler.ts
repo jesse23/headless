@@ -17,12 +17,12 @@ import CompilerFactory from './compilerFactory';
 import compileReactButton from './compileReactButton';
 import { TransformFn } from './types';
 
-export const transform: TransformFn = (node, vmContext = {}, toJSX = false) => {
+export const transform: TransformFn = (node, context) => {
   const compiler = createCompiler();
-  return compiler.compileView(node, vmContext, toJSX);
+  return compiler.compile(node, context);
 };
 
-const createCompiler = () => {
+export const createCompiler = () => {
   const compiler = new CompilerFactory();
 
   // Special Compiler

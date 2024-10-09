@@ -39,4 +39,4 @@ export interface TransformResult {
   props: Record<string, string>
 }
 
-export type TransformFn = (node: HTMLElement, vmContext?: TransformContext, toJSX?: boolean) => TransformResult;
+export type TransformFn = ( node: HTMLElement, context: CompileContext ) => TransformResult;

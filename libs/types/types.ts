@@ -24,6 +24,8 @@ export type Value =
  */
 export type Data = Record<string, Value>;
 
+type ActionDefinition = Data;
+
 /**
  * view definition with 'view' and 'viewmodel'
  */
@@ -36,7 +38,7 @@ export interface ViewModelDefinition {
   /**
    * action definitions for the view model
    */
-  actions: Data;
+  actions: ActionDefinition;
   /**
    * lifecycle hook definitions for the view model
    */
