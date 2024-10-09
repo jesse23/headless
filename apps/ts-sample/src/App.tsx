@@ -1,7 +1,13 @@
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
-import { CommandExample, PanelExample, LoadPanelExample, FormExample } from './sample-app-kit';
+import {
+  CommandExample,
+  PanelExample,
+  LoadPanelExample,
+  FormExample,
+  ComponentDeclExample,
+} from './sample-app-kit';
 
 function App() {
   const enableLocalSample = true;
@@ -26,6 +32,7 @@ function App() {
       )}
       <CommandExample />
       <LoadPanelExample />
+      <ComponentDeclExample />
     </>
   );
 }

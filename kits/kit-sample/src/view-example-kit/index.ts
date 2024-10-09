@@ -8,13 +8,15 @@ import commandViewModel from './commandViewModel.json';
 import LoadPanelExample from './viewmodel/loadPanelExampleViewModel';
 import VmoSampleForm from './viewmodel/vmoSampleFormViewModel';
 import FormExample from './viewmodel/formExampleViewModel';
+import ComponentDeclExample from './viewmodel/componentDeclExampleViewModel';
 
 // view
 import {
   SimpleButton,
   SimpleCheckbox,
   SimpleTextbox,
-  SimpleList, registerCommandViewModel
+  SimpleList,
+  registerCommandViewModel,
 } from '@headless/components';
 registerViewDeps('SimpleButton', SimpleButton);
 registerViewDeps('SimpleTextbox', SimpleTextbox);
@@ -26,4 +28,4 @@ registerViewDeps('VmoSampleForm', VmoSampleForm);
 // command
 registerCommandViewModel(commandViewModel);
 
-export { FormExample, LoadPanelExample };
+export { FormExample, LoadPanelExample, ComponentDeclExample };
