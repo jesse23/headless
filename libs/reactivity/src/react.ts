@@ -19,6 +19,7 @@ import {
   createActionFromActionFn,
   createComponentDefinition,
   registerDefineComponent,
+  subscribeEvents2,
 } from '@headless/core';
 import { useRef, useEffect, useState, createElement } from 'react';
 
@@ -90,8 +91,11 @@ const useComponentDefinition = (
       actions
     );
 
+    const subscriptions2 = subscribeEvents2(componentDef.onEvent2 || [], { getData, updateData }, getProps);
+
     return () => {
       unsubscribeEvents(subscriptions);
+      unsubscribeEvents(subscriptions2);
 
       const actionFn = componentDef.lifecycleHooks?.onUnmount;
       if (actionFn) {

@@ -5,6 +5,7 @@ import {
   LoadPanelExample,
   FormExample,
   ComponentDeclExample,
+  ComponentJsExample,
 } from './sample-app-kit';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
       {enableLocalSample && (
         <>
           <ComponentDeclExample />
+          <ComponentJsExample />
           <PanelExample />
           <FormExample />
         </>

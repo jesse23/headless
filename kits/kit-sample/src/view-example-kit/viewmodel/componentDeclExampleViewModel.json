@@ -23,13 +23,13 @@
                 "count": ""
             },
             "deps": "js/componentDeclExampleService"
-        },   
+        },
         "onUpdateAction": {
             "actionType": "JSFunction",
             "method": "updateComponent",
             "inputData": {},
             "deps": "js/componentDeclExampleService"
-        },   
+        },
         "onUnmountAction": {
             "actionType": "JSFunction",
             "method": "unloadComponent",
@@ -38,11 +38,24 @@
                 "count": ""
             },
             "deps": "js/componentDeclExampleService"
+        },
+        "notifyUpdateAction": {
+            "actionType": "JSFunction",
+            "method": "notifyUpdate",
+            "inputData": {},
+            "deps": "js/componentDeclExampleService"
         }
     },
     "lifecycleHooks": {
-        "onMount":  "onMountAction",
+        "onMount": "onMountAction",
         "onUpdate": "onUpdateAction",
         "onUnmount": "onUnmountAction"
-    }
+    },
+    "onEvent": [
+        {
+            "eventId": "notifyUpdateComponentDeclExample",
+            "action": "notifyUpdateAction",
+            "condition": "data.count > 5"
+        }
+    ]
 }

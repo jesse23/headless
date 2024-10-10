@@ -174,8 +174,14 @@ export type ActionFn = (
   eventData?: Data
 ) => Promise<Data | void> | Data | void;
 
-
-
+/**
+ * Condition function that used in view model, which will return boolean
+ */
+export type ConditionFn = (
+  data: Data,
+  props: Record<string, unknown>,
+  eventData?: Data
+) => boolean;
 
 
 export type RenderFn = ({
@@ -195,6 +201,11 @@ export type RenderFn = ({
   }) => JSX.Element;
 
 
+export type SubscriptionDefinition = {
+  eventId: string;
+  action: ActionFn;
+  condition: ConditionFn;
+};
 
 
 
@@ -207,6 +218,7 @@ export interface ComponentDefinition {
     eventId: string;
     action: string;
   }[];
+  onEvent2?: SubscriptionDefinition[];
   styles?: Record<string, string>;
   render?: RenderFn;
   imports?: string[];

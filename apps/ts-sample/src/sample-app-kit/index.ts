@@ -19,6 +19,7 @@ import {
   SimpleButton,
   SimpleCommandBar,
   registerCommandViewModel,
+  ComponentJsExample,
 } from '@headless/components';
 import { LoadPanelExample, FormExample, ComponentDeclExample } from '@headless/kit-sample';
 
@@ -33,4 +34,4 @@ registerCommandViewModel(commandViewModel);
 // export
 // export * from './js/buttonExampleService'
 // as a app kit, only external view needs to be exported
-export { LoadPanelExample, FormExample, ComponentDeclExample, CommandExample, PanelExample };
+export { LoadPanelExample, FormExample, ComponentDeclExample, CommandExample, PanelExample, ComponentJsExample };
