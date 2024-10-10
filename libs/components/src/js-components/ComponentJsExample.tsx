@@ -1,5 +1,6 @@
 // dynamic loading defineComponent from different framework
 import { defineComponent } from '@headless/core';
+import { eventBus } from '@headless/interop';
 
 export const ComponentJsExample =
   defineComponent &&
@@ -11,6 +12,12 @@ export const ComponentJsExample =
     actions: {
       increment: async ({ count }) => {
         // return { path: value } pair
+        eventBus.publish({
+          topic: 'notifyUpdateComponentJsExample',
+          payload: {
+            count: (count as number) + 1,
+          },
+        });
         return {
           count: (count as number) + 1,
         };
@@ -31,7 +38,18 @@ export const ComponentJsExample =
         console.log('RenderExample updated');
       },
     },
-    render: ({ data: { count }, actions: { increment }}) => {
+    onEvent2: [
+      {
+        eventId: 'notifyUpdateComponentJsExample',
+        action: () => {
+          console.log('notifyUpdate');
+        },
+        condition: ({ count }) => {
+          return (count as number) > 5;
+        },
+      },
+    ],
+    render: ({ data: { count }, actions: { increment } }) => {
       return (
         <div className="card">
           <h2>Render Component Example</h2>

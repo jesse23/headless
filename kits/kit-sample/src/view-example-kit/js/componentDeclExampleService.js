@@ -1,4 +1,12 @@
+import { eventBus } from '@headless/interop';
+
 export const increment = (value) => {
+  eventBus.publish( {
+    topic: 'notifyUpdateComponentDeclExample',
+    payload: {
+        count: value + 1
+    }
+  });
   return value + 1;
 };
 
@@ -13,4 +21,8 @@ export const updateComponent = () => {
 
 export const unloadComponent = () => {
     console.log('ComponentDeclExample unloaded');
+}
+
+export const notifyUpdate = (value) => {
+    console.log('Notification: value has been updated!');
 }
