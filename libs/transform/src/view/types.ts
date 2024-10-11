@@ -1,9 +1,9 @@
 
-export interface CompileContext {
+export interface ViewTransformContext {
     index: number;
     level: number;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    compileFn?: any;
+    transformFn?: any;
     context?: string;
     toTemplate?: boolean;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -12,7 +12,7 @@ export interface CompileContext {
     props?: Record<string, any>;
 }
 
-export interface CompileResult {
+export interface ViewTransformResult {
     contents: string[];
     deps?: Record<string, string>;
     scope?: Record<string, string>;
@@ -39,4 +39,6 @@ export interface TransformResult {
   props: Record<string, string>
 }
 
-export type TransformFn = ( node: HTMLElement, context: CompileContext ) => TransformResult;
+export interface ViewTransformFn {
+    ( node: HTMLElement, context: ViewTransformContext ): TransformResult;
+}

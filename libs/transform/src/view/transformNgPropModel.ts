@@ -1,32 +1,32 @@
 /**
- * Text Node Compiler
+ * Text Node transformer
  */
 import {
     NodeType,
     generateUpdateVmPropFunction
-} from './compileUtils';
-import { CompileContext, CompileResult } from './types';
+} from './transformUtils';
+import { ViewTransformContext, ViewTransformResult } from './types';
 
 const Attr = 'ng-prop-model';
 
 /**
- * Evaluate condition for current compiler
+ * Evaluate condition for current transformer
  * @param node input DOM Node
  * @param context input context
  * @returns true if condition matches
  */
-function when( node: HTMLElement, _: CompileContext ): boolean {
+function when( node: HTMLElement, _: ViewTransformContext ): boolean {
     return node.nodeType === NodeType.ELEMENT_NODE &&
         node.hasAttribute( Attr );
 }
 
 /**
- * Compile view input to target framework format
+ * transform view input to target framework format
  * @param node input DOM Node
  * @param context input context
- * @returns compile output
+ * @returns transform output
  */
-function compile( node: HTMLElement, context: CompileContext ): CompileResult | undefined {
+function transform( node: HTMLElement, context: ViewTransformContext ): ViewTransformResult | undefined {
     const expr = node.getAttribute( Attr ) || '';
 
     // TODO: maybe we should clone node here
@@ -44,16 +44,16 @@ function compile( node: HTMLElement, context: CompileContext ): CompileResult | 
         node.setAttribute( 'onchange', `{{function(e){${generateUpdateVmPropFunction( expr, value )}}}}` );
     }
 
-    return context.compileFn( node, context );
+    return context.transformFn( node, context );
 }
 
 /**
- * Compile view input to target framework format
+ * transform view input to target framework format
  * @param node input DOM Node
  * @param context input context
- * @returns compile output
+ * @returns transform output
  */
-function compileToTemplate( node: HTMLElement, context: CompileContext ): CompileResult | undefined {
+function transformToTemplate( node: HTMLElement, context: ViewTransformContext ): ViewTransformResult | undefined {
     const expr = node.getAttribute( Attr ) || '';
 
     // TODO: maybe we should clone node here
@@ -71,13 +71,13 @@ function compileToTemplate( node: HTMLElement, context: CompileContext ): Compil
         node.setAttribute( 'onchange', `{{e => ${generateUpdateVmPropFunction( expr, value )}}}` );
     }
 
-    return context.compileFn( node, context );
+    return context.transformFn( node, context );
 }
 
 
 export default {
     when,
-    compile,
-    compileToTemplate
+    transform,
+    transformToTemplate
 };
 

@@ -6,11 +6,7 @@ import {
   ComponentDefinition,
   ViewModelDefinition,
 } from '@headless/types';
-import {
-  cloneJson,
-  applyValues,
-  createPartialStore,
-} from '@headless/utils';
+import { cloneJson, applyValues, createPartialStore } from '@headless/utils';
 import {
   createActionFromActionFn,
   initActionsFromActionFn,
@@ -84,13 +80,17 @@ export class DynamicComponent {
           getData: this.getData,
           updateData: this.updateData,
         },
-        this.getProps.bind(this)
+        this.getProps
       )();
     }
 
     this.subscriptions = subscribeEvents(
-      { onEvent: this.componentDef.onEvent } as ViewModelDefinition,
-      this.actions
+      this.componentDef.onEvent || [],
+      {
+        getData: this.getData,
+        updateData: this.updateData,
+      },
+      this.getProps
     );
   }
 

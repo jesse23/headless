@@ -62,8 +62,8 @@ export const parseDataPath = ( pathStr: string ): PathContext => {
 };
 
 /**
- * Process scope slot based on compile result
- * @param children compile result, could be function or just children
+ * Process scope slot based on transform result
+ * @param children transform result, could be function or just children
  * @param slotScope slot scope
  * @returns react component
  */

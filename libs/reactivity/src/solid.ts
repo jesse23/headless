@@ -6,9 +6,9 @@
  * - For SolidJS components, it will be compiled to createComponent API and 'insert' into DOM
  * - For reactivity expression, it will be compile to callback instead of expression
  * - The main render function is one time generation, no reactivity. Reactivity is handled by callback
- * 
+ *
  * It will required when we write expression, we have to use callback, instead of variable in JSX expression.
- * 
+ *
  * If we really want to support generic JSX pattern, we might be ending up to compile {data.count} to {const data = getData(); return data.count}, or {(() => { const data = getData; return data.count; })()}.
  */
 import {
@@ -17,10 +17,7 @@ import {
   ComponentDefinition,
   ViewModelDefinition,
 } from '@headless/types';
-import {
-  cloneJson,
-  applyValues,
-} from '@headless/utils';
+import { cloneJson, applyValues } from '@headless/utils';
 import {
   initActionsFromActionFn,
   createActionFromActionFn,
@@ -70,8 +67,9 @@ const useComponentDefinition = (
     }
 
     const subscriptions = subscribeEvents(
-      { onEvent: componentDef.onEvent } as ViewModelDefinition,
-      actions
+      componentDef.onEvent || [],
+      { getData, updateData },
+      getProps
     );
 
     onCleanup(() => {

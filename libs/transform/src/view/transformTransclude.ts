@@ -1,4 +1,5 @@
 /**
+ * Transclude/Slot Statement transformr
  * NOTE: we can do it in better way like:
  *     `<div>(props.children)?(props.children):default</div>`
  * For now don't want to refactor too much so we use:
@@ -7,29 +8,29 @@
 import {
     BaseIndent,
     NodeType
-} from './compileUtils';
-import { CompileContext, CompileResult } from './types';
+} from './transformUtils';
+import { ViewTransformContext, ViewTransformResult } from './types';
 
-const Attr = 'ng-transclude';
+const Attr = 'transclude';
 
 /**
- * Evaluate condition for current compiler
+ * Evaluate condition for current transformer
  * @param node input DOM Node
  * @param context input context
  * @returns true if condition matches
  */
-function when( node: HTMLElement, _: CompileContext ): boolean {
+function when( node: HTMLElement, _: ViewTransformContext ): boolean {
     return  node.nodeType === NodeType.ELEMENT_NODE &&
         node.hasAttribute( Attr );
 }
 
 /**
- * Compile view input to target framework format
+ * transform view input to target framework format
  * @param node input DOM Node
  * @param context input context
- * @returns compile output
+ * @returns transform output
  */
-function compile( node: HTMLElement, context: CompileContext ): CompileResult | undefined {
+function transform( node: HTMLElement, context: ViewTransformContext ): ViewTransformResult | undefined {
     // process indent
     let contents = [];
     let deps = {};
@@ -45,12 +46,12 @@ function compile( node: HTMLElement, context: CompileContext ): CompileResult | 
     // TODO: Need to exclude white space case maybe
     contents.push( `${indent}( ( props.children ) ?` );
 
-    const slotChildRes = context.compileFn( slotNode, {
+    const slotChildRes = context.transformFn( slotNode, {
         ...context,
         level: context.level + 1
     } );
 
-    const defaultChildRes = context.compileFn( defaultNode, {
+    const defaultChildRes = context.transformFn( defaultNode, {
         ...context,
         level: context.level + 1
     } );
@@ -79,12 +80,12 @@ function compile( node: HTMLElement, context: CompileContext ): CompileResult | 
 }
 
 /**
- * Compile view input to target framework format
+ * transform view input to target framework format
  * @param node input DOM Node
  * @param context input context
- * @returns compile output
+ * @returns transform output
  */
-function compileToTemplate( node: HTMLElement, context: CompileContext ): CompileResult | undefined {
+function transformToTemplate( node: HTMLElement, context: ViewTransformContext ): ViewTransformResult | undefined {
     // process indent
     let contents = [];
     let deps = {};
@@ -101,7 +102,7 @@ function compileToTemplate( node: HTMLElement, context: CompileContext ): Compil
     const isJsxCtx = context.context === 'JSX';
     contents.push( `${indent}${isJsxCtx ? '{ ' : ''}( props.children ) ? (` );
 
-    const slotChildRes = context.compileFn( slotNode, {
+    const slotChildRes = context.transformFn( slotNode, {
         ...context,
         level: context.level + 1,
         context: 'JS'
@@ -114,7 +115,7 @@ function compileToTemplate( node: HTMLElement, context: CompileContext ): Compil
     // trim last comma and put last part ':'
     contents.push( `${indent}) : (` );
 
-    const defaultChildRes = context.compileFn( defaultNode, {
+    const defaultChildRes = context.transformFn( defaultNode, {
         ...context,
         level: context.level + 1,
         context: 'JS'
@@ -137,6 +138,6 @@ function compileToTemplate( node: HTMLElement, context: CompileContext ): Compil
 
 export default {
     when,
-    compile,
-    compileToTemplate
+    transform,
+    transformToTemplate
 };

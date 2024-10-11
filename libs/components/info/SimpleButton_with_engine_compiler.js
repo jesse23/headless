@@ -566,10 +566,10 @@ import { useRef, useEffect, useState, createElement } from "react";
 // ../view/src/index.ts
 var src_exports2 = {};
 __export(src_exports2, {
-  createCompiler: () => createCompiler
+  createTransformer: () => createTransformer
 });
 
-// ../view/src/compileUtils.ts
+// ../view/src/transformUtils.ts
 var BaseIndent2 = "  ";
 var NodeType = {
   ELEMENT_NODE: 1,
@@ -702,7 +702,7 @@ function compile(node, context) {
     const childCompileResults = [];
     for (let i = 0; i < childLength; i++) {
       const childDomNode = elem.childNodes[i];
-      const childRes = context.compileFn(childDomNode, {
+      const childRes = context.transformFn(childDomNode, {
         ...context,
         level: level + 1,
         index: i
@@ -818,7 +818,7 @@ function compileToTemplate(node, context) {
     const childCompileResults = [];
     for (let i = 0; i < childLength; i++) {
       const childDomNode = elem.childNodes[i];
-      const childRes = context.compileFn(childDomNode, {
+      const childRes = context.transformFn(childDomNode, {
         ...context,
         level: level + 1,
         index: i,
@@ -1005,7 +1005,7 @@ function compile4(node, context) {
   const expr = node.getAttribute(Attr);
   node.removeAttribute(Attr);
   contents.push(`${indent}( ( ${expr} ) ?`);
-  const childRes = context.compileFn(node, {
+  const childRes = context.transformFn(node, {
     ...context,
     level: context.level + 1
   });
@@ -1026,7 +1026,7 @@ function compileToTemplate4(node, context) {
   node.removeAttribute(Attr);
   const isJsxCtx = context.context === "JSX";
   contents.push(`${indent}${isJsxCtx ? "{ " : ""}( ${expr} ) ? (`);
-  const childRes = context.compileFn(node, {
+  const childRes = context.transformFn(node, {
     ...context,
     level: context.level + 1,
     context: "JS"
@@ -1055,7 +1055,7 @@ function compile5(node, context) {
   const expr = node.getAttribute(Attr2);
   node.removeAttribute(Attr2);
   node.setAttribute("style", `{{(${expr}) ? {} : { display: 'none' }}}`);
-  return context.compileFn(node, context);
+  return context.transformFn(node, context);
 }
 var compileVisible_default = {
   when: when5,
@@ -1079,7 +1079,7 @@ function compile6(node, context) {
     const classExpr = currClassValue ? `processNgClass(${expr}) + ' ${currClassValue}'` : `processNgClass(${expr})`;
     node.setAttribute("class", `{{${classExpr}}}`);
   }
-  return context.compileFn(node, context);
+  return context.transformFn(node, context);
 }
 var compileClass_default = {
   when: when6,
@@ -1101,11 +1101,11 @@ function compile7(node, context) {
   const slotNode = node.cloneNode(false);
   slotNode.innerHTML = "{{props.children}}";
   contents.push(`${indent}( ( props.children ) ?`);
-  const slotChildRes = context.compileFn(slotNode, {
+  const slotChildRes = context.transformFn(slotNode, {
     ...context,
     level: context.level + 1
   });
-  const defaultChildRes = context.compileFn(defaultNode, {
+  const defaultChildRes = context.transformFn(defaultNode, {
     ...context,
     level: context.level + 1
   });
@@ -1134,7 +1134,7 @@ function compileToTemplate5(node, context) {
   slotNode.innerHTML = "{{props.children}}";
   const isJsxCtx = context.context === "JSX";
   contents.push(`${indent}${isJsxCtx ? "{ " : ""}( props.children ) ? (`);
-  const slotChildRes = context.compileFn(slotNode, {
+  const slotChildRes = context.transformFn(slotNode, {
     ...context,
     level: context.level + 1,
     context: "JS"
@@ -1142,7 +1142,7 @@ function compileToTemplate5(node, context) {
   contents = contents.concat(slotChildRes.contents);
   deps = Object.assign(deps, slotChildRes.deps);
   contents.push(`${indent}) : (`);
-  const defaultChildRes = context.compileFn(defaultNode, {
+  const defaultChildRes = context.transformFn(defaultNode, {
     ...context,
     level: context.level + 1,
     context: "JS"
@@ -1178,11 +1178,11 @@ function compile8(node, context) {
   const slotNode = node.cloneNode(false);
   slotNode.innerHTML = "{{processScopeSlot(props.children, slotScope)}}";
   contents.push(`${indent}( ( props.children ) ?`);
-  const slotChildRes = context.compileFn(slotNode, {
+  const slotChildRes = context.transformFn(slotNode, {
     ...context,
     level: context.level + 1
   });
-  const defaultChildRes = context.compileFn(defaultNode, {
+  const defaultChildRes = context.transformFn(defaultNode, {
     ...context,
     level: context.level + 1
   });
@@ -1211,12 +1211,12 @@ function compileToTemplate6(node, context) {
   slotNode.innerHTML = "{{processScopeSlot(props.children, slotScope)}}";
   const isJsxCtx = context.context === "JSX";
   contents.push(`${indent}${isJsxCtx ? "{ " : ""}( props.children ) ? (`);
-  const slotChildRes = context.compileFn(slotNode, {
+  const slotChildRes = context.transformFn(slotNode, {
     ...context,
     level: context.level + 1,
     context: "JS"
   });
-  const defaultChildRes = context.compileFn(defaultNode, {
+  const defaultChildRes = context.transformFn(defaultNode, {
     ...context,
     level: context.level + 1,
     context: "JS"
@@ -1255,11 +1255,11 @@ function compile9(node, context) {
   const slotNode = node.cloneNode(false);
   slotNode.innerHTML = "{{props.children}}";
   contents.push(`${indent}( ( props.children ) ?`);
-  const slotChildRes = context.compileFn(slotNode, {
+  const slotChildRes = context.transformFn(slotNode, {
     ...context,
     level: context.level + 1
   });
-  const defaultChildRes = context.compileFn(defaultNode, {
+  const defaultChildRes = context.transformFn(defaultNode, {
     ...context,
     level: context.level + 1
   });
@@ -1288,7 +1288,7 @@ function compileToTemplate7(node, context) {
   slotNode.innerHTML = "{{props.children}}";
   const isJsxCtx = context.context === "JSX";
   contents.push(`${indent}${isJsxCtx ? "{ " : ""}( props.children ) ? (`);
-  const slotChildRes = context.compileFn(slotNode, {
+  const slotChildRes = context.transformFn(slotNode, {
     ...context,
     level: context.level + 1,
     context: "JS"
@@ -1296,7 +1296,7 @@ function compileToTemplate7(node, context) {
   contents = contents.concat(slotChildRes.contents);
   deps = Object.assign(deps, slotChildRes.deps);
   contents.push(`${indent}) : (`);
-  const defaultChildRes = context.compileFn(defaultNode, {
+  const defaultChildRes = context.transformFn(defaultNode, {
     ...context,
     level: context.level + 1,
     context: "JS"
@@ -1347,7 +1347,7 @@ function compile10(node, context) {
       contents.push(`${childIndent}const update${hyphenToCamelCase(varExpr)} = ${varExpr}.dispatch;`);
     }
     contents.push(`${childIndent}slotScope.${varExpr} = ${varExpr};`);
-    const childRes = context.compileFn(node, {
+    const childRes = context.transformFn(node, {
       ...context,
       level: context.level + 1,
       index: 0
@@ -1389,7 +1389,7 @@ function compileToTemplate8(node, context) {
       contents.push(`${childIndent}const update${hyphenToCamelCase(varExpr)} = ${varExpr}.dispatch;`);
     }
     contents.push(`${childIndent}slotScope.${varExpr} = ${varExpr};`);
-    const childRes = context.compileFn(node, {
+    const childRes = context.transformFn(node, {
       ...context,
       level: context.level + 2,
       index: 0,
@@ -1422,7 +1422,7 @@ function compile11(node, context) {
   const expr = node.getAttribute(Attr8);
   node.removeAttribute(Attr8);
   node.setAttribute("onkeydown", `{{ function(e){ e.which === 13 && ( e.preventDefault() || vm.getAction("${expr}").call()) } }}`);
-  return context.compileFn(node, context);
+  return context.transformFn(node, context);
 }
 var compileEnter_default = {
   when: when11,
@@ -1438,7 +1438,7 @@ function compile12(node, context) {
   const expr = node.getAttribute(Attr9);
   node.removeAttribute(Attr9);
   node.setAttribute("onclick", `{{ function($event){ return ${expr} } }}`);
-  return context.compileFn(node, context);
+  return context.transformFn(node, context);
 }
 var compileClick_default = {
   when: when12,
@@ -1463,7 +1463,7 @@ function compile13(node, context) {
     node.setAttribute(attr, `{{${expr}.uiValue}}`);
     node.setAttribute("onchange", `{{function(e){${generateUpdateVmPropFunction(expr, value)}}}}`);
   }
-  return context.compileFn(node, context);
+  return context.transformFn(node, context);
 }
 function compileToTemplate9(node, context) {
   const expr = node.getAttribute(Attr10) || "";
@@ -1478,7 +1478,7 @@ function compileToTemplate9(node, context) {
     node.setAttribute(attr, `{{${expr}.uiValue}}`);
     node.setAttribute("onchange", `{{e => ${generateUpdateVmPropFunction(expr, value)}}}`);
   }
-  return context.compileFn(node, context);
+  return context.transformFn(node, context);
 }
 var compilePropModel_default = {
   when: when13,
@@ -1496,7 +1496,7 @@ var CompilerFactory = class {
     this._compilers.push(compiler);
   }
   compile(node, context = {}) {
-    context.compileFn = this.compile.bind(this);
+    context.transformFn = this.compile.bind(this);
     for (const idx in this._compilers) {
       const compiler = this._compilers[idx];
       if (compiler.when(node, context)) {
@@ -1542,7 +1542,7 @@ function compile14(node, context) {
   const expr = node.getAttribute(Attr11);
   node.removeAttribute(Attr11);
   node.setAttribute(Attr11, `{{ vm.getAction('${expr}') }}`);
-  return context.compileFn(node, context);
+  return context.transformFn(node, context);
 }
 var compileReactButton_default = {
   when: when14,
@@ -1550,7 +1550,7 @@ var compileReactButton_default = {
 };
 
 // ../view/src/compiler.ts
-var createCompiler = () => {
+var createTransformer = () => {
   const compiler = new CompilerFactory();
   compiler.add(compileRepeat_default);
   compiler.add(compileCondition_default);
@@ -1679,7 +1679,7 @@ var useComponentDefinition = (componentDef2, props) => {
 };
 var createRenderFnContent = (viewDef2, node) => {
   const viewDepDefs2 = viewDef2.imports || [];
-  const compiler = createCompiler();
+  const compiler = createTransformer();
   const viewCompileResult = compiler.compile(node, {
     index: 0,
     level: 0,

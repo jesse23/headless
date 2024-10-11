@@ -3,29 +3,29 @@ import {
     BaseIndent,
     hyphenToCamelCase,
     // generateUpdatePropFunction
-} from './compileUtils';
-import { CompileContext, CompileResult } from './types';
+} from './transformUtils';
+import { ViewTransformContext, ViewTransformResult } from './types';
 
 const Attr = 'ng-repeat';
 
 /**
- * Evaluate condition for current compiler
+ * Evaluate condition for current transformer
  * @param node input DOM Node
  * @param context input context
  * @returns true if condition matches
  */
-function when( node: HTMLElement, _: CompileContext ): boolean {
+function when( node: HTMLElement, _: ViewTransformContext ): boolean {
     return node.nodeType === NodeType.ELEMENT_NODE &&
         node.hasAttribute( Attr );
 }
 
 /**
- * Compile view input to target framework format
+ * transform view input to target framework format
  * @param node input DOM Node
  * @param context input context
- * @returns compile output
+ * @returns transform output
  */
-function compile( node: HTMLElement, context: CompileContext ): CompileResult | undefined {
+function transform( node: HTMLElement, context: ViewTransformContext ): ViewTransformResult | undefined {
     // process indent
     let contents = [];
     const indent = BaseIndent.repeat( context.level );
@@ -70,7 +70,7 @@ function compile( node: HTMLElement, context: CompileContext ): CompileResult | 
         // slot scope
         contents.push( `${childIndent}slotScope.${varExpr} = ${varExpr};` );
 
-        const childRes = context.compileFn( node, {
+        const childRes = context.transformFn( node, {
             ...context,
             level: context.level + 1,
             index: 0
@@ -92,12 +92,12 @@ function compile( node: HTMLElement, context: CompileContext ): CompileResult | 
 }
 
 /**
- * Compile view input to target framework format
+ * transform view input to target framework format
  * @param node input DOM Node
  * @param context input context
- * @returns compile output
+ * @returns transform output
  */
-function compileToTemplate( node: HTMLElement, context: CompileContext ): CompileResult | undefined {
+function transformToTemplate( node: HTMLElement, context: ViewTransformContext ): ViewTransformResult | undefined {
     // process indent
     let contents = [];
     const indent = BaseIndent.repeat( context.level );
@@ -144,7 +144,7 @@ function compileToTemplate( node: HTMLElement, context: CompileContext ): Compil
         // slot scope
         contents.push( `${childIndent}slotScope.${varExpr} = ${varExpr};` );
 
-        const childRes = context.compileFn( node, {
+        const childRes = context.transformFn( node, {
             ...context,
             level: context.level + 2,
             index: 0,
@@ -168,6 +168,6 @@ function compileToTemplate( node: HTMLElement, context: CompileContext ): Compil
 
 export default {
     when,
-    compile,
-    compileToTemplate
+    transform,
+    transformToTemplate
 };

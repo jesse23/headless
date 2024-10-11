@@ -1,4 +1,4 @@
-import { Data, Value, Store, Action, ActionFn } from '@headless/types';
+import { Data, Value, Store, Action, ActionFn, FunctionType, ActionDefinitionWithFn } from '@headless/types';
 import { cloneJson, getValue, parseExpr } from '@headless/utils';
 import { getLibDeps } from './deps';
 
@@ -86,6 +86,22 @@ export const evalOutputData = (
   }, {} as Data);
 };
 
+export const executeAction = async (data: Data, props: Record<string, unknown>, eventData: Data, actionDefWithFn: ActionDefinitionWithFn) => {
+    const inputData = evalDataDefinition(actionDefWithFn.inputData as Data, {
+      data,
+      props: props as Value,
+      eventData,
+    });
+
+    // execute action
+    const result = (await actionDefWithFn.fn(...Object.values(inputData))) as Data;
+
+    return evalOutputData(
+      actionDefWithFn.outputData as Record<string, string>,
+      result
+    );
+}
+
 export const createActionFn = (actionDef: Data): ActionFn => {
   const actionFn: ActionFn = async (data, props, eventData) => {
     // load deps
@@ -93,19 +109,7 @@ export const createActionFn = (actionDef: Data): ActionFn => {
       actionDef.method as string
     ];
 
-    const inputData = evalDataDefinition(actionDef.inputData as Data, {
-      data,
-      props: props as Value,
-      eventData,
-    });
-
-    // execute action
-    const result = (await fn(...Object.values(inputData))) as Data;
-
-    return evalOutputData(
-      actionDef.outputData as Record<string, string>,
-      result
-    );
+    return await executeAction(data, props, eventData, { inputData: actionDef.inputData as Data, outputData: actionDef.outputData as Record<string, string>, fn: fn as FunctionType });
   };
 
   return actionFn;

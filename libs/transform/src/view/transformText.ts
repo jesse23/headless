@@ -1,26 +1,26 @@
 import {
     BaseIndent,
     NodeType
-} from './compileUtils';
-import { CompileContext, CompileResult } from './types';
+} from './transformUtils';
+import { ViewTransformContext, ViewTransformResult } from './types';
 
 /**
- * Evaluate condition for current compiler
+ * Evaluate condition for current transformer
  * @param {Node} node input DOM Node
  * @param {context} context input context
  * @returns {boolean} true if condition matches
  */
-function when( node: HTMLElement, _: CompileContext ): boolean {
+function when( node: HTMLElement, _: ViewTransformContext ): boolean {
     return  node.nodeType === NodeType.TEXT_NODE;
 }
 
 /**
- * Compile view input to target framework format
+ * transform view input to target framework format
  * @param {Node} node input DOM Node
  * @param {context} context input context
- * @returns {CompileOutut} compile output
+ * @returns {transformOutut} transform output
  */
-function compile( node: HTMLElement, context: CompileContext ): CompileResult | undefined {
+function transform( node: HTMLElement, context: ViewTransformContext ): ViewTransformResult | undefined {
     // process indent
     const res = [] as string[];
     const indent = BaseIndent.repeat( context.level );
@@ -46,14 +46,14 @@ function compile( node: HTMLElement, context: CompileContext ): CompileResult | 
 }
 
 /**
- * Compile view input to target framework format
+ * transform view input to target framework format
  * NOTE: this will reformat the text for now. Need a better solution later
  * worst case we need to use { "str" } way.
  * @param {Node} node input DOM Node
  * @param {context} context input context
- * @returns {CompileOutut} compile output
+ * @returns {transformOutut} transform output
  */
-function compileToTemplate( node: HTMLElement, context: CompileContext ): CompileResult | undefined {
+function transformToTemplate( node: HTMLElement, context: ViewTransformContext ): ViewTransformResult | undefined {
     // process indent
     const indent = BaseIndent.repeat( context.level );
     const res = [];
@@ -84,6 +84,6 @@ function compileToTemplate( node: HTMLElement, context: CompileContext ): Compil
 
 export default {
     when,
-    compile,
-    compileToTemplate
+    transform,
+    transformToTemplate
 };

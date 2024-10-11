@@ -38,7 +38,7 @@ export const ComponentJsExample =
         console.log('RenderExample updated');
       },
     },
-    onEvent2: [
+    onEvent: [
       {
         eventId: 'notifyUpdateComponentJsExample',
         action: () => {
@@ -52,7 +52,7 @@ export const ComponentJsExample =
     render: ({ data: { count }, actions: { increment } }) => {
       return (
         <div className="card">
-          <h2>Render Component Example</h2>
+          <h2>JS Component Example</h2>
           <button onClick={increment}>count is {count as number}</button>
         </div>
       );

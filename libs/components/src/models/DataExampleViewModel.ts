@@ -1,9 +1,14 @@
-import { ViewModelDefinition } from '@headless/types'
-import { registerLibDeps } from "@headless/core";
+import { ViewModelDefinition } from '@headless/types';
+import { registerLibDeps } from '@headless/core';
 
-registerLibDeps('js/DataExampleService', Promise.resolve({
-  increment: (x: number) => x + 1,
-}));
+registerLibDeps(
+  'js/DataExampleService',
+  Promise.resolve({
+    increment: (x: number) => {
+      return x + 1;
+    },
+  })
+);
 
 export const DataExampleViewModel: ViewModelDefinition = {
   name: 'DataExample',
@@ -15,14 +20,21 @@ export const DataExampleViewModel: ViewModelDefinition = {
       actionType: 'JSFunction',
       method: 'increment',
       inputData: {
-        'count': '{{data.count}}',
+        count: '{{data.count}}',
       },
       outputData: {
-        'count': '',
+        count: '',
       },
       deps: 'js/DataExampleService',
-    }
+    },
   },
+  onEvent: [
+    {
+      eventId: 'notifyUpdateComponentDeclExample',
+      action: 'notifyUpdateAction',
+      condition: 'data.count > 5',
+    },
+  ],
   view: `
     <div class="card">
       <h2>Data Example</h2>
@@ -30,5 +42,5 @@ export const DataExampleViewModel: ViewModelDefinition = {
         count is {{data.count}}
       </button>
     </div>
-  `
+  `,
 };

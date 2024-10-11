@@ -1,29 +1,29 @@
 import {
     BaseIndent,
     NodeType
-} from './compileUtils';
-import { CompileContext, CompileResult } from './types';
+} from './transformUtils';
+import { ViewTransformContext, ViewTransformResult } from './types';
 
 const Attr = 'exist-when';
 
 /**
- * Evaluate condition for current compiler
+ * Evaluate condition for current transform
  * @param node input DOM Node
  * @param context input context
  * @returns true if condition matches
  */
-function when( node: HTMLElement, _: CompileContext ): boolean {
+function when( node: HTMLElement, _: ViewTransformContext ): boolean {
     return  node.nodeType === NodeType.ELEMENT_NODE &&
         node.hasAttribute( Attr );
 }
 
 /**
- * Compile view input to target framework format
+ * Transform view input to target framework format
  * @param node input DOM Node
  * @param context input context
- * @returns compile output
+ * @returns transform output
  */
-function compile( node: HTMLElement, context: CompileContext ): CompileResult | undefined {
+function transform( node: HTMLElement, context: ViewTransformContext ): ViewTransformResult | undefined {
     // process indent
     let contents = [];
     const indent = BaseIndent.repeat( context.level );
@@ -35,7 +35,7 @@ function compile( node: HTMLElement, context: CompileContext ): CompileResult | 
     // write condition
     contents.push( `${indent}( ( ${expr} ) ?` );
 
-    const childRes = context.compileFn( node, {
+    const childRes = context.transformFn( node, {
         ...context,
         level: context.level + 1
     } );
@@ -54,12 +54,12 @@ function compile( node: HTMLElement, context: CompileContext ): CompileResult | 
 }
 
 /**
- * Compile view input to target framework format
+ * Transform view input to target framework format
  * @param node input DOM Node
  * @param context input context
- * @returns compile output
+ * @returns transform output
  */
-function compileToTemplate( node: HTMLElement, context: CompileContext ): CompileResult | undefined {
+function transformToTemplate( node: HTMLElement, context: ViewTransformContext ): ViewTransformResult | undefined {
     // process indent
     let contents = [];
     const indent = BaseIndent.repeat( context.level );
@@ -77,7 +77,7 @@ function compileToTemplate( node: HTMLElement, context: CompileContext ): Compil
     const isJsxCtx = context.context === 'JSX';
     contents.push( `${indent}${isJsxCtx ? '{ ' : ''}( ${expr} ) ? (` );
 
-    const childRes = context.compileFn( node, {
+    const childRes = context.transformFn( node, {
         ...context,
         level: context.level + 1,
         context: 'JS'
@@ -96,6 +96,6 @@ function compileToTemplate( node: HTMLElement, context: CompileContext ): Compil
 
 export default {
     when,
-    compile,
-    compileToTemplate
+    transform,
+    transformToTemplate
 };

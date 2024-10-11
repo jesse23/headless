@@ -1,32 +1,32 @@
 
 /**
- * ng-include Element Node Compiler
+ * ng-include Element Node transform
  */
 import {
     NodeType,
     BaseIndent,
     hyphenToCamelCase
-} from './compileUtils';
-import { CompileContext, CompileResult } from './types';
+} from './transformUtils';
+import { ViewTransformContext, ViewTransformResult } from './types';
 
 /**
- * Evaluate condition for current compiler
+ * Evaluate condition for current transform
  * @param node input DOM Node
  * @param context input context
  * @returns true if condition matches
  */
-function when( node: HTMLElement, _: CompileContext ): boolean {
+function when( node: HTMLElement, _: ViewTransformContext ): boolean {
     return  node.nodeType === NodeType.ELEMENT_NODE &&
         node.nodeName === 'NG-INCLUDE';
 }
 
 /**
- * Compile view input to target framework format
+ * transform view input to target framework format
  * @param node input DOM Node
  * @param context input context
- * @returns compile output
+ * @returns transform output
  */
-function compile( node: HTMLElement, context: CompileContext ): CompileResult | undefined {
+function transform( node: HTMLElement, context: ViewTransformContext ): ViewTransformResult | undefined {
     // process indent
     const index = context.index;
     const level = context.level;
@@ -44,10 +44,10 @@ function compile( node: HTMLElement, context: CompileContext ): CompileResult | 
             basePath = match[1] + '/';
             componentName = match[2];
         }
-        const compiledType = `${hyphenToCamelCase( componentName )}`;
+        const transformedType = `${hyphenToCamelCase( componentName )}`;
 
         const contents = [];
-        contents.push( `${indent}createElement( ${compiledType}, {` );
+        contents.push( `${indent}createElement( ${transformedType}, {` );
         const attrIndent = BaseIndent.repeat( level + 1 );
 
         if( index !== undefined && !node.hasAttribute( 'key' ) ) {
@@ -58,8 +58,8 @@ function compile( node: HTMLElement, context: CompileContext ): CompileResult | 
         // contents.push( `${attrIndent}"props": ${xxx},` );
         contents[contents.length - 1] = contents[contents.length - 1].replace( /,$/, '' );
         contents.push( `${indent}} )${context.level ? ',' : ''}` );
-        // deps[compiledType] = `../viewmodel/${componentName}ViewModel.json`;
-        deps[compiledType] = `${basePath}viewmodel/${componentName}ViewModel`;
+        // deps[transformedType] = `../viewmodel/${componentName}ViewModel.json`;
+        deps[transformedType] = `${basePath}viewmodel/${componentName}ViewModel`;
         return {
             contents,
             deps
@@ -68,12 +68,12 @@ function compile( node: HTMLElement, context: CompileContext ): CompileResult | 
 }
 
 /**
- * Compile view input to target JSX
+ * transform view input to target JSX
  * @param node input DOM Node
  * @param context input context
- * @returns compile output
+ * @returns transform output
  */
-function compileToTemplate( node: HTMLElement, context: CompileContext ): CompileResult | undefined {
+function transformToTemplate( node: HTMLElement, context: ViewTransformContext ): ViewTransformResult | undefined {
     // process indent
     const level = context.level;
     const indent = BaseIndent.repeat( level );
@@ -90,12 +90,12 @@ function compileToTemplate( node: HTMLElement, context: CompileContext ): Compil
             basePath = match[1] + '/';
             componentName = match[2];
         }
-        const compiledType = `${hyphenToCamelCase( componentName )}`;
+        const transformedType = `${hyphenToCamelCase( componentName )}`;
 
         const contents = [];
-        contents.push( `${indent}<${compiledType} />` );
-        // deps[compiledType] = `../viewmodel/${componentName}ViewModel.json`;
-        deps[compiledType] = `${basePath}viewmodel/${componentName}ViewModel`;
+        contents.push( `${indent}<${transformedType} />` );
+        // deps[transformedType] = `../viewmodel/${componentName}ViewModel.json`;
+        deps[transformedType] = `${basePath}viewmodel/${componentName}ViewModel`;
         return {
             contents,
             deps
@@ -105,6 +105,6 @@ function compileToTemplate( node: HTMLElement, context: CompileContext ): Compil
 
 export default {
     when,
-    compile,
-    compileToTemplate
+    transform,
+    transformToTemplate
 };

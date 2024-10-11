@@ -1,5 +1,5 @@
     
-import * as compiler from '.';
+import * as transform from '.';
 
 const global = globalThis as unknown as {
   swf: { [key: string]: unknown };
@@ -7,5 +7,5 @@ const global = globalThis as unknown as {
 
 global.swf = {
   ...global.swf,
-  compiler,
+  transform,
 };

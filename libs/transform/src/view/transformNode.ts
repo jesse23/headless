@@ -1,31 +1,31 @@
 /**
- * Node Compiler
+ * Node transformer
  */
-import { BaseIndent, NodeType, ReactAttr } from './compileUtils';
+import { BaseIndent, NodeType, ReactAttr } from './transformUtils';
 
-import { hyphenToCamelCase } from './compileUtils';
-import { CompileContext, CompileResult } from './types';
+import { hyphenToCamelCase } from './transformUtils';
+import { ViewTransformContext, ViewTransformResult } from './types';
 
 /**
- * Evaluate condition for current compiler
+ * Evaluate condition for current transformer
  * @param node input DOM Node
  * @param context input context
  * @returns true if condition matches
  */
-function when(node: HTMLElement, _: CompileContext): boolean {
+function when(node: HTMLElement, _: ViewTransformContext): boolean {
   return node.nodeType === NodeType.ELEMENT_NODE;
 }
 
 /**
- * Compile view input to target framework format
+ * transform view input to target framework format
  * @param node input DOM Node
  * @param context input context
- * @returns compile output
+ * @returns transform output
  */
-function compile(
+function transform(
   node: HTMLElement,
-  context: CompileContext
-): CompileResult | undefined {
+  context: ViewTransformContext
+): ViewTransformResult | undefined {
   let contents = [];
   let currLine = [];
   let deps = {};
@@ -40,22 +40,22 @@ function compile(
 
   // process tag
   let elemName = elem.nodeName.toLowerCase();
-  let compiledType = null;
+  let transformdType = null;
   let viewDesc = null;
   if (/^\S+-\S+$/.test(elemName)) {
     const compName = hyphenToCamelCase(elemName);
     if (viewImports[compName]) {
-      compiledType = compName;
+      transformdType = compName;
       viewDesc = viewImports[compName];
     }
   }
 
   currLine.push(
-    `${indent}${compiledType ? `${compiledType} && ` : ''}createElement( ${
-      compiledType ? compiledType : `"${elemName}"`
+    `${indent}${transformdType ? `${transformdType} && ` : ''}createElement( ${
+      transformdType ? transformdType : `"${elemName}"`
     }`
   );
-  elemName = compiledType ? compiledType : elemName;
+  elemName = transformdType ? transformdType : elemName;
 
   // process attribute
   const attrLenth = elem.attributes.length || 0;
@@ -133,21 +133,21 @@ function compile(
   // process children
   const childLength = elem.childNodes.length;
   if (childLength > 0) {
-    const childCompileResults = [];
+    const childTransformResults = [];
     for (let i = 0; i < childLength; i++) {
       const childDomNode = elem.childNodes[i];
-      const childRes = context.compileFn(childDomNode, {
+      const childRes = context.transformFn(childDomNode, {
         ...context,
         level: level + 1,
         index: i,
       });
 
       if (childRes) {
-        childCompileResults.push(childRes);
+        childTransformResults.push(childRes);
       }
     }
 
-    if (childCompileResults.length > 0) {
+    if (childTransformResults.length > 0) {
       // TODO: simple one level impl. For multiple level like:
       // <ng-list>
       //   <ng-list>
@@ -162,8 +162,8 @@ function compile(
         contents.push(currLine.join(''));
         contents.push(`${childIndent}eval: function(scope){`);
         contents.push(`${funcIndent}return evalExpression(\`[`);
-        for (let i = 0; i < childCompileResults.length; i++) {
-          const childRes = childCompileResults[i];
+        for (let i = 0; i < childTransformResults.length; i++) {
+          const childRes = childTransformResults[i];
           // escape text node.
           contents = contents.concat(
             childRes.contents.map((c: string) => {
@@ -192,8 +192,8 @@ function compile(
         currLine.push(', ');
         contents.push(currLine.join(''));
 
-        for (let i = 0; i < childCompileResults.length; i++) {
-          const childRes = childCompileResults[i];
+        for (let i = 0; i < childTransformResults.length; i++) {
+          const childRes = childTransformResults[i];
           contents = contents.concat(childRes.contents);
           deps = Object.assign(deps, childRes.deps);
           options = Object.assign(options, childRes.options);
@@ -231,12 +231,12 @@ function compile(
 }
 
 /**
- * Compile view input to JSX
+ * transform view input to JSX
  * @param node input DOM Node
  * @param context input context
- * @returns compile output
+ * @returns transform output
  */
-function compileToTemplate(node: HTMLElement, context: CompileContext) {
+function transformToTemplate(node: HTMLElement, context: ViewTransformContext) {
   let contents = [];
   const currLine = [];
   let deps = {};
@@ -251,18 +251,18 @@ function compileToTemplate(node: HTMLElement, context: CompileContext) {
 
   // process tag
   let elemName = elem.nodeName.toLowerCase();
-  let compiledType = null;
+  let transformdType = null;
   let viewDesc = null;
   if (/^\S+-\S+$/.test(elemName)) {
     const compName = hyphenToCamelCase(elemName);
     if (viewImports[compName]) {
-      compiledType = compName;
+      transformdType = compName;
       viewDesc = viewImports[compName];
     }
   }
 
-  currLine.push(`${indent}<${compiledType ? compiledType : elemName}`);
-  elemName = compiledType ? compiledType : elemName;
+  currLine.push(`${indent}<${transformdType ? transformdType : elemName}`);
+  elemName = transformdType ? transformdType : elemName;
 
   // process attribute
   const attrLenth = elem.attributes.length || 0;
@@ -311,10 +311,10 @@ function compileToTemplate(node: HTMLElement, context: CompileContext) {
   // process children
   const childLength = elem.childNodes.length;
   if (childLength > 0) {
-    const childCompileResults = [];
+    const childTransformResults = [];
     for (let i = 0; i < childLength; i++) {
       const childDomNode = elem.childNodes[i];
-      const childRes = context.compileFn(childDomNode, {
+      const childRes = context.transformFn(childDomNode, {
         ...context,
         level: level + 1,
         index: i,
@@ -323,11 +323,11 @@ function compileToTemplate(node: HTMLElement, context: CompileContext) {
       });
 
       if (childRes) {
-        childCompileResults.push(childRes);
+        childTransformResults.push(childRes);
       }
     }
 
-    if (childCompileResults.length > 0) {
+    if (childTransformResults.length > 0) {
       // TODO: simple one level impl. For multiple level like:
       // <ng-list>
       //   <ng-list>
@@ -342,8 +342,8 @@ function compileToTemplate(node: HTMLElement, context: CompileContext) {
         contents.push(`${childIndent}{ {`);
         contents.push(`${childIndent}eval: function(scope){`);
         contents.push(`${funcIndent}return evalExpression(\`[`);
-        for (let i = 0; i < childCompileResults.length; i++) {
-          const childRes = childCompileResults[i];
+        for (let i = 0; i < childTransformResults.length; i++) {
+          const childRes = childTransformResults[i];
           // escape text node.
           contents = contents.concat(
             childRes.contents.map((c: string) => {
@@ -366,8 +366,8 @@ function compileToTemplate(node: HTMLElement, context: CompileContext) {
         contents.push(`${childIndent}scope: viewDeps`);
         contents.push(`${childIndent}} }`);
       } else {
-        for (let i = 0; i < childCompileResults.length; i++) {
-          const childRes = childCompileResults[i];
+        for (let i = 0; i < childTransformResults.length; i++) {
+          const childRes = childTransformResults[i];
           contents = contents.concat(childRes.contents);
           deps = { ...deps, ...childRes.deps };
           options = { ...options, ...childRes.options };
@@ -389,6 +389,6 @@ function compileToTemplate(node: HTMLElement, context: CompileContext) {
 
 export default {
   when,
-  compile,
-  compileToTemplate,
+  transform,
+  transformToTemplate,
 };

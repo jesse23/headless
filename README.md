@@ -52,11 +52,11 @@ reactivity, components
 # Call to transform
 - transpileViewModelJson         [tooling]
   - generateComponentContent     [transform]
-    - generateRenderFnContent    [transform]
+    - createRenderFn             [transform]
       - transform                [transform]
 
 - defineComponentDeclViewSync    [core]
-  - generateRenderFnContent      [transform]
+  - createRenderFn               [transform]
     - transform                  [transform]
 
 

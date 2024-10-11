@@ -13,13 +13,12 @@ import {
 } from '@headless/utils';
 import {
   getViewDeps,
-  subscribeEvents,
   unsubscribeEvents,
   initActionsFromActionFn,
   createActionFromActionFn,
   createComponentDefinition,
   registerDefineComponent,
-  subscribeEvents2,
+  subscribeEvents,
 } from '@headless/core';
 import { useRef, useEffect, useState, createElement } from 'react';
 
@@ -86,16 +85,10 @@ const useComponentDefinition = (
       createActionFromActionFn(actionFn, { getData, updateData }, getProps)();
     }
 
-    const subscriptions = subscribeEvents(
-      { onEvent: componentDef.onEvent } as ViewModelDefinition,
-      actions
-    );
-
-    const subscriptions2 = subscribeEvents2(componentDef.onEvent2 || [], { getData, updateData }, getProps);
+    const subscriptions = subscribeEvents(componentDef.onEvent || [], { getData, updateData }, getProps);
 
     return () => {
       unsubscribeEvents(subscriptions);
-      unsubscribeEvents(subscriptions2);
 
       const actionFn = componentDef.lifecycleHooks?.onUnmount;
       if (actionFn) {

@@ -5,11 +5,12 @@ import {
   DefineComponentFn,
   ComponentDefinition,
   ViewModelDefinition,
+  ConditionFn,
 } from '@headless/types';
-import { generateRenderFnContent } from '@headless/transform';
 import { parseView } from '@headless/utils';
 import { createActionFn } from './actions';
 import { getViewDeps } from './views';
+import { createRenderFn } from '@headless/transform';
 
 let defineComponent: DefineComponentFn = () => {
   throw new Error('defineComponent is not implemented');
@@ -46,7 +47,7 @@ export const createComponentDefinition = (
     (prev, [name, actionDef]) => {
       return {
         ...prev,
-        [name]: createActionFn(actionDef as Data),
+        [name]: createActionFn(actionDef as unknown as Data),
       };
     },
     {}
@@ -62,6 +63,12 @@ export const createComponentDefinition = (
     {}
   );
 
+  const subscriptionDefinitions = (onEvent || []).map(({ eventId, action, condition }) => ({
+    eventId,
+    action: actionFnMap[action],
+    condition: new Function('data', 'props', 'eventData', `return ${condition}`) as ConditionFn,
+  }));
+
   const unresolvedImports = (imports || []).filter((name) => !viewDeps[name]);
 
   return {
@@ -69,7 +76,7 @@ export const createComponentDefinition = (
     data,
     actions: actionFnMap,
     lifecycleHooks: lifecycleHookFnMap,
-    onEvent,
+    onEvent: subscriptionDefinitions,
     styles,
     ...(unresolvedImports.length > 0 && { imports: unresolvedImports }),
   };
@@ -103,11 +110,7 @@ export const defineComponentDecl = (
  */
 export const defineComponentDeclViewSync = (viewDef: ViewModelDefinition, components = {} as Record<string,Component>) => {
   // create render function
-  const { args, contents } = generateRenderFnContent(
-    viewDef,
-    parseView(viewDef.view || '')
-  );
-  const renderFn = new Function(...args, contents.join('\n')) as RenderFn;
+  const renderFn = createRenderFn(viewDef, parseView(viewDef.view || '')) as RenderFn;
 
   // define component
   return defineComponentDecl(viewDef, renderFn, components);
@@ -127,4 +130,5 @@ export const defineComponentDeclView = async (viewDef: ViewModelDefinition) => {
   // define component
   return defineComponentDeclViewSync(viewDef, components);
 };
+
 

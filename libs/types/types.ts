@@ -24,7 +24,6 @@ export type Value =
  */
 export type Data = Record<string, Value>;
 
-type ActionDefinition = Data;
 
 /**
  * view definition with 'view' and 'viewmodel'
@@ -38,7 +37,7 @@ export interface ViewModelDefinition {
   /**
    * action definitions for the view model
    */
-  actions: ActionDefinition;
+  actions: Record<string, ActionDefinition>;
   /**
    * lifecycle hook definitions for the view model
    */
@@ -78,6 +77,7 @@ export interface ViewModelDefinition {
   onEvent?: {
     eventId: string;
     action: string;
+    condition?: string;
   }[];
 }
 
@@ -174,6 +174,21 @@ export type ActionFn = (
   eventData?: Data
 ) => Promise<Data | void> | Data | void;
 
+interface ActionDefinitionBase {
+  actionType?: string,
+  inputData: Data,
+  outputData?: Record<string, string>,
+}
+
+export interface ActionDefinition extends ActionDefinitionBase {
+  method: string,
+  deps: string,
+}
+
+export interface ActionDefinitionWithFn extends ActionDefinitionBase {
+  fn: FunctionType,
+}
+
 /**
  * Condition function that used in view model, which will return boolean
  */
@@ -214,11 +229,7 @@ export interface ComponentDefinition {
   data: Data;
   actions: Record<string, ActionFn>;
   lifecycleHooks?: Record<string, ActionFn>;
-  onEvent?: {
-    eventId: string;
-    action: string;
-  }[];
-  onEvent2?: SubscriptionDefinition[];
+  onEvent?: SubscriptionDefinition[];
   styles?: Record<string, string>;
   render?: RenderFn;
   imports?: string[];

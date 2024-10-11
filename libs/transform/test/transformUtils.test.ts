@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import { hyphenToCamelCase } from '../src/view/compileUtils';
+import { hyphenToCamelCase } from '../src/view/transformUtils';
 
 describe( 'Test compile specific core/utils', () => {
     it( 'Verify hyphenToCamelCase works fine for "aa-bb"', () => {

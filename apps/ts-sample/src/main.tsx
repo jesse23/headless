@@ -7,7 +7,7 @@ import './index.css';
 
 // plugin system
 import '@headless/core/register';
-import 'libs/transform/src/register.ts';
+import '@headless/transform/register';
 import '@headless/components/register';
 import './plugin';
 

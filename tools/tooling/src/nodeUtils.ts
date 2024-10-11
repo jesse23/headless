@@ -1,4 +1,4 @@
-import { Data, ViewModelDefinition } from '@headless/types';
+import { ActionDefinition, Data, ViewModelDefinition } from '@headless/types';
 import { generateComponentContent, hyphenToCamelCase } from '@headless/transform';
 import { access, readFile } from 'node:fs/promises';
 import { Window } from 'happy-dom';
@@ -20,6 +20,8 @@ const parseView = (input: string): HTMLElement => {
 
 /**
  * Transpile viewmodel json file to js code
+ * 
+ * NOTE: this version is simply boil view and styles into JSON...not used already
  *
  * @param jsonPath path of viewmodel json file
  * @returns transpiled js code of viewmodel
@@ -62,7 +64,7 @@ export const transpileViewModelJson = async (
   return output.join('\n');
 };
 
-export const transpileViewModel = async (
+export const transpileComponent = async (
   jsonPath: string,
   resolvedMap = {} as Record<string, string>,
 ): Promise<string> => {
@@ -94,22 +96,23 @@ export const transpileViewModel = async (
 
   // TODO: remove react later
   output.push(
-    `import { registerLibDeps, defineComponentDecl } from '@headless/core';`
+    `import { registerLibDeps, defineComponentDecl, defineComponent, evalDataDefinition, evalOutputData } from '@headless/core';`
   );
   output.push('');
 
   if (vmDef.actions) {
     // TODO: only support js in the same module for now
     output.push(
-      ...(await Promise.all(Object.entries(vmDef.actions).map(async ([_, { deps }]: [string, Data]) => {
+      ...(await Promise.all(Object.entries(vmDef.actions).map(async ([_, { method, deps }]: [string, ActionDefinition]) => {
         if ((deps as string).startsWith('js/')) {
           // TODO: vite cannot support import('../js/loadPanelService') when it is in mono repo
           // need to resolve later. For now use js and mention js in import explicitly
-          return `registerLibDeps('${deps}', import('../${deps}.js'));`;
+          // return `registerLibDeps('${deps}', import('../${deps}.js'));`;
+          return `import { ${method} } from '../${deps}.js';`;
         }
         return '';
       })
-    )));
+    )), '');
   }
 
   let content = generateComponentContent(vmDef, parseView(htmlContent)).join(
@@ -117,7 +120,7 @@ export const transpileViewModel = async (
   );
 
   if (cssExists) {
-    content = content.replace('// styles placeholder', 'viewDef.styles = styles;');
+    content = content.replace('// styles placeholder', 'componentDef.styles = styles;');
   }
 
   output.push(content);

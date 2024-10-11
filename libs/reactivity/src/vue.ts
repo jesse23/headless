@@ -6,11 +6,7 @@ import {
   ComponentDefinition,
   ViewModelDefinition,
 } from '@headless/types';
-import {
-  cloneJson,
-  applyValues,
-  createPartialStore,
-} from '@headless/utils';
+import { cloneJson, applyValues, createPartialStore } from '@headless/utils';
 import {
   subscribeEvents,
   unsubscribeEvents,
@@ -102,8 +98,9 @@ const useComponentDefinition = (
 
     // onEvent
     subscriptions.value = subscribeEvents(
-      { onEvent: componentDef.onEvent } as ViewModelDefinition,
-      actions
+      componentDef.onEvent || [],
+      { getData, updateData },
+      getProps
     );
   });
 
