@@ -9,18 +9,30 @@ import {
 } from '@headless/types';
 import { parseView } from '@headless/utils';
 import { createActionFn } from './actions';
-import { getViewDeps } from './views';
+import { getViewDeps } from './deps';
 import { createRenderFn } from '@headless/transform';
 
-let defineComponent: DefineComponentFn = () => {
-  throw new Error('defineComponent is not implemented');
+const _ctx = {
+  defineComponent: null as DefineComponentFn,
+}
+
+export const defineComponent: DefineComponentFn = (componentDef, viewDeps) => {
+  if(!_ctx.defineComponent) {
+    throw new Error('defineComponent is not implemented');
+  }
+
+  return _ctx.defineComponent(componentDef.extends ? {
+    ...componentDef,
+    lifecycleHooks: {
+      ...componentDef.extends.lifecycleHooks,
+      ...componentDef.lifecycleHooks,
+    }
+  } :componentDef, viewDeps);
 };
 
 export function registerDefineComponent(fn: DefineComponentFn) {
-  defineComponent = fn;
+  _ctx.defineComponent = fn;
 }
-
-export { defineComponent };
 
 ////////
 
@@ -66,7 +78,7 @@ export const createComponentDefinition = (
   const subscriptionDefinitions = (onEvent || []).map(({ eventId, action, condition }) => ({
     eventId,
     action: actionFnMap[action],
-    condition: new Function('data', 'props', 'eventData', `return ${condition}`) as ConditionFn,
+    condition: new Function('data', 'props', 'eventData', `return ${condition || 'true'}`) as ConditionFn,
   }));
 
   const unresolvedImports = (imports || []).filter((name) => !viewDeps[name]);

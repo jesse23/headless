@@ -1,5 +1,4 @@
-/* eslint-env jest */
-import { printDomNode, parseView, applyValues } from '../src/libs/utils';
+import { printDomNode, parseView, applyValues, hyphenToCamelCase } from '../src';
 
 describe('Test compile specific core/utils', () => {
   it('Verify printDomNode works as expected for pure element node case', () => {
@@ -63,4 +62,14 @@ describe('Test compile specific core/utils', () => {
       d: 6,
     });
   });
+});
+
+describe( 'Test compile specific core/utils', () => {
+    it( 'Verify hyphenToCamelCase works fine for "aa-bb"', () => {
+        expect( hyphenToCamelCase( 'aa-bb' ) ).toEqual( 'AaBb' );
+    } );
+
+    it( 'Verify hyphenToCamelCase works fine for "aa-bb-cc"', () => {
+        expect( hyphenToCamelCase( 'aa-bb-cc' ) ).toEqual( 'AaBbCc' );
+    } );
 });

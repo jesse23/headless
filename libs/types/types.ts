@@ -227,7 +227,8 @@ export type SubscriptionDefinition = {
 export interface ComponentDefinition {
   name: string;
   data: Data;
-  actions: Record<string, ActionFn>;
+  extends?: Partial<ComponentDefinition>;
+  actions?: Record<string, ActionFn>;
   lifecycleHooks?: Record<string, ActionFn>;
   onEvent?: SubscriptionDefinition[];
   styles?: Record<string, string>;

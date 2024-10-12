@@ -3,9 +3,9 @@
   "compilerOptions": {
     "outDir": "./dist",
     "jsx": "react-jsx",
+    "jsxImportSource": "@headless/core",
     //"rootDir": ".",
-    "types": ["node", "vitest/globals"]
+    "types": ["@headless/types/decl.d.ts"],
   },
-  // "include": ["src/*.ts", "test/*.ts"],
-  "include": ["**/*.ts"],
+  "include": ["src"],
 }

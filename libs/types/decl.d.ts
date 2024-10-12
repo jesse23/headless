@@ -5,12 +5,12 @@ declare module '*.scss' {
     export default content;
 }
 
-
 declare module '*ViewModel' {
-  import { Component } from "@headless/core";
-  const Component: Component;
+  const Component: (props: Record<string, unknown>) => JSX.Element
+  export { Component }
   export default Component
 }
+
 
 declare namespace JSX {
   interface Element {

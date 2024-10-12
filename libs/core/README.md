@@ -1,2 +1,2 @@
 # @headless/core
-core engine for headless
+Abstracted view model layer

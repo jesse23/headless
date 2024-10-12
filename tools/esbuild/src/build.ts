@@ -9,12 +9,21 @@ export interface BuildOptions {
   outfile?: string;
   external?: string[];
   externalGlobal?: Record<string, string>;
+  // jsx related
+  jsxOptions?: {
+    jsx?: 'transform' | 'preserve' | 'automatic';
+    jsxFactory?: string;
+    jsxFragment?: string;
+  };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  plugins?: any[];
+  inject?: string[];
 }
 
 export const getEsbuildOption = (opts?: BuildOptions): EsbuildOptions => {
   const external = [
     ...new Set(
-      ['esbuild-node-externals', 'react'].concat(
+      ['esbuild-node-externals' /*, 'react'*/].concat(
         opts?.external || [],
         Object.keys(opts?.externalGlobal || [])
       )
@@ -39,7 +48,13 @@ export const getEsbuildOption = (opts?: BuildOptions): EsbuildOptions => {
     sourcemap: true,
     bundle: true,
     // minify: true,
+    ...opts?.jsxOptions,
+    // jsx: 'preserve',
     external,
+    define: {
+      // 'process.env.NODE_ENV': `"${process.env.NODE_ENV}"`,
+      'process.env.NODE_ENV': `"${process.env.NODE_ENV}"`,
+    },
     plugins: [
       envPlugin,
       declViewPlugin,
@@ -52,7 +67,10 @@ export const getEsbuildOption = (opts?: BuildOptions): EsbuildOptions => {
       }),
       // resolve in browser by globalThis
       ...(externalGlobal ? [externalGlobalPlugin(externalGlobal)] : []),
+      // custom plugin
+      ...(opts?.plugins || []),
     ],
+    inject: opts?.inject || [],
   };
 };
 

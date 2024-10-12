@@ -2,7 +2,6 @@ import {
   Data,
   Store,
   SubscriptionDefinition,
-  ViewModelDefinition,
 } from '@headless/types';
 import { eventBus, Subscription } from '@headless/interop';
 

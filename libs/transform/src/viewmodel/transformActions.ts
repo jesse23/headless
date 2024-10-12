@@ -1,5 +1,5 @@
 import { ActionDefinition } from '@headless/types';
-import { BaseIndent } from '../view/transformUtils';
+import { BASE_INDENT } from '@headless/utils';
 
 export const transformActions = (
   actions: Record<string, ActionDefinition>,
@@ -9,8 +9,8 @@ export const transformActions = (
   actionFnMap: Record<string, string[]>;
 } => {
   const level = context.level !== undefined ? context.level : 0;
-  const indent = BaseIndent.repeat(level);
-  const childIndent = BaseIndent.repeat(level + 1);
+  const indent = BASE_INDENT.repeat(level);
+  const childIndent = BASE_INDENT.repeat(level + 1);
   const result = [];
 
   result.push(`${indent}{`);

@@ -1,10 +1,10 @@
+import '@headless/reactivity/react';
 import { useState } from 'react';
 import { SimpleButton } from '@headless/components';
 import { LoadPanelExample } from '@headless/kit-sample';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
-import { format } from 'date-fns';
 
 function App() {
   const [showPanel, setShowPanel] = useState(false);
@@ -30,9 +30,6 @@ function App() {
           <LoadPanelExample />
         </div>
       )}
-      <div>
-        format date by ext: {format(new Date(2014, 1, 11), 'yyyy-MM-dd')}
-      </div>
     </>
   );
 }

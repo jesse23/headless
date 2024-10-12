@@ -27,9 +27,8 @@
 import {
     preProcessTemplate
 } from './transformUtils';
-import { ViewTransformContext, ViewTransformFn } from './types';
+import { ViewTransformContext } from './types';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default class transformerFactory {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _transformers: any[];

@@ -4,14 +4,15 @@
   "description": "vitest config",
   "main": "./vitest.config.ts",
   "scripts": {
-    "audit": "eslint src test --ext .js,.jsx,.ts,.tsx && tsc -p tsconfig.json",
-    "build": "tsx esbuild",
-    "test": "vitest run",
-    "clean": "rimraf dist doc *.log *.tgz node_modules/.*",
-    "docs": "typedoc src/index.ts"
+    "audit": "echo \"placeholder\" && exit 0",
+    "build": "echo \"placeholder\" && exit 0",
+    "test": "echo \"placeholder\" && exit 0",
+    "clean": "rimraf dist doc *.log *.tgz node_modules"
   },
-  "devDependencies": {
-    "vitest": "^2.1.1"
+  "dependencies": {
+    "vitest": "^2.1.1",
+    "happy-dom": "^10.3.2",
+    "vite-tsconfig-paths": "^4.2.0"
   },
   "author": "jesse23",
   "license": "ISC"

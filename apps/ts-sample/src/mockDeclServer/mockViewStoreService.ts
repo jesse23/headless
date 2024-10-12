@@ -38,10 +38,6 @@ const _mockViewModelStore: Record<string, ViewModelDefinition> = {
   },
 };
 
-const updateComponent = (viewName: string, viewDef: ViewModelDefinition) => {
-  _mockViewModelStore[viewName] = viewDef;
-};
-
 /**
  * get View
  * @param viewName  name of the view
@@ -65,7 +61,7 @@ const getComponent = async (
  *
  * @returns list of views
  */
-const getComponents = (): string[] => {
+const listComponents = (): string[] => {
   return Object.keys(_mockViewModelStore);
 };
 
@@ -74,6 +70,5 @@ const getComponents = (): string[] => {
  */
 export const mockViewStore = {
   getComponent,
-  getComponents,
-  updateComponent,
+  listComponents,
 };

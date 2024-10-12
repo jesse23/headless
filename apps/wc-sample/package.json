@@ -1,0 +1,17 @@
+{
+  "name": "@headless/wc-sample",
+  "version": "1.0.0",
+  "description": "web component sample",
+  "main": "index.js",
+  "scripts": {
+    "audit": "echo \"placeholder\" && exit 0",
+    "test": "echo \"placeholder\" && exit 0",
+    "build": "npm run build:deps && npm run build:components",
+    "build:deps": "npm run build -w @headless/core && cp -f ../../libs/core/dist/cdn/core.js ./dist/core.js && cp -f ../../libs/core/dist/cdn/core.js.map ./dist/core.js.map && npm run build -w @headless/interop && cp -f ../../libs/interop/dist/cdn/interop.js ./dist/interop.js && cp -f ../../libs/interop/dist/cdn/interop.js.map ./dist/interop.js.map",
+    "build:components": "npm run build -w @headless/components && cp -f ../../libs/components/dist/wc/* ./dist",
+    "start": "npx http-server ./ -g -p 5173",
+    "preview": "npx http-server ./ -g -p 4173"
+  },
+  "author": "jesse23",
+  "license": "MIT"
+}

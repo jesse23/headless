@@ -8,7 +8,7 @@ import './index.css';
 // plugin system
 import '@headless/core/register';
 import '@headless/transform/register';
-import '@headless/components/register';
+import '@headless/interop/register';
 import './plugin';
 
 import { StrictMode } from 'react'

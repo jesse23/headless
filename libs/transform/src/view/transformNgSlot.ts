@@ -5,9 +5,9 @@
  *     `(props.children)?<div>props.children</div>:<div>default</div>`
  */
 import {
-    BaseIndent,
+    BASE_INDENT,
     NodeType
-} from './transformUtils';
+} from '@headless/utils';
 import { ViewTransformContext, ViewTransformResult } from './types';
 
 const Attr = 'ng-slot';
@@ -34,7 +34,7 @@ function transform( node: HTMLElement, context: ViewTransformContext ): ViewTran
     let contents = [];
     let deps = {};
     const options = {} as Record<string, boolean>;
-    const indent = BaseIndent.repeat( context.level );
+    const indent = BASE_INDENT.repeat( context.level );
 
     node.removeAttribute( Attr );
     const defaultNode = node;
@@ -96,7 +96,7 @@ function transformToTemplate( node: HTMLElement, context: ViewTransformContext )
     let contents = [];
     let deps = {};
     const options = {} as Record<string, boolean>;
-    const indent = BaseIndent.repeat( context.level );
+    const indent = BASE_INDENT.repeat( context.level );
 
     node.removeAttribute( Attr );
     const defaultNode = node;

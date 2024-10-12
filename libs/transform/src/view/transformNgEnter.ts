@@ -3,7 +3,7 @@
  */
 import {
     NodeType
-} from './transformUtils';
+} from '@headless/utils';
 import { ViewTransformContext } from './types';
 
 

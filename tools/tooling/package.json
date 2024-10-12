@@ -9,21 +9,23 @@
     ".": {
       "import": "./dist/index.js",
       "require": "./dist/index.js"
-    },
-    "./register": {
-      "import": "./dist/register.js",
-      "require": "./dist/register.js"
     }
   },
   "scripts": {
-    "audit": "eslint src test --ext .js,.jsx,.ts,.tsx && tsc -p tsconfig.json",
+    "audit": "eslint src test && tsc",
     "build": "tsx esbuild",
     "test": "vitest run",
-    "clean": "rimraf dist doc *.log *.tgz node_modules/.*",
-    "docs": "typedoc src/index.ts"
+    "clean": "rimraf dist docs *.log *.tgz node_modules"
+  },
+  "dependencies": {
+    "@headless/transform": "^1.0.0"
   },
   "devDependencies": {
-    "happy-dom": "^10.3.2"
+    "happy-dom": "^10.3.2",
+    "@headless/utils": "^1.0.0",
+    "@headless/types": "^1.0.0",
+    "@headless/esbuild": "^1.0.0",
+    "@headless/vitest": "^1.0.0"
   },
   "author": "jesse23",
   "license": "ISC"

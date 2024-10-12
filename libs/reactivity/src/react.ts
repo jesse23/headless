@@ -20,7 +20,13 @@ import {
   registerDefineComponent,
   subscribeEvents,
 } from '@headless/core';
-import { useRef, useEffect, useState, createElement } from 'react';
+import {
+  registerJsxRuntime
+} from '@headless/core/jsx-runtime';
+import { useRef, useEffect, useState, createElement, Fragment } from 'react';
+
+// TODO: this is not applicable in UMD yet, use workaround for now
+// import { jsx, jsxs, Fragment } from 'react/jsx-runtime';
 
 /**
  * Async init hook
@@ -158,7 +164,11 @@ export const defineComponent = (
   return Component;
 };
 
+const jsx = (elem, { children, ...props }) => createElement(elem, props, children);
+const jsxs = (elem, { children, ...props }) => createElement(elem, props, ...children);
+
 registerDefineComponent(defineComponent);
+registerJsxRuntime({ jsx, jsxs, Fragment });
 
 ///////////////////////////////
 /**

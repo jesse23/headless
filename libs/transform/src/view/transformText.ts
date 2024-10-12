@@ -1,7 +1,7 @@
 import {
-    BaseIndent,
+    BASE_INDENT,
     NodeType
-} from './transformUtils';
+} from '@headless/utils';
 import { ViewTransformContext, ViewTransformResult } from './types';
 
 /**
@@ -23,7 +23,7 @@ function when( node: HTMLElement, _: ViewTransformContext ): boolean {
 function transform( node: HTMLElement, context: ViewTransformContext ): ViewTransformResult | undefined {
     // process indent
     const res = [] as string[];
-    const indent = BaseIndent.repeat( context.level );
+    const indent = BASE_INDENT.repeat( context.level );
     // indent in text node will add noise
     // TODO: this is very naive
     const matches = (node.textContent || '').split( /({{.*?}})/g );
@@ -55,7 +55,7 @@ function transform( node: HTMLElement, context: ViewTransformContext ): ViewTran
  */
 function transformToTemplate( node: HTMLElement, context: ViewTransformContext ): ViewTransformResult | undefined {
     // process indent
-    const indent = BaseIndent.repeat( context.level );
+    const indent = BASE_INDENT.repeat( context.level );
     const res = [];
     // indent in text node will add noise
     // TODO: this is very naive

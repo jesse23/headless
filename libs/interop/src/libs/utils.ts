@@ -1,12 +1,17 @@
-import { Message, MessageDefinition, Subscription, SubscriptionDefinition, Subscriptions } from "./types";
-
+import {
+  Message,
+  MessageDefinition,
+  Subscription,
+  SubscriptionDefinition,
+  Subscriptions,
+} from './types';
 
 export const generateId = (): string => {
   return Math.random().toString(36).substring(2, 11);
 };
 
 export const publish = <T>(
-  { topic, channel = "global", payload }: MessageDefinition<T>,
+  { topic, channel = 'global', payload }: MessageDefinition<T>,
   target = null as Window | null
 ): Message<T> => {
   const requestId = generateId();
@@ -20,9 +25,9 @@ export const publish = <T>(
   if (target) {
     if ((target as typeof window).postMessage) {
       // iframe, popup window, or web worker
-      (target as typeof window).postMessage(request, "*");
+      (target as typeof window).postMessage(request, '*');
     } else {
-      throw new Error("Invalid target");
+      throw new Error('Invalid target');
     }
   } else {
     // TODO: auto identify the target is wrong - what if a whole page
@@ -31,19 +36,19 @@ export const publish = <T>(
     if (window.parent !== window) {
       // iframe
       console.log(`event iframe->parent: ${topic}`);
-      window.parent.postMessage(request, "*");
+      window.parent.postMessage(request, '*');
     } else if (window.opener) {
       // popup window
       console.log(`event popup->parent: ${topic}`);
-      window.opener.postMessage(request, "*");
+      window.opener.postMessage(request, '*');
     } else if (self !== window) {
       // web worker
       console.log(`event webworker->parent: ${topic}`);
-      self.postMessage(request, "*");
+      self.postMessage(request, '*');
     } else {
       console.log(`event to window: ${topic}`);
       // custom element for both parent->child or child->parent
-      window.dispatchEvent(new MessageEvent("message", { data: request }));
+      window.dispatchEvent(new MessageEvent('message', { data: request }));
     }
   }
 
@@ -51,12 +56,12 @@ export const publish = <T>(
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const createMessageEventBus = <T=any>() => {
+export const createMessageEventBus = <T = any>() => {
   const _subscriptions: Subscriptions<T> = {};
 
   const subscribe = ({
     topic,
-    channel = "global",
+    channel = 'global',
     handler,
   }: SubscriptionDefinition<T>): Subscription<T> => {
     const subscription = {
@@ -83,7 +88,9 @@ export const createMessageEventBus = <T=any>() => {
     ];
   };
 
-  const handleMessage = (event: MessageEvent<Message<T>>): Promise<unknown>[] => {
+  const handleMessage = (
+    event: MessageEvent<Message<T>>
+  ): Promise<unknown>[] => {
     const { payload, channel, topic } = event.data;
     if (_subscriptions[topic]?.[channel]) {
       return Object.values(_subscriptions[topic][channel]).map(({ handler }) =>

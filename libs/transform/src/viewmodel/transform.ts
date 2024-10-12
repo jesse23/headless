@@ -1,13 +1,14 @@
 import { ViewModelDefinition } from '@headless/types';
-import { BaseIndent } from '../view/transformUtils';
+import { BASE_INDENT } from '@headless/utils';
+
 import { transformLifeCycleHooks } from './transformLifeCycleHooks';
 import { transformSubscriptions } from './transformSubscriptions';
 import { transformActions } from './transformActions';
 
 export const transform = (vmDef: ViewModelDefinition, context): string[] => {
   const level = context.level !== undefined ? context.level : 0;
-  const indent = BaseIndent.repeat(level);
-  const childIndent = BaseIndent.repeat(level + 1);
+  const indent = BASE_INDENT.repeat(level);
+  const childIndent = BASE_INDENT.repeat(level + 1);
   const result = [];
 
   result.push(`${indent}{`);

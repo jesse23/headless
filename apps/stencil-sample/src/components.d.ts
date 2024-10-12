@@ -5,8 +5,8 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { ComponentDefinition } from "../../../libs/core/src/index";
-export { ComponentDefinition } from "../../../libs/core/src/index";
+import { ComponentDefinition } from "@headless/types";
+export { ComponentDefinition } from "@headless/types";
 export namespace Components {
     interface DynamicComponent {
         "componentDef": ComponentDefinition;

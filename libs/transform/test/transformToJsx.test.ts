@@ -165,7 +165,6 @@ describe( 'Test view transformer to JSX', () => {
         const output = transformer.transformView( parseView( '<div ng-repeat="item in data.items">{{item.name}}</div>' ), {}, true );
         expect( output.contents ).toEqual( [
             'processRepeat(data.items, key => {',
-            // eslint-disable-next-line no-template-curly-in-string
             '  return vm.getDispatch( `data.items[\'${key}\']` );',
             '}, ( item, index ) => {',
             '  const updateItem = item.dispatch;',

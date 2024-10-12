@@ -1,17 +1,5 @@
+import { hyphenToCamelCase } from "@headless/utils";
 import { PathContext } from "./types";
-
-export const BaseIndent = '  ';
-// DOM Node type in browser
-export const NodeType = {
-    ELEMENT_NODE:                1,
-    TEXT_NODE:                   3,
-    CDATA_SECTION_NODE:          4,
-    PROCESSING_INSTRUCTION_NODE: 7,
-    COMMENT_NODE:                8,
-    DOCUMENT_NODE:               9,
-    DOCUMENT_TYPE_NODE:          10,
-    DOCUMENT_FRAGMENT_NODE:      11
-};
 
 // NOTE: ootb dom attribute like 'class' and 'autocomplete' will also work but
 // will get a react warning in console
@@ -26,16 +14,6 @@ export const ReactAttr : Record<string,string> = {
     onchange: 'onChange',
     maxlength: 'maxLength',
     for: 'htmlFor'
-};
-
-/**
- * convert sting like 'my-button' to 'MyButton'
- *
- * @param str input string as 'my-button'
- * @returns output string as 'MyButton'
- */
-export const hyphenToCamelCase = ( str: string ): string => {
-    return str.replace( /^./, str[0].toUpperCase() ).replace( /-(.)/g, ( _, firstMatch ) => firstMatch.toUpperCase() );
 };
 
 /**

@@ -9,6 +9,7 @@ const _ctx = {
   eventBus: null as ReturnType<typeof createMessageEventBus> | null,
 };
 
+// NOTE: required for tree shaking
 const getEventBus = () => {
   if (!_ctx.eventBus) {
     _ctx.eventBus = createMessageEventBus();

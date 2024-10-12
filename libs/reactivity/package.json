@@ -1,28 +1,34 @@
 {
   "name": "@headless/reactivity",
   "version": "1.0.0",
-  "description": "sample view models to test headless",
-  "export": {
-    "./react": {
-      "import": "./dist/react.js",
-      "require": "./dist/react.js"
-    },
-    "./vue": {
-      "import": "./dist/vue.js",
-      "require": "./dist/vue.js"
-    },
-    "./solid": {
-      "import": "./dist/solid.js",
-      "require": "./dist/solid.js"
+  "description": "Reactivity implementation for @headless/core",
+  "exports": {
+    "./*": {
+      "import": "./dist/*",
+      "require": "./dist/*"
     }
   },
   "scripts": {
-    "audit": "eslint src test --ext .js,.jsx,.ts,.tsx && tsc -p tsconfig.json",
+    "audit": "eslint src test&& tsc",
     "build": "tsx esbuild",
     "test": "vitest run",
-    "clean": "rimraf dist doc *.log *.tgz node_modules/.*",
-    "docs": "typedoc src/index.ts"
+    "clean": "rimraf dist doc *.log *.tgz node_modules"
+  },
+  "dependencies": {
+    "@headless/core": "^1.0.0"
+  },
+  "devDependencies": {
+    "@headless/utils": "^1.0.0",
+    "@headless/types": "^1.0.0",
+    "@headless/esbuild": "^1.0.0",
+    "@headless/vitest": "^1.0.0"
+  },
+  "peerDependencies": {
+    "react": "^18.3.1",
+    "vue": "^3.5.0",
+    "solid-js": "^1.8.20",
+    "@stencil/core": "^4.7.0"
   },
   "author": "jesse23",
-  "license": "ISC"
+  "license": "MIT"
 }

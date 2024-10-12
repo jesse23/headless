@@ -11,9 +11,11 @@
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "isolatedModules": true,
-    "moduleDetection": "force",
+    // "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
+
+    "types": ["@headless/types/decl.d.ts"],
 
     /* Linting */
     // "strict": true,

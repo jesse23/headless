@@ -1,5 +1,5 @@
-# @headless/reactivityivity
-reactivity across frameworks
+# @headless/reactivity
+Reactivity implementation for @headless/core
 
 https://www.builder.io/blog/reactivity-across-frameworks
 

@@ -3,13 +3,13 @@ import { transform as transformViewModel } from './viewmodel';
 import { transform as transformView } from './view';
 
 /**
- * Create component JS content from view model definition and parsed view as HTMLElement
+ * Transform DECL Component to JS Component content
  *
  * @param viewDef view model definition
  * @param node parsed view as HTMLElement
  * @returns component JS content as array of strings
  */
-export const generateComponentContent = (
+export const transformDeclComponent = (
   viewDef: ViewModelDefinition,
   node: HTMLElement
 ): string[] => {

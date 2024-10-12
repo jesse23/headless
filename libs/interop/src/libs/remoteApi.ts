@@ -1,12 +1,12 @@
 import { MessageDefinition } from './types';
 import { createMessageEventBus } from './utils';
 
-
 const _ctx = {
   eventBus: null as ReturnType<typeof createMessageEventBus> | null,
   pendingRequests: {} as { [key: string]: (data: unknown) => void },
 };
 
+// NOTE: required for tree shaking
 const getEventBus = () => {
   if (!_ctx.eventBus) {
     _ctx.eventBus = createMessageEventBus();

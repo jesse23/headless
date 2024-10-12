@@ -1,8 +1,8 @@
 import { registerCommandViewModel } from "@headless/components";
-import { getCommandViewModel } from "../../mockDeclServer/mockCmdStoreService";
+import { getCommandViewModelFromServer } from "../../mockDeclServer/mockCmdStoreService";
 
 export const getRemoteCommandViewModel = async id => {
-    const commandViewModel = await getCommandViewModel(id);
+    const commandViewModel = await getCommandViewModelFromServer(id);
     registerCommandViewModel(commandViewModel);
     // return something to trigger the update for now
     return Object.keys(commandViewModel.commands).length;

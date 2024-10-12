@@ -57,7 +57,7 @@ __export(src_exports3, {
 // ../core/src/index.ts
 var src_exports = {};
 __export(src_exports, {
-  BaseIndent: () => BaseIndent,
+  BASE_INDENT: () => BASE_INDENT,
   Node: () => Node,
   applyValue: () => applyValue,
   applyValues: () => applyValues,
@@ -94,7 +94,7 @@ __export(src_exports, {
 });
 
 // ../core/src/utils.ts
-var BaseIndent = "  ";
+var BASE_INDENT = "  ";
 var Node = {
   ELEMENT_NODE: 1,
   TEXT_NODE: 3,
@@ -142,8 +142,8 @@ var interopES6Default = (obj) => {
 var formatNode = (node, level = 0) => {
   const tmpNode = (level && node.parentNode ? node.parentNode : node).cloneNode();
   tmpNode.innerHTML = `
-${BaseIndent.repeat(level + 1)}<div></div>
-${BaseIndent.repeat(level)}`;
+${BASE_INDENT.repeat(level + 1)}<div></div>
+${BASE_INDENT.repeat(level)}`;
   const indentBefore = tmpNode.firstChild;
   const indentAfter = tmpNode.lastChild;
   let childCount = node.childNodes.length;

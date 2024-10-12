@@ -41,7 +41,7 @@ const _mockCmdStore: Record<string, CommandViewModelJson> = {
   },
 };
 
-export const getCommandViewModel = async (
+export const getCommandViewModelFromServer = async (
   id: string
 ): Promise<CommandViewModelJson> => {
   return new Promise((resolve) => {

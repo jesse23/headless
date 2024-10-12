@@ -1,5 +1,4 @@
-    
-import * as transform from '.';
+import { createRenderFn } from './view';
 
 const global = globalThis as unknown as {
   swf: { [key: string]: unknown };
@@ -7,5 +6,8 @@ const global = globalThis as unknown as {
 
 global.swf = {
   ...global.swf,
-  transform,
+  transform: {
+    // only view transform is needed
+    createRenderFn,
+  },
 };

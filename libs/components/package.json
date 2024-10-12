@@ -1,27 +1,41 @@
 {
   "name": "@headless/components",
   "version": "1.0.0",
-  "description": "sample agnostic components to test headless",
-  "main": "dist/index.js",
+  "description": "Component library for all patterns as example",
+  "main": "src/index.ts",
   "module": "src/index.ts",
   "types": "src/index.ts",
-  "export": {
+  "exports": {
     ".": {
       "import": "./dist/index.js",
       "require": "./dist/index.js"
     },
-    "./register": {
-      "import": "./dist/register.js",
-      "require": "./dist/register.js"
+    "./*": {
+      "import": "./dist/esm/*",
+      "require": "./dist/esm/*"
+    },
+    "./wc/*": {
+      "import": "./dist/wc/*",
+      "require": "./dist/wc/*"
     }
   },
   "scripts": {
-    "audit": "eslint src test --ext .js,.jsx,.ts,.tsx && tsc -p tsconfig.json",
+    "audit": "eslint src test && tsc",
+    "preview": "npx http-server ./ -g -p 5173",
     "build": "tsx esbuild",
+    "build:wc": "npm run build -w @headless/core && cp -f ../core/dist/cdn/core.js ./dist/cdn/core.js && cp -f ../core/dist/cdn/core.js.map ./dist/cdn/core.js.map && npm run build -w @headless/interop && cp -f ../interop/dist/cdn/interop.js ./dist/cdn/interop.js && cp -f ../interop/dist/cdn/interop.js.map ./dist/cdn/interop.js.map &&npm run build",
     "test": "vitest run",
-    "clean": "rimraf dist doc *.log *.tgz node_modules/.*",
-    "docs": "typedoc src/index.ts"
+    "clean": "rimraf dist doc *.log *.tgz node_modules"
+  },
+  "peerDependencies": {
+    "@headless/core": "^1.0.0",
+    "@headless/interop": "^1.0.0"
+  },
+  "devDependencies": {
+    "@headless/esbuild": "^1.0.0",
+    "@headless/types": "^1.0.0",
+    "@headless/vitest": "^1.0.0"
   },
   "author": "jesse23",
-  "license": "ISC"
+  "license": "MIT"
 }

@@ -1,7 +1,7 @@
 import {
-    BaseIndent,
+    BASE_INDENT,
     NodeType
-} from './transformUtils';
+} from '@headless/utils';
 import { ViewTransformContext, ViewTransformResult } from './types';
 
 const Attr = 'exist-when';
@@ -26,7 +26,7 @@ function when( node: HTMLElement, _: ViewTransformContext ): boolean {
 function transform( node: HTMLElement, context: ViewTransformContext ): ViewTransformResult | undefined {
     // process indent
     let contents = [];
-    const indent = BaseIndent.repeat( context.level );
+    const indent = BASE_INDENT.repeat( context.level );
     // indent in text node will add noise
     const expr = node.getAttribute( Attr );
     // TODO: maybe we should clone node here
@@ -62,7 +62,7 @@ function transform( node: HTMLElement, context: ViewTransformContext ): ViewTran
 function transformToTemplate( node: HTMLElement, context: ViewTransformContext ): ViewTransformResult | undefined {
     // process indent
     let contents = [];
-    const indent = BaseIndent.repeat( context.level );
+    const indent = BASE_INDENT.repeat( context.level );
     // indent in text node will add noise
     const expr = node.getAttribute( Attr );
     // TODO: maybe we should clone node here

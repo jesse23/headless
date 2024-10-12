@@ -4,12 +4,12 @@
   "version": "0.0.0",
   "type": "commonjs",
   "scripts": {
+    "audit": "NODE_OPTIONS='--import tsx' eslint . && tsc -b",
+    "test": "echo \"placeholder\" && exit 0",
     "start": "NODE_OPTIONS='--import tsx' vite",
     "build": "NODE_OPTIONS='--import tsx' vite build && npm run build -w @headless/plugin-sample&& cp ../../kits/plugin-sample/dist/index.js ./dist/assets/plugin.js && cp ../../kits/plugin-sample/dist/index.js.map ./dist/assets/plugin.js.map",
-    "audit": "eslint . && tsc",
     "preview": "NODE_OPTIONS='--import tsx' vite preview",
-    "test": "echo \"placeholder\" && exit 0",
-    "clean": "rimraf dist doc *.log *.tgz node_modules/.*"
+    "clean": "rimraf dist doc *.log *.tgz node_modules"
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -27,6 +27,8 @@
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.1",
     "vite": "^5.4.1",
-    "vite-plugin-dynamic-import": "^1.6.0"
+    "@headless/core": "^1.0.0",
+    "@headless/reactivity": "^1.0.0",
+    "@headless/components": "^1.0.0"
   }
 }

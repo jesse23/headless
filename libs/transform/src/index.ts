@@ -1,3 +1,3 @@
 
-export { generateComponentContent } from './utils';
-export { createRenderFn, hyphenToCamelCase } from './view';
+export { transformDeclComponent } from './utils';
+export { createRenderFn } from './view';

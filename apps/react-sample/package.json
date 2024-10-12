@@ -4,16 +4,16 @@
   "version": "0.0.0",
   "type": "commonjs",
   "scripts": {
+    "audit": "NODE_OPTIONS='--import tsx' eslint . && tsc -b",
+    "test": "echo \"placeholder\" && exit 0",
     "start": "NODE_OPTIONS='--import tsx' vite",
-    "build": "tsc -b && NODE_OPTIONS='--import tsx' vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "build": "NODE_OPTIONS='--import tsx' vite build",
+    "preview": "NODE_OPTIONS='--import tsx' vite preview",
+    "clean": "rimraf dist doc *.log *.tgz node_modules"
   },
   "devDependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "@eslint/js": "^9.9.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
@@ -24,6 +24,9 @@
     "globals": "^15.9.0",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.1",
-    "vite": "^5.4.1"
+    "vite": "^5.4.1",
+    "@headless/core": "^1.0.0",
+    "@headless/reactivity": "^1.0.0",
+    "@headless/components": "^1.0.0"
   }
 }

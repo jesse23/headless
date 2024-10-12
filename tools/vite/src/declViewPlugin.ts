@@ -3,7 +3,7 @@
 // - use tsx and commonjs at app side
 // - use absolute path here
 // - use pre-bundled version
-import {transpileJson, transpileComponent } from '@headless/tooling';
+import {transpileJson, transpileDeclComponent } from '@headless/tooling';
 
 // https://github.com/vitejs/vite/discussions/12788
 export const declViewPlugin = ()/*: PluginOption*/ => {
@@ -24,7 +24,7 @@ export const declViewPlugin = ()/*: PluginOption*/ => {
         const jsonPath = id;
         const code = id.endsWith('commandViewModel.json')
           ? await transpileJson(jsonPath)
-          : await transpileComponent(jsonPath, resolvedMap);
+          : await transpileDeclComponent(jsonPath, resolvedMap);
 
         // NOTE: need to fix
         const htmlPath = jsonPath

@@ -2,25 +2,24 @@
   "name": "@headless/esbuild",
   "version": "1.0.0",
   "description": "esbuild config",
-  "main": "dist/index.js",
-  "module": "src/index.ts",
-  "types": "src/index.ts",
-  "export": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.js"
-    },
-    "./register": {
-      "import": "./dist/register.js",
-      "require": "./dist/register.js"
-    }
-  },
+  "main": "src/index.ts",
   "scripts": {
-    "audit": "eslint src test --ext .js,.jsx,.ts,.tsx && tsc -p tsconfig.json",
-    "build": "tsx esbuild",
+    "audit": "eslint src test && tsc",
+    "build": "echo \"placeholder\" && exit 0",
     "test": "vitest run",
-    "clean": "rimraf dist doc *.log *.tgz node_modules/.*",
-    "docs": "typedoc src/index.ts"
+    "clean": "rimraf dist doc *.log *.tgz node_modules"
+  },
+  "dependencies": {
+    "@headless/tooling": "^1.0.0",
+    "esbuild": "^0.23.0",
+    "esbuild-css-modules-plugin": "^2.7.1",
+    "esbuild-node-externals": "^1.7.0",
+    "esbuild-plugin-external-global": "^1.0.1",
+    "esbuild-plugin-ts-references": "^0.2.2",
+    "esbuild-sass-plugin": "^3.3.1"
+  },
+  "devDependencies": {
+    "@headless/vitest": "^1.0.0"
   },
   "author": "jesse23",
   "license": "ISC"

@@ -1,9 +1,8 @@
 /**
  * Node transformer
  */
-import { BaseIndent, NodeType, ReactAttr } from './transformUtils';
-
-import { hyphenToCamelCase } from './transformUtils';
+import { BASE_INDENT, NodeType, hyphenToCamelCase } from '@headless/utils';
+import { ReactAttr } from './transformUtils';
 import { ViewTransformContext, ViewTransformResult } from './types';
 
 /**
@@ -36,7 +35,7 @@ function transform(
   const viewImports = context.deps || {};
   const level = context.level !== undefined ? context.level : 0;
   const index = context.index;
-  const indent = BaseIndent.repeat(level);
+  const indent = BASE_INDENT.repeat(level);
 
   // process tag
   let elemName = elem.nodeName.toLowerCase();
@@ -94,12 +93,9 @@ function transform(
         );
       } else if (matchSingleCurly) {
         // partial store
-        const path = value
-          .substring(1, value.length - 1);
-          partialStore[path] = true;
-          contents.push(
-            `${attrIndent}"${name}": ${path.replace(/\./g,'_')},`
-          );
+        const path = value.substring(1, value.length - 1);
+        partialStore[path] = true;
+        contents.push(`${attrIndent}"${name}": ${path.replace(/\./g, '_')},`);
       } else {
         contents.push(`${attrIndent}"${name}": "${value}",`);
       }
@@ -156,8 +152,8 @@ function transform(
       // </ng-list>
       // We need to flatten the object, save it as a top level variable
       if (viewDesc && viewDesc.scopeSlot) {
-        const childIndent = BaseIndent.repeat(level + 1);
-        const funcIndent = BaseIndent.repeat(level + 2);
+        const childIndent = BASE_INDENT.repeat(level + 1);
+        const funcIndent = BASE_INDENT.repeat(level + 2);
         currLine.push(', {');
         contents.push(currLine.join(''));
         contents.push(`${childIndent}eval: function(scope){`);
@@ -247,7 +243,7 @@ function transformToTemplate(node: HTMLElement, context: ViewTransformContext) {
   const viewImports = context.deps || {};
   const level = context.level !== undefined ? context.level : 0;
   const index = context.index;
-  const indent = BaseIndent.repeat(level);
+  const indent = BASE_INDENT.repeat(level);
 
   // process tag
   let elemName = elem.nodeName.toLowerCase();
@@ -282,11 +278,9 @@ function transformToTemplate(node: HTMLElement, context: ViewTransformContext) {
         currLine.push(`${name}={${value.substr(2, value.length - 4)}}`);
       } else if (matchSingleCurly) {
         // partial store
-        const path = value
-          .substring(1, value.length - 1)
+        const path = value.substring(1, value.length - 1);
         partialStore[path] = true;
         currLine.push(`${name}={${path.replace(/\./g, '_')}}`);
-        
       } else {
         currLine.push(`${name}="${value}"`);
       }
@@ -336,8 +330,8 @@ function transformToTemplate(node: HTMLElement, context: ViewTransformContext) {
       // </ng-list>
       // We need to flatten the object, save it as a top level variable
       if (viewDesc && viewDesc.scopeSlot) {
-        const childIndent = BaseIndent.repeat(level + 1);
-        const funcIndent = BaseIndent.repeat(level + 2);
+        const childIndent = BASE_INDENT.repeat(level + 1);
+        const funcIndent = BASE_INDENT.repeat(level + 2);
         // currLine.push( ', {' );
         contents.push(`${childIndent}{ {`);
         contents.push(`${childIndent}eval: function(scope){`);

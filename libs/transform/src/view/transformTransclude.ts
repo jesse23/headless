@@ -6,9 +6,9 @@
  *     `(props.children)?<div>props.children</div>:<div>default</div>`
  */
 import {
-    BaseIndent,
+    BASE_INDENT,
     NodeType
-} from './transformUtils';
+} from '@headless/utils';
 import { ViewTransformContext, ViewTransformResult } from './types';
 
 const Attr = 'transclude';
@@ -35,7 +35,7 @@ function transform( node: HTMLElement, context: ViewTransformContext ): ViewTran
     let contents = [];
     let deps = {};
     let scope = {};
-    const indent = BaseIndent.repeat( context.level );
+    const indent = BASE_INDENT.repeat( context.level );
 
     node.removeAttribute( Attr );
     const defaultNode = node;
@@ -90,7 +90,7 @@ function transformToTemplate( node: HTMLElement, context: ViewTransformContext )
     let contents = [];
     let deps = {};
     let scope = {};
-    const indent = BaseIndent.repeat( context.level );
+    const indent = BASE_INDENT.repeat( context.level );
 
     node.removeAttribute( Attr );
     const defaultNode = node;

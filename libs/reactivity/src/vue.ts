@@ -25,12 +25,16 @@ import {
   h,
   toRaw,
   Slots,
+  shallowRef,
+  VNode,
+  Fragment
 } from 'vue';
+import { registerJsxRuntime } from '@headless/core/jsx-runtime';
 
 export const useStore: UseStoreFn = (initFn) => {
   const lastState = ref(initFn());
-  const getData = ref(() => toRaw(lastState.value)).value;
-  const updateData = ref((values: Data): void => {
+  const getData = shallowRef(() => toRaw(lastState.value)).value;
+  const updateData = shallowRef((values: Data): void => {
     lastState.value = applyValues(getData(), values);
   }).value;
 
@@ -38,11 +42,11 @@ export const useStore: UseStoreFn = (initFn) => {
 };
 
 const usePartialStore: GetPartialStoreFn = (store, path) => {
-  return ref(createPartialStore(store, path)).value;
+  return shallowRef(createPartialStore(store, path)).value;
 };
 
 const useAsyncInit = (initFn) => {
-  const data = ref({});
+  const data = shallowRef({});
 
   onMounted(async () => {
     const res = await initFn();
@@ -60,11 +64,14 @@ const useComponentDefinition = (
   }
 ) => {
   // props
-  const propsRef = ref(context);
+  const propsRef = shallowRef(context);
   propsRef.value = context;
   const getProps = () => {
     return {
       ...propsRef.value.attrs,
+      // TODO: Non-function value encountered for default slot. Prefer function slots for better performance.
+      // https://stackoverflow.com/questions/69875273/non-function-value-encountered-for-default-slot-in-vue-3-composition-api-comp
+      // Maybe compile to JSX will be better
       children: propsRef.value.slots.default && propsRef.value.slots.default(),
     };
   };
@@ -73,7 +80,7 @@ const useComponentDefinition = (
   const { getData, updateData } = useStore(() => cloneJson(componentDef.data));
 
   // actions
-  const actions = ref(
+  const actions = shallowRef(
     initActionsFromActionFn(
       componentDef.actions,
       { getData, updateData },
@@ -82,7 +89,7 @@ const useComponentDefinition = (
   ).value;
 
   // events
-  const subscriptions = ref([]);
+  const subscriptions = shallowRef([]);
 
   onMounted(async () => {
     // onMount hook
@@ -180,7 +187,13 @@ export const defineComponent = (
   return Component;
 };
 
+// TODO: not tested yet
+const jsx = (tag: string, { children, ...props } : Record<string, unknown> & { children: VNode}) => h(tag, props || {}, children);
+
+const jsxs = (tag: string, { children, ...props } : Record<string, unknown> & { children: VNode[]}) => h(tag, props || {}, children);
+
 registerDefineComponent(defineComponent);
+registerJsxRuntime({ jsx, jsxs, Fragment });
 
 ///////////////////////////
 /**

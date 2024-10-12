@@ -5,7 +5,9 @@ import { declViewPlugin } from '@headless/vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [tsconfigPaths(), declViewPlugin(), react()],
+  plugins: [tsconfigPaths(), declViewPlugin(), react({
+    tsDecorators: true,
+  })],
   css: {
     modules: {
       localsConvention: 'camelCaseOnly',

@@ -1,3 +1,5 @@
 import { build } from '@headless/esbuild';
 
-build();
+build({
+  external: ['@headless/core', '@headless/interop'],
+});

@@ -1,6 +1,6 @@
 import {
     NodeType
-} from './transformUtils';
+} from '@headless/utils';
 import { ViewTransformContext, ViewTransformResult } from './types';
 
 const Attr = 'visible-when';

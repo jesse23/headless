@@ -5,12 +5,13 @@
   "main": "types.ts",
   "module": "types.ts",
   "scripts": {
-    "audit": "eslint src test --ext .js,.jsx,.ts,.tsx && tsc -p tsconfig.json",
-    "build": "dts-bundle-generator -o dist/decl.d.ts src/index.ts",
-    "test": "vitest run",
+    "audit": "eslint && tsc -p tsconfig.json",
+    "build": "npm run build:dts",
+    "build:dts": "tsc types.ts --declaration --emitDeclarationOnly --outDir dist",
+    "test": "echo \"placeholder\" && exit 0",
     "clean": "rimraf dist doc *.log *.tgz node_modules/.*",
-    "docs": "typedoc src/index.ts"
+    "doc": "typedoc types.ts"
   },
   "author": "jesse23",
-  "license": "ISC"
+  "license": "MIT"
 }

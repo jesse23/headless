@@ -1,5 +1,6 @@
 import './App.css';
-import { ComponentJsExample, DataExample, EventExampleContainer } from '@headless/components';
+import { ComponentJsExample } from '@headless/components/ComponentJsExample';
+import { DataExample, EventExampleContainer } from '@headless/components';
 import { FormExample } from '@headless/kit-sample';
 
 function App() {

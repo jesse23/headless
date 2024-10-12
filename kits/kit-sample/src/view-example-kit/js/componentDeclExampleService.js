@@ -23,6 +23,6 @@ export const unloadComponent = () => {
     console.log('ComponentDeclExample unloaded');
 }
 
-export const notifyUpdate = (value) => {
+export const notifyUpdate = () => {
     console.log('Notification: value has been updated!');
 }

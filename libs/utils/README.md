@@ -1,2 +1,2 @@
-# @headless/core
-core engine for headless
+# @headless/utils
+Internal utilities for mono repo

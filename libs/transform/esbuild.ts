@@ -6,5 +6,4 @@ build();
 build({
     entryPoints: ['src/register.ts'],
     outfile: 'dist/register.js',
-    external: ['.'],
 });

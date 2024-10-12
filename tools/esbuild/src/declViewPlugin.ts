@@ -1,5 +1,5 @@
 import { Plugin } from 'esbuild';
-import { transpileComponent, transpileJson } from '@headless/tooling';
+import { transpileDeclComponent, transpileJson } from '@headless/tooling';
 
 export const declViewPlugin: Plugin = {
   name: 'declViewPlugin',
@@ -10,7 +10,7 @@ export const declViewPlugin: Plugin = {
       const jsonPath = args.path.replace(/\\/g, '/');
       const contents = jsonPath.endsWith('commandViewModel.json')
         ? await transpileJson(jsonPath)
-        : await transpileComponent(jsonPath);
+        : await transpileDeclComponent(jsonPath);
       return {
         contents,
         loader: 'ts',

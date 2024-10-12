@@ -2,7 +2,9 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "jsx": "react-jsx",
+    "jsxImportSource": "@headless/core",
     "outDir": "./dist",
+    "experimentalDecorators": true,
     "types": ["@headless/types/decl.d.ts"],
   },
   "include": ["src"],

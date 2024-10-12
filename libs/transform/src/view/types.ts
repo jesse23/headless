@@ -26,6 +26,7 @@ export interface PathContext {
 }
 
 export interface TransformContext {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;
 }
 

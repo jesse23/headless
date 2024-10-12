@@ -1,4 +1,4 @@
 import '@headless/reactivity/stencil';
-import { ComponentJsExample } from "@headless/components/src/js-components";
+import { ComponentJsExample } from "@headless/components/ComponentJsExample";
 
 export default ComponentJsExample;
